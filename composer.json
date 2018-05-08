@@ -1,0 +1,29 @@
+{
+	"name": "wp-pay-extensions/ninjaforms",
+	"description": "Ninja Forms driver for the WordPress payment processing library.",
+	"keywords": ["wordpress", "wp", "pay", "ninja", "forms", "extension", "pronamic"],
+	"license": "GPL-3.0-or-later",
+	"authors": [
+		{
+			"name": "Pronamic",
+			"email": "info@pronamic.eu",
+			"homepage": "http://www.pronamic.eu/",
+			"role": "Company"
+		},
+		{
+			"name": "Ruben Droogh",
+			"homepage": "http://www.rubendroogh.nl/",
+			"role": "Developer"
+		}
+	],
+	"support": {
+		"email": "support@wp-pay.org",
+		"issues": "https://github.com/wp-pay-extensions/ninjaforms/issues",
+		"source": "https://github.com/wp-pay-extensions/ninjaforms"
+	},
+	"autoload": {
+		"psr-4": {
+			"Pronamic\\WordPress\\Pay\\Extensions\\NinjaForms\\": "src/"
+		}
+	},
+}

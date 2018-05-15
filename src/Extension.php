@@ -121,6 +121,18 @@ class Extension {
 	}
 
 	/**
+	 * Source description.
+	 *
+	 * @param string  $description Source description.
+	 * @param Payment $payment     Payment.
+	 *
+	 * @return string|void
+	 */
+	public function source_description( $description, Payment $payment ) {
+		return __( 'Ninja Forms Entry', 'pronamic_ideal' );
+	}
+
+	/**
      * Config
      *
      * @param $file_name

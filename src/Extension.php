@@ -24,12 +24,12 @@ class Extension {
 	const SLUG = 'ninja-forms';
 
 	/**
-     * Plugin Directory
-     *
-     * @since 3.0
-     * @var string $dir
-     */
-    public static $dir = '';
+	 * Plugin Directory
+	 *
+	 * @since 3.0
+	 * @var string $dir
+	 */
+	public static $dir = '';
 
 	/**
 	 * Bootstrap.
@@ -54,7 +54,7 @@ class Extension {
 		add_filter( 'ninja_forms_enable_credit_card_fields', '__return_true' );
 
 		add_action( 'ninja_trigger_pronamic_pay_create_action', array( $this, 'create_action' ), 10, 3 );
-		add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3  );
+		add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
 
 		$payment_action = new PaymentAction();
 	}
@@ -64,23 +64,23 @@ class Extension {
 	 */
 	public function register_fields( $fields ) {
 		include self::$dir . 'fields/PaymentMethodsField.php';
-		$fields['paymentmethods'] = new Pay_PaymentMethodsField;
+		$fields['paymentmethods'] = new Pay_PaymentMethodsField();
 
-        return $fields;
+		return $fields;
 	}
 
 	/**
 	 * Initialize.
 	 */
 	public function init() {
-		
+
 	}
 
 	/**
 	 * Admin enqueue scripts.
 	 */
 	public function admin_enqueue_scripts() {
-		
+
 	}
 
 	/**
@@ -165,14 +165,12 @@ class Extension {
 	}
 
 	/**
-     * Config
-     *
-     * @param $file_name
-     * @return mixed
-     */
-    public static function config( $file_name ) {
-        return include self::$dir . 'config/' . $file_name . '.php';
-    }
+	 * Config
+	 *
+	 * @param $file_name
+	 * @return mixed
+	 */
+	public static function config( $file_name ) {
+		return include self::$dir . 'config/' . $file_name . '.php';
+	}
 }
-
-?>

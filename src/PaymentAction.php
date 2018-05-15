@@ -11,7 +11,7 @@ final class PaymentAction extends NF_Abstracts_Action {
 	 *
 	 * @var array
 	 */
-    public $payment_methods = array();
+	public $payment_methods = array();
 
 	/**
 	 * Constructor
@@ -27,9 +27,9 @@ final class PaymentAction extends NF_Abstracts_Action {
 		$settings = Extension::config( 'PaymentActionSettings' );
 
 		$this->_settings = array_merge( $this->_settings, $settings );
-		$this->_tags = array(
+		$this->_tags     = array(
 			'payment',
-			'gateway'
+			'gateway',
 		);
 
 		add_action( 'ninja_forms_register_actions', array( $this, 'register_actions' ) );
@@ -40,18 +40,20 @@ final class PaymentAction extends NF_Abstracts_Action {
 	}
 
 	public function register_actions( $actions ) {
-		$actions[ 'pronamicpay' ] = new PaymentAction();
+		$actions['pronamicpay'] = new PaymentAction();
 
 		return $actions;
 	}
 
 	public function process( $action_settings, $form_id, $data ) {
 		$config_id = get_option( 'pronamic_pay_config_id' );
+
 		$payment_data = new PaymentData( $form_id, $action_settings );
+
 		$payment_method = $payment_data->get_payment_method();
 
 		$gateway = Plugin::get_gateway( $config_id );
-		
+
 		if ( ! $gateway ) {
 			return;
 		}
@@ -61,11 +63,9 @@ final class PaymentAction extends NF_Abstracts_Action {
 		$error = $gateway->get_error();
 
 		if ( ! is_wp_error( $error ) ) {
-			$data[ 'actions' ][ 'redirect' ] = $payment->get_action_url();
+			$data['actions']['redirect'] = $payment->get_action_url();
 		}
-		
+
 		return $data;
 	}
 }
-
-?>

@@ -25,5 +25,5 @@
 		"psr-4": {
 			"Pronamic\\WordPress\\Pay\\Extensions\\NinjaForms\\": "src/"
 		}
-	},
+	}
 }

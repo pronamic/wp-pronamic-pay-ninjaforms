@@ -54,8 +54,19 @@ class Extension {
 		add_filter( 'ninja_forms_enable_credit_card_fields', '__return_true' );
 
 		add_action( 'ninja_trigger_pronamic_pay_create_action', array( $this, 'create_action' ), 10, 3 );
+		add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3  );
 
 		$payment_action = new PaymentAction();
+	}
+
+	/**
+	 * Register custom fields
+	 */
+	public function register_fields( $fields ) {
+		include self::$dir . 'fields/PaymentMethodsField.php';
+		$fields['paymentmethods'] = new Pay_PaymentMethodsField;
+
+        return $fields;
 	}
 
 	/**
@@ -75,8 +86,6 @@ class Extension {
 	/**
 	 * Registered form actions.
 	 *
-	 * @see https://github.com/wp-premium/formidable-paypal/blob/3.02/controllers/FrmPaymentSettingsController.php#L125-L128
-	 * @see https://github.com/wp-premium/formidable-paypal/blob/3.02/models/FrmPaymentAction.php
 	 *
 	 * @param array $actions Formidable Forms form actions.
 	 *
@@ -91,8 +100,6 @@ class Extension {
 	/**
 	 * Create action.
 	 *
-	 * @see https://github.com/wp-premium/formidable/blob/2.0.21/classes/controllers/FrmFormActionsController.php#L299-L308
-	 * @see https://github.com/wp-premium/formidable-paypal/blob/3.02/controllers/FrmPaymentsController.php#L186-L193
 	 *
 	 * @param $action
 	 * @param $entry

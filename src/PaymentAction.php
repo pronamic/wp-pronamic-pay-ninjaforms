@@ -46,63 +46,18 @@ final class PaymentAction extends NF_Abstracts_Action {
 	}
 
 	public function process( $action_settings, $form_id, $data ) {
-		//wp_nonce_field( 'pronamic_pay_save_form_options', 'pronamic_pay_nonce' );
-		$fields = array();
-		$description = $action_settings['description'];
-		$amount = $action_settings['amount'];
-
-		$i = 0;
-
-		foreach ( $data['fields'] as $field ) {
-			if ( 'submit' !== $field['type'] ) {
-				$fields[$i]->id = $field['id'];
-				$fields[$i]->value = $field['value'];
-				$fields[$i]->type = $field['type'];
-			}
-
-			$i++;
-		}
-
-		$data[ 'actions' ][ 'redirect' ] = 'http://google.com/';
-		return $data;
-	}
-
-	/**
-	 * Get payment method options.
-	 */
-	public static function get_payment_methods() {
-		$payment_methods = array();
-
 		$config_id = get_option( 'pronamic_pay_config_id' );
+		$payment_data = new PaymentData( $form_id, $action_settings );
 
 		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( ! $gateway ) {
-			return $payment_methods;
+			return;
 		}
 
-		$options = $gateway->get_payment_method_field_options();
+		Plugin::start( $form_id, $form_id, $payment_data, $gateway );
 
-		$error = $gateway->get_error();
-
-		if ( is_wp_error( $error ) || ! $options ) {
-			return $payment_methods;
-		}
-
-		foreach ( $options as $payment_method => $name ) {
-			$value = 'pronamic_pay';
-
-			if ( ! empty( $payment_method ) ) {
-				$value = sprintf( 'pronamic_pay_%s', $payment_method );
-			}
-
-			$payment_methods[] = array(
-				'label' => $name,
-				'value' => $value,
-			);
-		}
-
-		return $payment_methods;
+		return $data;
 	}
 }
 

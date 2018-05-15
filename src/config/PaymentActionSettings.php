@@ -35,13 +35,9 @@ return array(
 
     'method' => array(
         'name' => 'method',
-        'type' => 'select',
+        'type' => 'textbox',
         'group' => 'primary',
         'label' => __( 'Payment method', 'ninja-forms' ),
-        'options' => array(
-            array( 'label' => __( 'Method 1', 'ninja-forms' ), 'value' => '5' ),
-            array( 'label' => __( 'Method 2', 'ninja-forms' ), 'value' => '5' )
-        ),
         'placeholder' => '',
         'value' => '',
         'width' => 'one-half',

@@ -69,71 +69,7 @@ class Extension {
 	 * Admin enqueue scripts.
 	 */
 	public function admin_enqueue_scripts() {
-		$screen = get_current_screen();
-
-		// $in_form_editor = ( 'toplevel_page_formidable' === $screen->id && 'edit' === filter_input( INPUT_GET, 'frm_action', FILTER_SANITIZE_STRING ) );
-		// $in_settings    = ( 'toplevel_page_formidable' === $screen->id && 'settings' === filter_input( INPUT_GET, 'frm_action', FILTER_SANITIZE_STRING ) );
-
-		// if ( ! $in_form_editor && ! $in_settings ) {
-		// 	return;
-		// }
-
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-
-		wp_register_style(
-			'pronamic-pay-ninja-forms',
-			plugins_url( 'css/admin' . $min . '.css', dirname( __FILE__ ) ),
-			array(),
-			'1.0.0'
-		);
-
-		wp_register_script(
-			'pronamic-pay-ninja-forms',
-			plugins_url( 'js/admin' . $min . '.js', dirname( __FILE__ ) ),
-			array( 'jquery' ),
-			'1.0.0',
-			true
-		);
-
-		wp_enqueue_style( 'pronamic-pay-ninja-forms' );
-
-		wp_enqueue_script( 'pronamic-pay-ninja-forms' );
-	}
-
-	/**
-	 * Update entry payment status of the specified payment
-	 *
-	 * @param Payment $payment
-	 * @param bool    $can_redirect
-	 *
-	 * @since unreleased
-	 */
-	public function update_status( Payment $payment, $can_redirect = false ) {
-
-	}
-
-	/**
-	 * Source text.
-	 *
-	 * @param string  $text    Source text.
-	 * @param Payment $payment Payment.
-	 *
-	 * @return string
-	 */
-	public static function source_text( $text, Payment $payment ) {
-
-	}
-
-	/**
-	 * Source description.
-	 *
-	 * @param string  $description Source description.
-	 * @param Payment $payment     Payment.
-	 *
-	 * @return string|void
-	 */
-	public function source_description( $description, Payment $payment ) {
-		return __( 'Ninja Forms Entry', 'pronamic_ideal' );
+		
 	}
 
 	/**

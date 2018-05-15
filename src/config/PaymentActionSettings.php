@@ -21,7 +21,7 @@ return array(
         'name' => 'amount',
         'type' => 'textbox',
         'group' => 'primary',
-        'label' => __( 'Amount Field', 'ninja-forms' ),
+        'label' => __( 'Payment Amount', 'ninja-forms' ),
         'placeholder' => '',
         'value' => '',
         'width' => 'one-half',
@@ -35,12 +35,13 @@ return array(
 
     'method' => array(
         'name' => 'method',
-        'type' => 'textbox',
+        'type' => 'field-select',
         'group' => 'primary',
         'label' => __( 'Payment method', 'ninja-forms' ),
         'placeholder' => '',
         'value' => '',
         'width' => 'one-half',
+        'help'  => __( 'Use the special "Payment Methods" field for this.', 'ninja-forms' ),
         'use_merge_tags' => array(
             'include' => array(
                 'calcs',

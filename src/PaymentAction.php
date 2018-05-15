@@ -48,15 +48,22 @@ final class PaymentAction extends NF_Abstracts_Action {
 	public function process( $action_settings, $form_id, $data ) {
 		$config_id = get_option( 'pronamic_pay_config_id' );
 		$payment_data = new PaymentData( $form_id, $action_settings );
+		$payment_method = $payment_data->get_payment_method();
 
 		$gateway = Plugin::get_gateway( $config_id );
-
+		
 		if ( ! $gateway ) {
 			return;
 		}
 
-		Plugin::start( $form_id, $form_id, $payment_data, $gateway );
+		$payment = Plugin::start( $config_id, $gateway, $payment_data, $payment_method );
 
+		$error = $gateway->get_error();
+
+		if ( ! is_wp_error( $error ) ) {
+			$data[ 'actions' ][ 'redirect' ] = $payment->get_action_url();
+		}
+		
 		return $data;
 	}
 }

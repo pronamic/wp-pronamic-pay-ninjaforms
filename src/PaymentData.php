@@ -74,10 +74,8 @@ class PaymentData extends Pay_PaymentData {
 	public function get_payment_method() {
 		$payment_method = null;
 
-		$payment_method_field = $this->data['pronamic_pay_payment_method_field'];
-
-		if ( ! empty( $payment_method_field ) && isset( $this->entry->metas[ $payment_method_field ] ) ) {
-			$payment_method = $this->entry->metas[ $payment_method_field ];
+		if ( ! empty( $this->form_data['method'] ) && isset( $this->form_data['method'] ) ) {
+			$payment_method = $this->form_data['method'];
 
 			$replacements = array(
 				'pronamic_pay_' => '',

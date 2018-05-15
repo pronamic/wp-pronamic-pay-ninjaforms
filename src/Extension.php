@@ -128,6 +128,31 @@ class Extension {
 	}
 
 	/**
+	 * Source text.
+	 *
+	 * @param string  $text    Source text.
+	 * @param Payment $payment Payment.
+	 *
+	 * @return string
+	 */
+	public static function source_text( $text, Payment $payment ) {
+		$text = __( 'Ninja Forms', 'pronamic_ideal' ) . '<br />';
+
+		$text .= sprintf(
+			'<a href="%s">%s</a>',
+			add_query_arg( array(
+				'page'       => 'ninja-forms',
+				'frm_action' => 'show',
+				'id'         => $payment->get_source_id(),
+			), admin_url( 'admin.php' ) ),
+			/* translators: %s: payment source id */
+			sprintf( __( 'Entry #%s', 'pronamic_ideal' ), $payment->get_source_id() )
+		);
+
+		return $text;
+	}
+
+	/**
 	 * Source description.
 	 *
 	 * @param string  $description Source description.

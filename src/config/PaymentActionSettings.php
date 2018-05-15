@@ -42,6 +42,9 @@ return array(
         'value' => '',
         'width' => 'one-half',
         'help'  => __( 'Use the special "Payment Methods" field for this.', 'ninja-forms' ),
+        'field_types' => array(
+            'paymentmethods'
+        ),
         'use_merge_tags' => array(
             'include' => array(
                 'calcs',

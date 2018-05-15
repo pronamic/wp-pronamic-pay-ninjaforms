@@ -67,6 +67,80 @@ class PaymentData extends Pay_PaymentData {
 	}
 
 	/**
+	 * Get payment method.
+	 *
+	 * @return string|null
+	 */
+	public function get_payment_method() {
+		$payment_method = null;
+
+		$payment_method_field = $this->data['pronamic_pay_payment_method_field'];
+
+		if ( ! empty( $payment_method_field ) && isset( $this->entry->metas[ $payment_method_field ] ) ) {
+			$payment_method = $this->entry->metas[ $payment_method_field ];
+
+			$replacements = array(
+				'pronamic_pay_' => '',
+				'pronamic_pay'  => '',
+			);
+
+			$payment_method = strtr( $payment_method, $replacements );
+
+			if ( empty( $payment_method ) ) {
+				$payment_method = null;
+			}
+		}
+
+		return $payment_method;
+	}
+
+	/**
+	 * Get source indicator
+	 *
+	 * @see Pronamic_Pay_PaymentDataInterface::get_source()
+	 * @return string
+	 */
+	public function get_source() {
+		return 'ninja-forms';
+	}
+
+	/**
+	 * Get currency
+	 *
+	 * @see Pronamic_Pay_PaymentDataInterface::get_currency_alphabetic_code()
+	 * @return string
+	 */
+	public function get_currency_alphabetic_code() {
+		return 'EUR';
+	}
+
+	/**
+	 * Get description
+	 *
+	 * @see Pronamic_Pay_PaymentDataInterface::get_description()
+	 * @return string
+	 */
+	public function get_description() {
+		$description = '';
+
+		if ( isset( $this->form_data['description'] ) ) {
+			$description = $this->form_data['description'];
+		}
+
+		return $description;
+	}
+
+	/**
+	 * Get order ID
+	 *
+	 * @see Pronamic_Pay_PaymentDataInterface::get_order_id()
+	 * @return string
+	 */
+	public function get_order_id() {
+		return $this->entry_id;
+	}
+
+	/**
 	 * Get amount
 	 *
 	 * @return float
@@ -74,13 +148,9 @@ class PaymentData extends Pay_PaymentData {
 	private function get_amount_from_field() {
 		$amount = 0;
 
-		die(var_dump($this->form_data));
-
-		// $amount_field = $this->action->post_content['pronamic_pay_amount_field'];
-
-		// if ( ! empty( $amount_field ) && isset( $this->entry->metas[ $amount_field ] ) ) {
-		// 	$amount = $this->entry->metas[ $amount_field ];
-		// }
+		if ( isset( $this->form_data['amount'] ) ) {
+			$amount = $this->form_data['amount'];
+		}
 
 		return $amount;
 	}

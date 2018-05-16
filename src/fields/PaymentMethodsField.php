@@ -8,9 +8,8 @@ use Pronamic\WordPress\Pay\Core\PaymentMethods;
 /**
  * Class Pay_PaymentMethodsField
  */
-class Pay_PaymentMethodsField extends NF_Abstracts_List
-{
-//phpcs:disable Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed
+class Pay_PaymentMethodsField extends NF_Abstracts_List {
+    //phpcs:disable Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed
     protected $_name = 'paymentmethods';
 
     protected $_type = 'paymentmethods';
@@ -19,33 +18,31 @@ class Pay_PaymentMethodsField extends NF_Abstracts_List
 
     protected $_section = 'pricing';
 
-    protected $_icon = 'paypal'; //todo
+    protected $_icon = 'paypal';
 
     protected $_templates = 'listselect';
 
     protected $_old_classname = 'list-select';
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
 
         $this->_nicename = __( 'Payment Methods', 'ninja-forms' );
 
-        $this->_settings[ 'options' ][ 'value' ] = $this->get_options();
+        $this->_settings['options']['value'] = $this->get_options();
     }
 
-    private function get_options()
-    {
-        $order = 0;
+    private function get_options() {
+        $order   = 0;
         $options = array();
 
-        foreach( PaymentMethods::get_payment_methods() as $value => $label ){
+        foreach ( PaymentMethods::get_payment_methods() as $value => $label ) {
             $options[] = array(
-                'label'  => $label,
-                'value' => $value,
-                'calc' => '',
+                'label'    => $label,
+                'value'    => $value,
+                'calc'     => '',
                 'selected' => 0,
-                'order' => $order
+                'order'    => $order,
             );
 
             $order++;
@@ -53,5 +50,5 @@ class Pay_PaymentMethodsField extends NF_Abstracts_List
 
         return $options;
     }
-//phpcs:enable
+    //phpcs:enable
 }

@@ -1,7 +1,7 @@
-<?php if ( ! defined( 'ABSPATH' ) ) exit;
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // @phpcs:ignore
 
 return array(
-//phpcs:disable Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed
+    // phpcs:disable Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed
     'description' => array(
         'name'           => 'description',
         'type'           => 'textbox',
@@ -17,7 +17,7 @@ return array(
         ),
     ),
 
-    'amount' => array(
+    'amount'      => array(
         'name'           => 'amount',
         'type'           => 'textbox',
         'group'          => 'primary',
@@ -33,17 +33,17 @@ return array(
         ),
     ),
 
-    'method' => array(
-        'name'        => 'method',
-        'type'        => 'field-select',
-        'group'       => 'primary',
-        'label'       => __( 'Payment method', 'ninja-forms' ),
-        'placeholder' => '',
-        'value'       => '',
-        'width'       => 'one-half',
-        'help'        => __( 'Use the special "Payment Methods" field for this.', 'ninja-forms' ),
-        'field_types' => array(
-            'paymentmethods'
+    'method'      => array(
+        'name'           => 'method',
+        'type'           => 'field-select',
+        'group'          => 'primary',
+        'label'          => __( 'Payment method', 'ninja-forms' ),
+        'placeholder'    => '',
+        'value'          => '',
+        'width'          => 'one-half',
+        'help'           => __( 'Use the special "Payment Methods" field for this.', 'ninja-forms' ),
+        'field_types'    => array(
+            'paymentmethods',
         ),
         'use_merge_tags' => array(
             'include' => array(
@@ -51,5 +51,5 @@ return array(
             ),
         ),
     ),
-//phpcs:enable
+// phpcs:enable
 );

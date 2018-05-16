@@ -6,7 +6,8 @@ module.exports = function( grunt ) {
 		'!bower_components/**',
 		'!deploy/**',
 		'!node_modules/**',
-		'!vendor/**'
+		'!vendor/**',
+		'!wordpress/**'
 	];
 
 	// Project configuration

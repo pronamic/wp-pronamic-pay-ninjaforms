@@ -1,7 +1,7 @@
-<?php if ( ! defined( 'ABSPATH' ) ) exit; // @phpcs:ignore
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // @codingStandardsIgnoreLine 
 
 return array(
-    // phpcs:disable Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed
+    // @codingStandardsIgnoreStart Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed
     'description' => array(
         'name'           => 'description',
         'type'           => 'textbox',
@@ -51,5 +51,5 @@ return array(
             ),
         ),
     ),
-// phpcs:enable
+// @codingStandardsIgnoreEnd
 );

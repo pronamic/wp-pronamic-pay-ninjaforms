@@ -9,7 +9,7 @@ use Pronamic\WordPress\Pay\Core\PaymentMethods;
  * Class Pay_PaymentMethodsField
  */
 class Pay_PaymentMethodsField extends NF_Abstracts_List {
-    //phpcs:disable Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed
+    // @codingStandardsIgnoreStart Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed
     protected $_name = 'paymentmethods';
 
     protected $_type = 'paymentmethods';
@@ -50,5 +50,5 @@ class Pay_PaymentMethodsField extends NF_Abstracts_List {
 
         return $options;
     }
-    //phpcs:enable
+    //@codingStandardsIgnoreEnd
 }

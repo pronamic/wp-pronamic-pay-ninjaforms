@@ -1,20 +1,34 @@
 <?php
+/**
+ * Payment Action
+ *
+ * @author    Pronamic <info@pronamic.eu>
+ * @copyright 2005-2018 Pronamic
+ * @license   GPL-3.0-or-later
+ * @package   Pronamic\WordPress\Pay\Extensions\NinjaForms
+ */
 
 namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
 use NF_Abstracts_Action;
 use Pronamic\WordPress\Pay\Plugin;
 
+/**
+ * Payment Action class
+ *
+ * @author Ruben Droogh
+ * @since 1.0.0
+ */
 final class PaymentAction extends NF_Abstracts_Action {
 	/**
-	 * Payment methods
+	 * Payment methods.
 	 *
 	 * @var array
 	 */
 	public $payment_methods = array();
 
 	/**
-	 * Constructor
+	 * Constructor for the payment action.
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -24,7 +38,7 @@ final class PaymentAction extends NF_Abstracts_Action {
 
 		$this->_nicename = __( 'Pronamic Pay', 'ninja-forms' );
 
-		$settings = Extension::config( 'PaymentActionSettings' );
+		$settings = $this->action_settings();
 
 		$this->_settings = array_merge( $this->_settings, $settings );
 		$this->_tags     = array(
@@ -35,16 +49,33 @@ final class PaymentAction extends NF_Abstracts_Action {
 		add_action( 'ninja_forms_register_actions', array( $this, 'register_actions' ) );
 	}
 
+	/**
+	 * Init.
+	 */
 	public function init() {
 		$this->payment_methods = \Pronamic\WordPress\Pay\Plugin::get_config_select_options();
 	}
 
+	/**
+	 * Register actions.
+	 *
+	 * @param array $actions Actions array from Ninja Forms.
+	 * @return array $actions
+	 */
 	public function register_actions( $actions ) {
 		$actions['pronamicpay'] = new PaymentAction();
 
 		return $actions;
 	}
 
+	/**
+	 * Processing form.
+	 *
+	 * @param array  $action_settings Action settings.
+	 * @param string $form_id Form id.
+	 * @param array  $data Form data.
+	 * @return array
+	 */
 	public function process( $action_settings, $form_id, $data ) {
 		$config_id = get_option( 'pronamic_pay_config_id' );
 
@@ -67,5 +98,64 @@ final class PaymentAction extends NF_Abstracts_Action {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Action settings.
+	 *
+	 * @return array
+	 */
+	public function action_settings() {
+		return array(
+			'description' => array(
+				'name'           => 'description',
+				'type'           => 'textbox',
+				'group'          => 'primary',
+				'label'          => __( 'Transaction Description', 'ninja-forms' ),
+				'placeholder'    => '',
+				'value'          => '',
+				'width'          => 'full',
+				'use_merge_tags' => array(
+					'include' => array(
+						'calcs',
+					),
+				),
+			),
+
+			'amount'      => array(
+				'name'           => 'amount',
+				'type'           => 'textbox',
+				'group'          => 'primary',
+				'label'          => __( 'Payment Amount', 'ninja-forms' ),
+				'placeholder'    => '',
+				'value'          => '',
+				'width'          => 'one-half',
+				'help'           => __( 'Select the correct field using the icon on the right, or enter a fixed amount.', 'ninja-forms' ),
+				'use_merge_tags' => array(
+					'include' => array(
+						'calcs',
+					),
+				),
+			),
+
+			'method'      => array(
+				'name'           => 'method',
+				'type'           => 'field-select',
+				'group'          => 'primary',
+				'label'          => __( 'Payment method', 'ninja-forms' ),
+				'placeholder'    => '',
+				'value'          => '',
+				'width'          => 'one-half',
+				'help'           => __( 'Use the special "Payment Methods" field for this.', 'ninja-forms' ),
+				'field_types'    => array(
+					'paymentmethods',
+				),
+				'use_merge_tags' => array(
+					'include' => array(
+						'calcs',
+					),
+				),
+			),
+		);
 	}
 }

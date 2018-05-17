@@ -1,4 +1,12 @@
 <?php
+/**
+ * Extension
+ *
+ * @author    Pronamic <info@pronamic.eu>
+ * @copyright 2005-2018 Pronamic
+ * @license   GPL-3.0-or-later
+ * @package   Pronamic\WordPress\Pay\Extensions\NinjaForms
+ */
 
 namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
@@ -59,9 +67,12 @@ class Extension {
 
 	/**
 	 * Register custom fields
+	 *
+	 * @param array $fields Fields from Ninja Forms.
+	 * @return array $fields
 	 */
 	public function register_fields( $fields ) {
-		include self::$dir . 'fields/PaymentMethodsField.php';
+		include self::$dir . 'PaymentMethodsField.php';
 		$fields['paymentmethods'] = new Pay_PaymentMethodsField();
 
 		return $fields;
@@ -83,7 +94,6 @@ class Extension {
 
 	/**
 	 * Registered form actions.
-	 *
 	 *
 	 * @param array $actions Formidable Forms form actions.
 	 *
@@ -148,15 +158,5 @@ class Extension {
 	 */
 	public function source_description( $description, Payment $payment ) {
 		return __( 'Ninja Forms Entry', 'pronamic_ideal' );
-	}
-
-	/**
-	 * Config
-	 *
-	 * @param $file_name
-	 * @return mixed
-	 */
-	public static function config( $file_name ) {
-		return include self::$dir . 'config/' . $file_name . '.php';
 	}
 }

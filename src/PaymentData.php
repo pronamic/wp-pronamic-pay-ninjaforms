@@ -1,4 +1,13 @@
 <?php
+/**
+ * Payment Data
+ *
+ * @author    Pronamic <info@pronamic.eu>
+ * @copyright 2005-2018 Pronamic
+ * @license   GPL-3.0-or-later
+ * @package   Pronamic\WordPress\Pay\Extensions\NinjaForms
+ */
+
 namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
 use Pronamic\WordPress\Pay\Payments\PaymentData as Pay_PaymentData;
@@ -32,9 +41,8 @@ class PaymentData extends Pay_PaymentData {
 	/**
 	 * Constructs and initializes an Formidable Forms payment data object.
 	 *
-	 * @param string  $entry_id
-	 * @param string  $form_id
-	 * @param WP_Post $action
+	 * @param string $form_id Form id.
+	 * @param array  $data Form data.
 	 */
 	public function __construct( $form_id, $data ) {
 		parent::__construct();
@@ -44,17 +52,16 @@ class PaymentData extends Pay_PaymentData {
 	}
 
 	/**
-	 * Get items
+	 * Get items.
 	 *
 	 * @see Pronamic_Pay_PaymentDataInterface::get_items()
 	 * @return Items
 	 */
 	public function get_items() {
-		// Items
 		$items = new Items();
 
-		// Item
-		// We only add one total item, because iDEAL cant work with negative price items (discount)
+		// Item.
+		// We only add one total item, because iDEAL cant work with negative price items (discount).
 		$item = new Item();
 		$item->setNumber( $this->get_order_id() );
 		$item->setDescription( $this->get_description() );
@@ -93,7 +100,7 @@ class PaymentData extends Pay_PaymentData {
 	}
 
 	/**
-	 * Get source indicator
+	 * Get source indicator.
 	 *
 	 * @see Pronamic_Pay_PaymentDataInterface::get_source()
 	 * @return string
@@ -103,7 +110,7 @@ class PaymentData extends Pay_PaymentData {
 	}
 
 	/**
-	 * Get currency
+	 * Get currency.
 	 *
 	 * @see Pronamic_Pay_PaymentDataInterface::get_currency_alphabetic_code()
 	 * @return string
@@ -113,7 +120,7 @@ class PaymentData extends Pay_PaymentData {
 	}
 
 	/**
-	 * Get description
+	 * Get description.
 	 *
 	 * @see Pronamic_Pay_PaymentDataInterface::get_description()
 	 * @return string
@@ -129,7 +136,7 @@ class PaymentData extends Pay_PaymentData {
 	}
 
 	/**
-	 * Get order ID
+	 * Get order ID.
 	 *
 	 * @see Pronamic_Pay_PaymentDataInterface::get_order_id()
 	 * @return string
@@ -139,7 +146,7 @@ class PaymentData extends Pay_PaymentData {
 	}
 
 	/**
-	 * Get amount
+	 * Get amount.
 	 *
 	 * @return float
 	 */

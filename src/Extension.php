@@ -34,7 +34,6 @@ class Extension {
 	/**
 	 * Plugin Directory
 	 *
-	 * @since 3.0
 	 * @var string $dir
 	 */
 	public static $dir = '';

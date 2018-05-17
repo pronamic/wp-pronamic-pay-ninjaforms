@@ -11,6 +11,7 @@
 namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
 use NF_Abstracts_List;
+use Pronamic\WordPress\Pay\Plugin;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
 
 /**
@@ -87,7 +88,11 @@ class PaymentMethodsField extends NF_Abstracts_List {
 		$order   = 0;
 		$options = array();
 
-		foreach ( PaymentMethods::get_payment_methods() as $value => $label ) {
+		$config_id       = get_option( 'pronamic_pay_config_id' );
+		$gateway         = Plugin::get_gateway( $config_id );
+		$payment_methods = $gateway->get_payment_method_field_options();
+
+		foreach ( $payment_methods as $value => $label ) {
 			$options[] = array(
 				'label'    => $label,
 				'value'    => $value,

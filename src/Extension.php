@@ -52,8 +52,6 @@ class Extension {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
 		add_filter( 'ninja_forms_enable_credit_card_fields', '__return_true' );
-
-		add_action( 'ninja_trigger_pronamic_pay_create_action', array( $this, 'create_action' ), 10, 3 );
 		add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
 
 		$payment_action = new PaymentAction();
@@ -95,18 +93,6 @@ class Extension {
 		$actions['pronamic_pay'] = __NAMESPACE__ . '\PaymentAction';
 
 		return $actions;
-	}
-
-	/**
-	 * Create action.
-	 *
-	 *
-	 * @param $action
-	 * @param $entry
-	 * @param $form
-	 */
-	public function create_action( $action, $entry, $form ) {
-		$act = new PaymentAction();
 	}
 
 	/**

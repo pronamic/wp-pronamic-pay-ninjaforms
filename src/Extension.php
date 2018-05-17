@@ -50,14 +50,10 @@ class Extension {
 	 * Construct.
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'init' ) );
-
 		add_action( 'pronamic_payment_status_update_' . self::SLUG, array( $this, 'update_status' ), 10, 2 );
 		add_filter( 'pronamic_payment_source_text_' . self::SLUG, array( $this, 'source_text' ), 10, 2 );
 		add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( $this, 'source_description' ), 10, 2 );
 		add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( $this, 'source_url' ), 10, 2 );
-
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
 		add_filter( 'ninja_forms_enable_credit_card_fields', '__return_true' );
 		add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
@@ -76,20 +72,6 @@ class Extension {
 		$fields['paymentmethods'] = new Pay_PaymentMethodsField();
 
 		return $fields;
-	}
-
-	/**
-	 * Initialize.
-	 */
-	public function init() {
-
-	}
-
-	/**
-	 * Admin enqueue scripts.
-	 */
-	public function admin_enqueue_scripts() {
-
 	}
 
 	/**

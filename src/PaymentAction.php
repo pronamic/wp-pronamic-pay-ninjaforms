@@ -36,7 +36,7 @@ final class PaymentAction extends NF_Abstracts_Action {
 
 		$this->_name = 'pronamicpay';
 
-		$this->_nicename = __( 'Pronamic Pay', 'ninja-forms' );
+		$this->_nicename = __( 'Pronamic Pay', 'pronamic_ideal' );
 
 		$settings = $this->action_settings();
 
@@ -111,7 +111,7 @@ final class PaymentAction extends NF_Abstracts_Action {
 				'name'           => 'description',
 				'type'           => 'textbox',
 				'group'          => 'primary',
-				'label'          => __( 'Transaction Description', 'ninja-forms' ),
+				'label'          => __( 'Transaction Description', 'pronamic_ideal' ),
 				'placeholder'    => '',
 				'value'          => '',
 				'width'          => 'full',
@@ -126,11 +126,11 @@ final class PaymentAction extends NF_Abstracts_Action {
 				'name'           => 'amount',
 				'type'           => 'textbox',
 				'group'          => 'primary',
-				'label'          => __( 'Payment Amount', 'ninja-forms' ),
+				'label'          => __( 'Payment Amount', 'pronamic_ideal' ),
 				'placeholder'    => '',
 				'value'          => '',
 				'width'          => 'one-half',
-				'help'           => __( 'Select the correct field using the icon on the right, or enter a fixed amount.', 'ninja-forms' ),
+				'help'           => __( 'Select the correct field using the icon on the right, or enter a fixed amount.', 'pronamic_ideal' ),
 				'use_merge_tags' => array(
 					'include' => array(
 						'calcs',
@@ -142,11 +142,11 @@ final class PaymentAction extends NF_Abstracts_Action {
 				'name'           => 'method',
 				'type'           => 'field-select',
 				'group'          => 'primary',
-				'label'          => __( 'Payment method', 'ninja-forms' ),
+				'label'          => __( 'Payment method', 'pronamic_ideal' ),
 				'placeholder'    => '',
 				'value'          => '',
 				'width'          => 'one-half',
-				'help'           => __( 'Use the special "Payment Methods" field for this.', 'ninja-forms' ),
+				'help'           => __( 'Use the special "Payment Methods" field for this.', 'pronamic_ideal' ),
 				'field_types'    => array(
 					'paymentmethods',
 				),

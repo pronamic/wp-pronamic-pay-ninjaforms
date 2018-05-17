@@ -73,7 +73,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	public function __construct() {
 		parent::__construct();
 
-		$this->_nicename = __( 'Payment Methods', 'ninja-forms' );
+		$this->_nicename = __( 'Payment Methods', 'pronamic_ideal' );
 
 		$this->_settings['options']['value'] = $this->get_options();
 	}

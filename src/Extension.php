@@ -68,8 +68,7 @@ class Extension {
 	 * @return array $fields
 	 */
 	public function register_fields( $fields ) {
-		include self::$dir . 'PaymentMethodsField.php';
-		$fields['paymentmethods'] = new Pay_PaymentMethodsField();
+		$fields['paymentmethods'] = new PaymentMethodsField();
 
 		return $fields;
 	}

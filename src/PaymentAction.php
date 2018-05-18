@@ -79,13 +79,17 @@ final class PaymentAction extends NF_Abstracts_Action {
 	public function process( $action_settings, $form_id, $data ) {
 		$config_id = get_option( 'pronamic_pay_config_id' );
 
-		$payment_data = new PaymentData( $form_id, $action_settings );
-
+		$payment_data   = new PaymentData( $form_id, $action_settings );
 		$payment_method = $payment_data->get_payment_method();
 
 		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( ! $gateway ) {
+			return;
+		}
+
+		// Only start payments for known/active payment methods.
+		if ( is_string( $payment_method ) && ! PaymentMethods::is_active( $payment_method ) ) {
 			return;
 		}
 

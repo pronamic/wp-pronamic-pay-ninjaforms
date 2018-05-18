@@ -68,6 +68,7 @@ class Extension {
 	 */
 	public function register_fields( $fields ) {
 		$fields['paymentmethods'] = new PaymentMethodsField();
+		$fields['bankselect']     = new BankSelectField();
 
 		return $fields;
 	}

@@ -156,6 +156,24 @@ final class PaymentAction extends NF_Abstracts_Action {
 					),
 				),
 			),
+
+			'bank'       => array(
+				'name'           => 'bank',
+				'type'           => 'field-select',
+				'group'          => 'primary',
+				'label'          => __( 'Bank Select Field', 'pronamic_ideal' ),
+				'placeholder'    => '',
+				'value'          => '',
+				'width'          => 'one-half',
+				'field_types'    => array(
+					'bankselect',
+				),
+				'use_merge_tags' => array(
+					'include' => array(
+						'calcs',
+					),
+				),
+			),
 		);
 	}
 }

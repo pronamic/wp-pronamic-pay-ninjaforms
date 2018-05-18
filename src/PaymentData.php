@@ -39,6 +39,13 @@ class PaymentData extends Pay_PaymentData {
 	private $form_data;
 
 	/**
+	 * Issuer
+	 *
+	 * @var array
+	 */
+	private $issuer;
+
+	/**
 	 * Constructs and initializes an Formidable Forms payment data object.
 	 *
 	 * @param string $form_id Form id.
@@ -49,6 +56,7 @@ class PaymentData extends Pay_PaymentData {
 
 		$this->form_id   = $form_id;
 		$this->form_data = $data;
+		$this->issuer    = $data['bank'];
 	}
 
 	/**
@@ -104,7 +112,7 @@ class PaymentData extends Pay_PaymentData {
 	 *
 	 * @return string
 	 */
-	public function get_issuer_id() {
+	public function get_issuer() {
 		$bank = null;
 
 		if ( $this->form_data['bank'] ) {

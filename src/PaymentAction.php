@@ -12,6 +12,7 @@ namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
 use NF_Abstracts_Action;
 use Pronamic\WordPress\Pay\Plugin;
+use Pronamic\WordPress\Pay\Core\PaymentMethods;
 
 /**
  * Payment Action class
@@ -94,7 +95,7 @@ final class PaymentAction extends NF_Abstracts_Action {
 		}
 
 		if ( empty( $payment_method ) ) {
-			if ( null !== $payment_data->get_issuer_id() ) {
+			if ( null !== $payment_data->get_issuer() ) {
 				$payment_method = PaymentMethods::IDEAL;
 			} elseif ( $gateway->payment_method_is_required() ) {
 				$payment_method = PaymentMethods::IDEAL;

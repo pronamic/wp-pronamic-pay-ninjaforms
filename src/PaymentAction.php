@@ -89,6 +89,14 @@ final class PaymentAction extends NF_Abstracts_Action {
 			return;
 		}
 
+		if ( empty( $payment_method ) ) {
+			if ( null !== $payment_data->get_issuer_id() ) {
+				$payment_method = PaymentMethods::IDEAL;
+			} elseif ( $gateway->payment_method_is_required() ) {
+				$payment_method = PaymentMethods::IDEAL;
+			}
+		}
+
 		$payment = Plugin::start( $config_id, $gateway, $payment_data, $payment_method );
 
 		$error = $gateway->get_error();
@@ -157,7 +165,7 @@ final class PaymentAction extends NF_Abstracts_Action {
 				),
 			),
 
-			'bank'       => array(
+			'bank'        => array(
 				'name'           => 'bank',
 				'type'           => 'field-select',
 				'group'          => 'primary',

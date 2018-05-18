@@ -100,6 +100,21 @@ class PaymentData extends Pay_PaymentData {
 	}
 
 	/**
+	 * Get issuer ID.
+	 *
+	 * @return string
+	 */
+	public function get_issuer_id() {
+		$bank = null;
+
+		if ( $this->form_data['bank'] ) {
+			$bank = $this->form_data['bank'];
+		}
+
+		return $bank;
+	}
+
+	/**
 	 * Get source indicator.
 	 *
 	 * @see Pronamic_Pay_PaymentDataInterface::get_source()

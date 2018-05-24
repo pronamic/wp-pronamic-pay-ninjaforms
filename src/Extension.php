@@ -54,6 +54,7 @@ class Extension {
 		add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( $this, 'source_description' ), 10, 2 );
 		add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( $this, 'source_url' ), 10, 2 );
 
+		// @see http://developer.ninjaforms.com/codex/payment-gateways/
 		add_filter( 'ninja_forms_enable_credit_card_fields', '__return_true' );
 		add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
 

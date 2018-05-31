@@ -97,9 +97,8 @@ class Extension {
 	 */
 	public function source_url( $url, Payment $payment ) {
 		$url = add_query_arg( array(
-			'page'       => 'ninja-entries',
-			'frm_action' => 'show',
-			'id'         => $payment->get_source_id(),
+			'page'    => 'ninja-forms',
+			'form_id' => $payment->get_source_id(),
 		), admin_url( 'admin.php' ) );
 
 		return $url;
@@ -124,7 +123,7 @@ class Extension {
 				'id'         => $payment->get_source_id(),
 			), admin_url( 'admin.php' ) ),
 			/* translators: %s: payment source id */
-			sprintf( __( 'Entry #%s', 'pronamic_ideal' ), $payment->get_source_id() )
+			sprintf( __( 'Form #%s', 'pronamic_ideal' ), $payment->get_source_id() )
 		);
 
 		return $text;
@@ -136,6 +135,6 @@ class Extension {
 	 * @return string|void
 	 */
 	public function source_description() {
-		return __( 'Ninja Forms Entry', 'pronamic_ideal' );
+		return __( 'Ninja Forms Form', 'pronamic_ideal' );
 	}
 }

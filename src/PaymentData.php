@@ -134,6 +134,16 @@ class PaymentData extends Pay_PaymentData {
 	}
 
 	/**
+	 * Get source id.
+	 *
+	 * @see Pronamic_Pay_PaymentDataInterface::get_source_id()
+	 * @return string
+	 */
+	public function get_source_id() {
+		return $this->form_id;
+	}
+
+	/**
 	 * Get currency.
 	 *
 	 * @see Pronamic_Pay_PaymentDataInterface::get_currency_alphabetic_code()

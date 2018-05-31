@@ -110,7 +110,8 @@ class PaymentData extends Pay_PaymentData {
 	/**
 	 * Get issuer ID.
 	 *
-	 * @return string
+	 * @see Pronamic_Pay_PaymentDataInterface::get_issuer()
+	 * @return string|null
 	 */
 	public function get_issuer() {
 		$bank = null;

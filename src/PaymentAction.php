@@ -29,6 +29,26 @@ final class PaymentAction extends NF_Abstracts_Action {
 	public $payment_methods = array();
 
 	/**
+     * @var string
+     */
+    protected $_name  = '';
+
+    /**
+     * @var string
+     */
+    protected $_nicename = '';
+
+	/**
+     * @var array
+     */
+    protected $_settings = array();
+
+	/**
+     * @var array
+     */
+    protected $_tags = array();
+
+	/**
 	 * Constructor for the payment action.
 	 */
 	public function __construct() {

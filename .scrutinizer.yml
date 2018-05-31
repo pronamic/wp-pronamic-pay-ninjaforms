@@ -1,6 +1,10 @@
 checks:
-  php:
-    coding_standard:
-      name: WordPress
-    code_rating: true
-    duplication: true
+    php:
+        coding_standard:
+            name: WordPress
+        code_rating: true
+        duplication: true
+filter:
+    dependency_paths:
+        - "vendor/"
+        - "node_modules/"

@@ -58,7 +58,7 @@ class Extension {
 		add_filter( 'ninja_forms_enable_credit_card_fields', '__return_true' );
 		add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
 
-		$payment_action = /** @scrutinizer ignore-call */ new PaymentAction();
+		$payment_action = new PaymentAction();
 	}
 
 	/**
@@ -132,9 +132,6 @@ class Extension {
 
 	/**
 	 * Source description.
-	 *
-	 * @param string  $description Source description.
-	 * @param Payment $payment     Payment.
 	 *
 	 * @return string|void
 	 */

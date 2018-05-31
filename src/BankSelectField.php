@@ -69,6 +69,13 @@ class BankSelectField extends NF_Abstracts_List {
 	protected $_old_classname = 'list-select';
 
 	/**
+	 * Settings.
+	 *
+	 * @var array
+	 */
+	protected $_settings = array();
+
+	/**
 	 * Constructs and initializes the field object.
 	 */
 	public function __construct() {

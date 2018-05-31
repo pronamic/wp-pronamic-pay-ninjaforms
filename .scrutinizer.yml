@@ -6,5 +6,12 @@ checks:
         duplication: true
 filter:
     dependency_paths:
-        - "vendor/"
-        - "node_modules/"
+        - vendor/
+        - node_modules/
+        - wordpress/
+build:
+    nodes:
+        analysis:
+            dependencies:
+                before:
+                    - composer require --dev johnpbloch/wordpress

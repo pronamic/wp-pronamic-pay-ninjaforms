@@ -118,16 +118,12 @@ final class PaymentAction extends NF_Abstracts_Action {
 		}
 
 		// Only start payments for known/active payment methods.
-		if ( is_string( $payment_method ) && ! PaymentMethods::is_active( $payment_method ) ) {
+		if ( ! PaymentMethods::is_active( $payment_method ) ) {
 			return;
 		}
 
-		if ( empty( $payment_method ) ) {
-			if ( null !== $payment_data->get_issuer() ) {
-				$payment_method = PaymentMethods::IDEAL;
-			} elseif ( $gateway->payment_method_is_required() ) {
-				$payment_method = PaymentMethods::IDEAL;
-			}
+		if ( empty( $payment_method ) && ( null !== $payment_data->get_issuer() || $gateway->payment_method_is_required() ) ) {
+			$payment_method = PaymentMethods::IDEAL;
 		}
 
 		$payment = Plugin::start( $config_id, $gateway, $payment_data, $payment_method );

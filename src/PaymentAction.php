@@ -22,13 +22,6 @@ use Pronamic\WordPress\Pay\Core\PaymentMethods;
  */
 final class PaymentAction extends NF_Abstracts_Action {
 	/**
-	 * Payment methods.
-	 *
-	 * @var array
-	 */
-	public $payment_methods = array();
-
-	/**
 	 * Name.
 	 *
 	 * @var string
@@ -61,7 +54,6 @@ final class PaymentAction extends NF_Abstracts_Action {
 	 */
 	public function __construct() {
 		parent::__construct();
-		add_action( 'init', array( $this, 'init' ) );
 
 		$this->_name = 'pronamicpay';
 
@@ -74,27 +66,6 @@ final class PaymentAction extends NF_Abstracts_Action {
 			'payment',
 			'gateway',
 		);
-
-		add_action( 'ninja_forms_register_actions', array( $this, 'register_actions' ) );
-	}
-
-	/**
-	 * Init.
-	 */
-	public function init() {
-		$this->payment_methods = \Pronamic\WordPress\Pay\Plugin::get_config_select_options();
-	}
-
-	/**
-	 * Register actions.
-	 *
-	 * @param array $actions Actions array from Ninja Forms.
-	 * @return array $actions
-	 */
-	public function register_actions( $actions ) {
-		$actions['pronamicpay'] = new PaymentAction();
-
-		return $actions;
 	}
 
 	/**

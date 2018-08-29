@@ -58,7 +58,22 @@ class Extension {
 		add_filter( 'ninja_forms_enable_credit_card_fields', '__return_true' );
 		add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
 
+		add_action( 'ninja_forms_register_actions', array( $this, 'register_actions' ) );
+
 		$payment_action = new PaymentAction();
+	}
+
+	/**
+	 * Register actions.
+	 *
+	 * @link https://github.com/wpninjas/ninja-forms/blob/v3.0.16/ninja-forms.php#L358-L361
+	 * @param array $actions Actions array from Ninja Forms.
+	 * @return array $actions
+	 */
+	public function register_actions( $actions ) {
+		$actions['pronamic-pay-payment-action'] = new PaymentAction();
+
+		return $actions;
 	}
 
 	/**

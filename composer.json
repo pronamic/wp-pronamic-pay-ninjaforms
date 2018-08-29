@@ -31,6 +31,29 @@
 			"php": "5.3.3"
 		}
 	},
+	"repositories": [
+		{
+			"type": "package",
+			"package": {
+				"name": "wpninjas/ninja-forms",
+				"version": "3.3.14.1",
+				"dist": {
+					"url": "https://github.com/wpninjas/ninja-forms/archive/3.3.14.1.zip",
+					"type": "zip"
+				},
+				"source": {
+					"url": "https://github.com/wpninjas/ninja-forms",
+					"type": "github",
+					"reference": "tags/3.3.14.1"
+				},
+				"autoload": {
+					"classmap": [
+						"."
+					]
+				}
+			}
+		}
+	],
 	"require": {
 		"php": "^5.3",
 		"wp-pay/core": "^2.0"
@@ -38,9 +61,12 @@
 	"require-dev": {
 		"php-coveralls/php-coveralls": "^1.0",
 		"squizlabs/php_codesniffer": "^2.7",
-		"wp-coding-standards/wpcs": "^0.14.1",
+		"wp-coding-standards/wpcs": "^1.0",
 		"phpmd/phpmd": "^2.4",
 		"phpunit/phpunit": "^4.8",
-		"wimg/php-compatibility": "^8.1"
+		"wimg/php-compatibility": "^8.1",
+		"wpninjas/ninja-forms": "3.3.14.1",
+		"johnpbloch/wordpress": "^4.9",
+		"wp-phpunit/wp-phpunit": "^4.9"
 	}
 }

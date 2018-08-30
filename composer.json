@@ -60,7 +60,7 @@
 	},
 	"require-dev": {
 		"php-coveralls/php-coveralls": "^1.0",
-		"squizlabs/php_codesniffer": "^2.7",
+		"squizlabs/php_codesniffer": "^2.9",
 		"wp-coding-standards/wpcs": "^1.0",
 		"phpmd/phpmd": "^2.4",
 		"phpunit/phpunit": "^4.8",

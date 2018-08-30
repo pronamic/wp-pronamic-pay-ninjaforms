@@ -23,14 +23,14 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	 *
 	 * @var string
 	 */
-	protected $_name = 'paymentmethods';
+	protected $_name = 'pronamic_pay_payment_method';
 
 	/**
 	 * Type.
 	 *
 	 * @var string
 	 */
-	protected $_type = 'paymentmethods';
+	protected $_type = 'pronamic_pay_payment_method';
 
 	/**
 	 * Nice name for display.

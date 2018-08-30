@@ -55,8 +55,8 @@ class Extension {
 	 * @return array $fields
 	 */
 	public function register_fields( $fields ) {
-		$fields['paymentmethods'] = new PaymentMethodsField();
-		$fields['bankselect']     = new BankSelectField();
+		$fields['pronamic_pay_payment_method'] = new PaymentMethodsField();
+		$fields['pronamic_pay_issuer']         = new IssuersField();
 
 		return $fields;
 	}

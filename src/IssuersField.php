@@ -1,6 +1,6 @@
 <?php
 /**
- * Bank Select Field
+ * Issuers Field.
  *
  * @author    Pronamic <info@pronamic.eu>
  * @copyright 2005-2018 Pronamic
@@ -15,23 +15,23 @@ use Pronamic\WordPress\Pay\Plugin;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
 
 /**
- * Class PaymentMethodsField
+ * Class IssuersField.
  */
-class BankSelectField extends NF_Abstracts_List {
+class IssuersField extends NF_Abstracts_List {
 
 	/**
 	 * Name.
 	 *
 	 * @var string
 	 */
-	protected $_name = 'bankselect';
+	protected $_name = 'pronamic_pay_issuer';
 
 	/**
 	 * Type.
 	 *
 	 * @var string
 	 */
-	protected $_type = 'bankselect';
+	protected $_type = 'pronamic_pay_issuer';
 
 	/**
 	 * Nice name for display.

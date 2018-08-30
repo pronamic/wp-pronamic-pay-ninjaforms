@@ -71,10 +71,10 @@ class PaymentData extends Pay_PaymentData {
 		// Item.
 		// We only add one total item, because iDEAL cant work with negative price items (discount).
 		$item = new Item();
-		$item->setNumber( $this->get_order_id() );
-		$item->setDescription( $this->get_description() );
-		$item->setPrice( $this->get_amount_from_field() );
-		$item->setQuantity( 1 );
+		$item->set_number( $this->get_order_id() );
+		$item->set_description( $this->get_description() );
+		$item->set_price( $this->get_amount_from_field() );
+		$item->set_quantity( 1 );
 
 		$items->addItem( $item );
 

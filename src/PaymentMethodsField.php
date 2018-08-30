@@ -12,7 +12,6 @@ namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
 use NF_Abstracts_List;
 use Pronamic\WordPress\Pay\Plugin;
-use Pronamic\WordPress\Pay\Core\PaymentMethods;
 
 /**
  * Class PaymentMethodsField

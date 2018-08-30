@@ -10,10 +10,7 @@
 
 namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
-use Pronamic\WordPress\Pay\Core\PaymentMethods;
-use Pronamic\WordPress\Pay\Core\Statuses;
 use Pronamic\WordPress\Pay\Payments\Payment;
-use Pronamic\WordPress\Pay\Plugin;
 
 /**
  * Title: Ninja Forms extension
@@ -30,13 +27,6 @@ class Extension {
 	 * @var string
 	 */
 	const SLUG = 'ninja-forms';
-
-	/**
-	 * Plugin Directory
-	 *
-	 * @var string $dir
-	 */
-	public static $dir = '';
 
 	/**
 	 * Bootstrap.

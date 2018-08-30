@@ -47,8 +47,6 @@ class Extension {
 		add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
 
 		add_action( 'ninja_forms_register_actions', array( $this, 'register_actions' ) );
-
-		$payment_action = new PaymentAction();
 	}
 
 	/**

@@ -45,21 +45,7 @@ class Extension {
 		add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( $this, 'source_url' ), 10, 2 );
 
 		add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
-
-		add_action( 'ninja_forms_register_actions', array( $this, 'register_actions' ) );
-	}
-
-	/**
-	 * Register actions.
-	 *
-	 * @link https://github.com/wpninjas/ninja-forms/blob/v3.0.16/ninja-forms.php#L358-L361
-	 * @param array $actions Actions array from Ninja Forms.
-	 * @return array $actions
-	 */
-	public function register_actions( $actions ) {
-		$actions['pronamic-pay-payment-action'] = new PaymentAction();
-
-		return $actions;
+		add_filter( 'ninja_forms_register_payment_gateways', array( $this, 'register_payment_gateways' ), 10, 1 );
 	}
 
 	/**
@@ -76,16 +62,16 @@ class Extension {
 	}
 
 	/**
-	 * Registered form actions.
+	 * Register payment gateways.
 	 *
-	 * @param array $actions Formidable Forms form actions.
+	 * @param array $gateways Payment gateways.
 	 *
 	 * @return array
 	 */
-	public function registered_form_actions( $actions ) {
-		$actions['pronamic_pay'] = __NAMESPACE__ . '\PaymentAction';
+	public function register_payment_gateways( $gateways ) {
+		$gateways['pronamic_pay'] = new PaymentGateway();
 
-		return $actions;
+		return $gateways;
 	}
 
 	/**

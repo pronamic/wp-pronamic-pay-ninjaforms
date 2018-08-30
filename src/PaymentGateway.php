@@ -1,6 +1,6 @@
 <?php
 /**
- * Payment Action
+ * Payment Gateway.
  *
  * @author    Pronamic <info@pronamic.eu>
  * @copyright 2005-2018 Pronamic
@@ -10,7 +10,7 @@
 
 namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
-use NF_Abstracts_Action;
+use NF_Abstracts_PaymentGateway;
 use Pronamic\WordPress\Pay\Plugin;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
 
@@ -20,20 +20,20 @@ use Pronamic\WordPress\Pay\Core\PaymentMethods;
  * @author Ruben Droogh
  * @since 1.0.0
  */
-final class PaymentAction extends NF_Abstracts_Action {
+final class PaymentGateway extends NF_Abstracts_PaymentGateway {
+	/**
+	 * Slug.
+	 *
+	 * @var string
+	 */
+	protected $_slug = 'pronamic_pay';
+
 	/**
 	 * Name.
 	 *
 	 * @var string
 	 */
 	protected $_name = '';
-
-	/**
-	 * Nice name.
-	 *
-	 * @var string
-	 */
-	protected $_nicename = '';
 
 	/**
 	 * Settings.
@@ -43,29 +43,14 @@ final class PaymentAction extends NF_Abstracts_Action {
 	protected $_settings = array();
 
 	/**
-	 * Tags.
-	 *
-	 * @var array
-	 */
-	protected $_tags = array();
-
-	/**
-	 * Constructor for the payment action.
+	 * Constructor for the payment gateway.
 	 */
 	public function __construct() {
 		parent::__construct();
 
-		$this->_name = 'pronamicpay';
+		$this->_name = __( 'Pronamic Pay', 'pronamic_ideal' );
 
-		$this->_nicename = __( 'Pronamic Pay', 'pronamic_ideal' );
-
-		$settings = $this->action_settings();
-
-		$this->_settings = array_merge( $this->_settings, $settings );
-		$this->_tags     = array(
-			'payment',
-			'gateway',
-		);
+		$this->_settings = $this->action_settings();
 	}
 
 	/**
@@ -123,59 +108,6 @@ final class PaymentAction extends NF_Abstracts_Action {
 				'placeholder'    => '',
 				'value'          => '',
 				'width'          => 'full',
-				'use_merge_tags' => array(
-					'include' => array(
-						'calcs',
-					),
-				),
-			),
-
-			'amount'      => array(
-				'name'           => 'amount',
-				'type'           => 'textbox',
-				'group'          => 'primary',
-				'label'          => __( 'Payment Amount', 'pronamic_ideal' ),
-				'placeholder'    => '',
-				'value'          => '',
-				'width'          => 'one-half',
-				'help'           => __( 'Select the correct field using the icon on the right, or enter a fixed amount.', 'pronamic_ideal' ),
-				'use_merge_tags' => array(
-					'include' => array(
-						'calcs',
-					),
-				),
-			),
-
-			'method'      => array(
-				'name'           => 'method',
-				'type'           => 'field-select',
-				'group'          => 'primary',
-				'label'          => __( 'Payment method', 'pronamic_ideal' ),
-				'placeholder'    => '',
-				'value'          => '',
-				'width'          => 'one-half',
-				'help'           => __( 'Use the special "Payment Methods" field for this.', 'pronamic_ideal' ),
-				'field_types'    => array(
-					'paymentmethods',
-				),
-				'use_merge_tags' => array(
-					'include' => array(
-						'calcs',
-					),
-				),
-			),
-
-			'bank'        => array(
-				'name'           => 'bank',
-				'type'           => 'field-select',
-				'group'          => 'primary',
-				'label'          => __( 'Bank Select Field', 'pronamic_ideal' ),
-				'placeholder'    => '',
-				'value'          => '',
-				'width'          => 'one-half',
-				'field_types'    => array(
-					'bankselect',
-				),
 				'use_merge_tags' => array(
 					'include' => array(
 						'calcs',

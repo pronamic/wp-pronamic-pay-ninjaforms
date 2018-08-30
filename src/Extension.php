@@ -89,6 +89,15 @@ class Extension {
 	}
 
 	/**
+	 * Update entry status of the specified payment.
+	 *
+	 * @param Payment $payment      Payment.
+	 * @param bool    $can_redirect Whether or not to redirect.
+	 */
+	public function update_status( Payment $payment, $can_redirect = false ) {
+	}
+
+	/**
 	 * Source URL.
 	 *
 	 * @param string  $url     Source URL.

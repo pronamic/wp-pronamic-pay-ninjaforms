@@ -92,10 +92,15 @@ class Extension {
 	 * @return string
 	 */
 	public function source_url( $url, Payment $payment ) {
-		$url = add_query_arg( array(
-			'page'    => 'ninja-forms',
-			'form_id' => $payment->get_source_id(),
-		), admin_url( 'admin.php' ) );
+		$source_id = $payment->get_source_id();
+
+		// Source ID could be a submission ID.
+		if ( 'nf_sub' === get_post_type( $source_id ) ) {
+			$url = add_query_arg( array(
+				'post'   => $source_id,
+				'action' => 'edit',
+			), admin_url( 'post.php' ) );
+		}
 
 		return $url;
 	}
@@ -111,16 +116,20 @@ class Extension {
 	public static function source_text( $text, Payment $payment ) {
 		$text = __( 'Ninja Forms', 'pronamic_ideal' ) . '<br />';
 
-		$text .= sprintf(
-			'<a href="%s">%s</a>',
-			add_query_arg( array(
-				'page'       => 'ninja-forms',
-				'frm_action' => 'show',
-				'id'         => $payment->get_source_id(),
-			), admin_url( 'admin.php' ) ),
+		if ( 'nf_sub' === get_post_type( $payment->get_source_id() ) ) {
+			$text .= sprintf(
+				'<a href="%s">%s</a>',
+				add_query_arg( array(
+					'post'   => $payment->get_source_id(),
+					'action' => 'edit',
+				), admin_url( 'post.php' ) ),
+				/* translators: %s: payment source id */
+				sprintf( __( 'Entry #%s', 'pronamic_ideal' ), $payment->get_source_id() )
+			);
+		} else {
 			/* translators: %s: payment source id */
-			sprintf( __( 'Form #%s', 'pronamic_ideal' ), $payment->get_source_id() )
-		);
+			$text .= sprintf( __( '#%s', 'pronamic_ideal' ), $payment->get_source_id() );
+		}
 
 		return $text;
 	}
@@ -128,9 +137,18 @@ class Extension {
 	/**
 	 * Source description.
 	 *
-	 * @return string|void
+	 * @param string  $description Description.
+	 * @param Payment $payment     Payment.
+	 *
+	 * @return string
 	 */
-	public function source_description() {
-		return __( 'Ninja Forms Form', 'pronamic_ideal' );
+	public function source_description( $description, Payment $payment ) {
+		$description = __( 'Ninja Forms', 'pronamic_ideal' );
+
+		if ( 'nf_sub' === get_post_type( $payment->get_source_id() ) ) {
+			$description = __( 'Ninja Forms Entry', 'pronamic_ideal' );
+		}
+
+		return $description;
 	}
 }

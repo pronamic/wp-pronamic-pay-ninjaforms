@@ -32,31 +32,32 @@ class PaymentData extends Pay_PaymentData {
 	private $form_id;
 
 	/**
-	 * Action
+	 * Form data.
 	 *
 	 * @var array
 	 */
 	private $form_data;
 
 	/**
-	 * Issuer
+	 * Action settings.
 	 *
 	 * @var array
 	 */
-	private $issuer;
+	private $action_settings;
 
 	/**
-	 * Constructs and initializes an Formidable Forms payment data object.
+	 * Constructs and initializes a Ninja Forms payment data object.
 	 *
-	 * @param string $form_id Form id.
-	 * @param array  $data Form data.
+	 * @param array  $action_settings Action settings.
+	 * @param string $form_id         Form id.
+	 * @param array  $data            Form data.
 	 */
-	public function __construct( $form_id, $data ) {
+	public function __construct( $action_settings, $form_id, $data ) {
 		parent::__construct();
 
-		$this->form_id   = $form_id;
-		$this->form_data = $data;
-		$this->issuer    = $data['bank'];
+		$this->action_settings = $action_settings;
+		$this->form_id         = $form_id;
+		$this->form_data       = $data;
 	}
 
 	/**
@@ -73,7 +74,7 @@ class PaymentData extends Pay_PaymentData {
 		$item = new Item();
 		$item->set_number( $this->get_order_id() );
 		$item->set_description( $this->get_description() );
-		$item->set_price( $this->get_amount_from_field() );
+		$item->set_price( $this->action_settings['payment_total'] );
 		$item->set_quantity( 1 );
 
 		$items->addItem( $item );
@@ -89,18 +90,18 @@ class PaymentData extends Pay_PaymentData {
 	public function get_payment_method() {
 		$payment_method = null;
 
-		if ( ! empty( $this->form_data['method'] ) && isset( $this->form_data['method'] ) ) {
-			$payment_method = $this->form_data['method'];
+		// Get payment method from a payment method field if it exists.
+		foreach ( $this->form_data['fields'] as $field ) {
+			if ( 'pronamic_pay_payment_method' !== $field['type'] ) {
+				continue;
+			}
 
-			$replacements = array(
-				'pronamic_pay_' => '',
-				'pronamic_pay'  => '',
-			);
+			$value = $field['value'];
 
-			$payment_method = strtr( $payment_method, $replacements );
+			if ( ! empty( $value ) ) {
+				$payment_method = $value;
 
-			if ( empty( $payment_method ) ) {
-				$payment_method = null;
+				break;
 			}
 		}
 
@@ -110,17 +111,23 @@ class PaymentData extends Pay_PaymentData {
 	/**
 	 * Get issuer ID.
 	 *
-	 * @see Pronamic_Pay_PaymentDataInterface::get_issuer()
 	 * @return string|null
 	 */
-	public function get_issuer() {
-		$bank = null;
+	public function get_issuer_id() {
+		$issuer = null;
 
-		if ( $this->form_data['bank'] ) {
-			$bank = $this->form_data['bank'];
+		// Get issuer from an issuers field if it exists.
+		foreach ( $this->form_data['fields'] as $field ) {
+			if ( 'pronamic_pay_issuer' !== $field['type'] ) {
+				continue;
+			}
+
+			$issuer = $field['value'];
+
+			break;
 		}
 
-		return $bank;
+		return $issuer;
 	}
 
 	/**
@@ -140,7 +147,11 @@ class PaymentData extends Pay_PaymentData {
 	 * @return string
 	 */
 	public function get_source_id() {
-		return $this->form_id;
+		if ( isset( $this->form_data['actions']['save']['sub_id'] ) ) {
+			return $this->form_data['actions']['save']['sub_id'];
+		}
+
+		return time();
 	}
 
 	/**
@@ -150,7 +161,9 @@ class PaymentData extends Pay_PaymentData {
 	 * @return string
 	 */
 	public function get_currency_alphabetic_code() {
-		return 'EUR';
+		$form = Ninja_Forms()->form( $this->form_id )->get();
+
+		return $form->get_setting( 'currency', Ninja_Forms()->get_setting( 'currency' ) );
 	}
 
 	/**
@@ -160,13 +173,7 @@ class PaymentData extends Pay_PaymentData {
 	 * @return string
 	 */
 	public function get_description() {
-		$description = '';
-
-		if ( isset( $this->form_data['description'] ) ) {
-			$description = $this->form_data['description'];
-		}
-
-		return $description;
+		return $this->action_settings['pronamic_pay_description'];
 	}
 
 	/**
@@ -176,21 +183,6 @@ class PaymentData extends Pay_PaymentData {
 	 * @return string
 	 */
 	public function get_order_id() {
-		return $this->entry_id;
-	}
-
-	/**
-	 * Get amount.
-	 *
-	 * @return float
-	 */
-	private function get_amount_from_field() {
-		$amount = 0;
-
-		if ( isset( $this->form_data['amount'] ) ) {
-			$amount = $this->form_data['amount'];
-		}
-
-		return $amount;
+		return $this->get_source_id();
 	}
 }

@@ -46,8 +46,6 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 	 * Constructor for the payment gateway.
 	 */
 	public function __construct() {
-		parent::__construct();
-
 		$this->_name = __( 'Pronamic Pay', 'pronamic_ideal' );
 
 		$this->_settings = $this->action_settings();
@@ -59,34 +57,38 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 	 * @param array  $action_settings Action settings.
 	 * @param string $form_id Form id.
 	 * @param array  $data Form data.
-	 * @return array
+	 * @return array|bool
 	 */
 	public function process( $action_settings, $form_id, $data ) {
 		$config_id = get_option( 'pronamic_pay_config_id' );
 
-		$payment_data   = new PaymentData( $form_id, $action_settings );
+		$payment_data = new PaymentData( $action_settings, $form_id, $data );
+
 		$payment_method = $payment_data->get_payment_method();
 
 		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( ! $gateway ) {
-			return;
+			return false;
 		}
 
+		// Set default payment method if neccessary.
 		if ( empty( $payment_method ) && ( null !== $payment_data->get_issuer() || $gateway->payment_method_is_required() ) ) {
 			$payment_method = PaymentMethods::IDEAL;
 		}
 
 		// Only start payments for known/active payment methods.
-		if ( ! PaymentMethods::is_active( $payment_method ) ) {
-			return;
+		if ( is_string( $payment_method ) && ! PaymentMethods::is_active( $payment_method ) ) {
+			return false;
 		}
 
 		$payment = Plugin::start( $config_id, $gateway, $payment_data, $payment_method );
 
 		$error = $gateway->get_error();
 
-		if ( ! is_wp_error( $error ) ) {
+		if ( is_wp_error( $error ) ) {
+			// @todo add error message
+		} else {
 			$data['actions']['redirect'] = $payment->get_action_url();
 		}
 
@@ -101,7 +103,7 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 	public function action_settings() {
 		return array(
 			'description' => array(
-				'name'           => 'description',
+				'name'           => 'pronamic_pay_description',
 				'type'           => 'textbox',
 				'group'          => 'primary',
 				'label'          => __( 'Transaction Description', 'pronamic_ideal' ),

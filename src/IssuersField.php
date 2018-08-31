@@ -108,10 +108,8 @@ class IssuersField extends NF_Abstracts_List {
 				'value'    => $value,
 				'calc'     => '',
 				'selected' => 0,
-				'order'    => $order,
+				'order'    => ++$order,
 			);
-
-			$order++;
 		}
 
 		return $options;

@@ -87,6 +87,20 @@ class IssuersField extends NF_Abstracts_List {
 	}
 
 	/**
+	 * Get settings.
+	 *
+	 * @return array
+	 */
+	public function get_settings() {
+		// Hide options settings in form builder.
+		if ( is_admin() ) {
+			unset( $this->_settings['options'] );
+		}
+
+		return $this->_settings;
+	}
+
+	/**
 	 * Get options.
 	 *
 	 * @return array

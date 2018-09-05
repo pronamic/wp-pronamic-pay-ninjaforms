@@ -82,7 +82,13 @@ class Extension {
 	 * @return string
 	 */
 	public function source_url( $url, Payment $payment ) {
-		$source_id = intval( $payment->get_source_id() );
+		$source_id = $payment->get_source_id();
+
+		if ( empty( $source_id ) ) {
+			return $url;
+		}
+
+		$source_id = intval( $source_id );
 
 		// Source ID could be a submission ID.
 		if ( 'nf_sub' === get_post_type( $source_id ) ) {
@@ -104,9 +110,15 @@ class Extension {
 	 * @return string
 	 */
 	public static function source_text( $text, Payment $payment ) {
-		$source_id = intval( $payment->get_source_id() );
-
 		$text = __( 'Ninja Forms', 'pronamic_ideal' ) . '<br />';
+
+		$source_id = $payment->get_source_id();
+
+		if ( empty( $source_id ) ) {
+			return $text;
+		}
+
+		$source_id = intval( $source_id );
 
 		if ( 'nf_sub' === get_post_type( $source_id ) ) {
 			$text .= sprintf(
@@ -135,9 +147,15 @@ class Extension {
 	 * @return string
 	 */
 	public function source_description( $description, Payment $payment ) {
-		$source_id = intval( $payment->get_source_id() );
-
 		$description = __( 'Ninja Forms', 'pronamic_ideal' );
+
+		$source_id = $payment->get_source_id();
+
+		if ( empty( $source_id ) ) {
+			return $description;
+		}
+
+		$source_id = intval( $source_id );
 
 		if ( 'nf_sub' === get_post_type( $source_id ) ) {
 			$description = __( 'Ninja Forms Entry', 'pronamic_ideal' );

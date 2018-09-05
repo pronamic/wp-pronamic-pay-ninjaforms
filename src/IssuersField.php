@@ -83,7 +83,10 @@ class IssuersField extends NF_Abstracts_List {
 
 		$this->_nicename = __( 'Issuer', 'pronamic_ideal' );
 
-		$this->_settings['options']['value'] = $this->get_options();
+		$this->_settings['options']['value'] = array();
+
+		// Actions.
+		add_action( 'ninja_forms_render_options_' . $this->_type, array( $this, 'render_options' ), 10, 2 );
 	}
 
 	/**
@@ -103,9 +106,12 @@ class IssuersField extends NF_Abstracts_List {
 	/**
 	 * Get options.
 	 *
+	 * @param array $options  Field select options.
+	 * @param array $settings Field settings.
+	 *
 	 * @return array
 	 */
-	private function get_options() {
+	public function render_options( $options, $settings ) {
 		$options = array();
 		$order   = 0;
 
@@ -115,6 +121,10 @@ class IssuersField extends NF_Abstracts_List {
 		$gateway->set_payment_method( PaymentMethods::IDEAL );
 
 		$issuers = $gateway->get_issuers();
+
+		if ( empty( $issuers ) ) {
+			return $options;
+		}
 
 		foreach ( $issuers[0]['options'] as $value => $label ) {
 			$options[] = array(

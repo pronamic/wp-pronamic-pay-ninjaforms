@@ -173,7 +173,17 @@ class PaymentData extends Pay_PaymentData {
 	 * @return string
 	 */
 	public function get_description() {
-		return $this->action_settings['pronamic_pay_description'];
+		$description = $this->action_settings['pronamic_pay_description'];
+
+		if ( empty( $description ) ) {
+			$description = sprintf(
+				'%s #%s',
+				__( 'Submission', 'pronamic_ideal' ),
+				$this->get_source_id()
+			);
+		}
+
+		return $description;
 	}
 
 	/**

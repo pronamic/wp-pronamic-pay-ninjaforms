@@ -39,7 +39,6 @@ class Extension {
 	 * Construct.
 	 */
 	public function __construct() {
-		add_action( 'pronamic_payment_status_update_' . self::SLUG, array( $this, 'update_status' ), 10, 2 );
 		add_filter( 'pronamic_payment_source_text_' . self::SLUG, array( $this, 'source_text' ), 10, 2 );
 		add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( $this, 'source_description' ), 10, 2 );
 		add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( $this, 'source_url' ), 10, 2 );
@@ -72,15 +71,6 @@ class Extension {
 		$gateways['pronamic_pay'] = new PaymentGateway();
 
 		return $gateways;
-	}
-
-	/**
-	 * Update entry status of the specified payment.
-	 *
-	 * @param Payment $payment      Payment.
-	 * @param bool    $can_redirect Whether or not to redirect.
-	 */
-	public function update_status( Payment $payment, $can_redirect = false ) {
 	}
 
 	/**

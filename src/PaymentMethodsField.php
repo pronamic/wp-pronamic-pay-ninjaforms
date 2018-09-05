@@ -92,7 +92,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 		$this->_settings['options']['value'] = $this->get_options();
 
 		// Actions.
-		add_action( 'ninja_forms_render_options_' . $this->_type, array( $this, 'render_options' ), 10, 2 );
+		add_action( 'ninja_forms_render_options_' . $this->_type, array( $this, 'render_options' ), 10, 1 );
 	}
 
 	/**
@@ -154,11 +154,10 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	 * Render options.
 	 *
 	 * @param array $options  Field select options.
-	 * @param array $settings Field settings.
 	 *
 	 * @return array
 	 */
-	public function render_options( $options, $settings ) {
+	public function render_options( $options ) {
 		$options = wp_list_filter( $options, array( 'selected' => 1 ) );
 
 		foreach ( $options as &$option ) {

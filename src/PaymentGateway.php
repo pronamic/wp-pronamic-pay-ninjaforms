@@ -62,6 +62,11 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 	public function process( $action_settings, $form_id, $data ) {
 		$config_id = get_option( 'pronamic_pay_config_id' );
 
+		// A valid configuration ID is needed.
+		if ( false === $config_id ) {
+			return;
+		}
+
 		$payment_data = new PaymentData( $action_settings, $form_id, $data );
 
 		$payment_method = $payment_data->get_payment_method();

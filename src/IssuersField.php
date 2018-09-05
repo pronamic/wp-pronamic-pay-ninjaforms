@@ -38,7 +38,7 @@ class IssuersField extends NF_Abstracts_List {
 	 *
 	 * @var string
 	 */
-	protected $_nicename = 'Bank Select';
+	protected $_nicename = 'Issuer';
 
 	/**
 	 * Section.
@@ -81,7 +81,7 @@ class IssuersField extends NF_Abstracts_List {
 	public function __construct() {
 		parent::__construct();
 
-		$this->_nicename = __( 'Bank Select', 'pronamic_ideal' );
+		$this->_nicename = __( 'Issuer', 'pronamic_ideal' );
 
 		$this->_settings['options']['value'] = $this->get_options();
 	}

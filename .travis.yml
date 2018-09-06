@@ -28,7 +28,6 @@ matrix:
     - php: nightly
 
 cache:
-  yarn: true
   directories:
     - node_modules
     - vendor
@@ -36,9 +35,9 @@ cache:
 
 install:
   # Install Grunt command line interface (https://github.com/gruntjs/grunt-cli).
-  - yarn global add grunt-cli
+  - npm install -g grunt-cli
   # Install Node.js packages.
-  - yarn install
+  - npm install
   # Update Composer itself to the latest version (https://getcomposer.org/doc/03-cli.md#self-update-selfupdate-).
   - composer self-update
   # Install Composer packages.

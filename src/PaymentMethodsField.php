@@ -173,8 +173,15 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	 * @return array
 	 */
 	private function get_gateway_payment_methods() {
-		$config_id       = get_option( 'pronamic_pay_config_id' );
-		$gateway         = Plugin::get_gateway( $config_id );
+		$payment_methods = array();
+
+		$config_id = get_option( 'pronamic_pay_config_id' );
+		$gateway   = Plugin::get_gateway( $config_id );
+
+		if ( null === $gateway ) {
+			return $payment_methods;
+		}
+
 		$payment_methods = $gateway->get_payment_method_field_options();
 
 		if ( empty( $payment_methods ) ) {

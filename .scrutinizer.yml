@@ -1,18 +1,17 @@
-checks:
-    php:
-        coding_standard:
-            name: WordPress
-        code_rating: true
-        duplication: true
-filter:
-    dependency_paths:
-        - vendor/
-        - node_modules/
-        - wordpress/
 build:
-    nodes:
-        analysis:
-            dependencies:
-                before:
-                    - composer require --dev johnpbloch/wordpress
-                    - composer require --dev wp-pay/core
+  environment:
+    variables:
+      WP_TESTS_DB_NAME: 'wp_phpunit_tests'
+      WP_TESTS_DB_USER: 'root'
+      WP_TESTS_DB_PASS: ''
+      WP_TESTS_DB_HOST: 'localhost'
+  project_setup:
+    before:
+      - mysql -e "CREATE DATABASE wp_phpunit_tests"
+
+checks:
+  php:
+    coding_standard:
+      name: WordPress
+    code_rating: true
+    duplication: true

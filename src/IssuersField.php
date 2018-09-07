@@ -115,6 +115,10 @@ class IssuersField extends NF_Abstracts_List {
 		$config_id = get_option( 'pronamic_pay_config_id' );
 		$gateway   = Plugin::get_gateway( $config_id );
 
+		if ( null === $gateway ) {
+			return $options;
+		}
+
 		$gateway->set_payment_method( PaymentMethods::IDEAL );
 
 		$issuers = $gateway->get_issuers();

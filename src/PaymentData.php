@@ -1,4 +1,13 @@
 <?php
+/**
+ * Payment data
+ *
+ * @author    Pronamic <info@pronamic.eu>
+ * @copyright 2005-2018 Pronamic
+ * @license   GPL-3.0-or-later
+ * @package   Pronamic\WordPress\Pay\Extensions\NinjaForms
+ */
+
 namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
 use Pronamic\WordPress\Pay\Payments\PaymentData as Pay_PaymentData;
@@ -6,12 +15,10 @@ use Pronamic\WordPress\Pay\Payments\Item;
 use Pronamic\WordPress\Pay\Payments\Items;
 
 /**
- * Title: WordPress pay Ninja Forms payment data
- * Description:
- * Copyright: Copyright (c) 2005 - 2018
- * Company: Pronamic
+ * Payment data
  *
- * @author Ruben Droogh
+ * @version 1.0.0
+ * @since   1.0.0
  */
 class PaymentData extends Pay_PaymentData {
 
@@ -23,43 +30,50 @@ class PaymentData extends Pay_PaymentData {
 	private $form_id;
 
 	/**
-	 * Action
+	 * Form data.
 	 *
 	 * @var array
 	 */
 	private $form_data;
 
 	/**
-	 * Constructs and initializes an Formidable Forms payment data object.
+	 * Action settings.
 	 *
-	 * @param string  $entry_id
-	 * @param string  $form_id
-	 * @param WP_Post $action
+	 * @var array
 	 */
-	public function __construct( $form_id, $data ) {
+	private $action_settings;
+
+	/**
+	 * Constructs and initializes a Ninja Forms payment data object.
+	 *
+	 * @param array  $action_settings Action settings.
+	 * @param string $form_id         Form id.
+	 * @param array  $data            Form data.
+	 */
+	public function __construct( $action_settings, $form_id, $data ) {
 		parent::__construct();
 
-		$this->form_id   = $form_id;
-		$this->form_data = $data;
+		$this->action_settings = $action_settings;
+		$this->form_id         = $form_id;
+		$this->form_data       = $data;
 	}
 
 	/**
-	 * Get items
+	 * Get items.
 	 *
 	 * @see Pronamic_Pay_PaymentDataInterface::get_items()
 	 * @return Items
 	 */
 	public function get_items() {
-		// Items
 		$items = new Items();
 
-		// Item
-		// We only add one total item, because iDEAL cant work with negative price items (discount)
+		// Item.
+		// We only add one total item, because iDEAL cant work with negative price items (discount).
 		$item = new Item();
-		$item->setNumber( $this->get_order_id() );
-		$item->setDescription( $this->get_description() );
-		$item->setPrice( $this->get_amount_from_field() );
-		$item->setQuantity( 1 );
+		$item->set_number( $this->get_order_id() );
+		$item->set_description( $this->get_description() );
+		$item->set_price( $this->action_settings['payment_total'] );
+		$item->set_quantity( 1 );
 
 		$items->addItem( $item );
 
@@ -74,18 +88,18 @@ class PaymentData extends Pay_PaymentData {
 	public function get_payment_method() {
 		$payment_method = null;
 
-		if ( ! empty( $this->form_data['method'] ) && isset( $this->form_data['method'] ) ) {
-			$payment_method = $this->form_data['method'];
+		// Get payment method from a payment method field if it exists.
+		foreach ( $this->form_data['fields'] as $field ) {
+			if ( 'pronamic_pay_payment_method' !== $field['type'] ) {
+				continue;
+			}
 
-			$replacements = array(
-				'pronamic_pay_' => '',
-				'pronamic_pay'  => '',
-			);
+			$value = $field['value'];
 
-			$payment_method = strtr( $payment_method, $replacements );
+			if ( ! empty( $value ) ) {
+				$payment_method = $value;
 
-			if ( empty( $payment_method ) ) {
-				$payment_method = null;
+				break;
 			}
 		}
 
@@ -93,7 +107,29 @@ class PaymentData extends Pay_PaymentData {
 	}
 
 	/**
-	 * Get source indicator
+	 * Get issuer ID.
+	 *
+	 * @return string|null
+	 */
+	public function get_issuer_id() {
+		$issuer = null;
+
+		// Get issuer from an issuers field if it exists.
+		foreach ( $this->form_data['fields'] as $field ) {
+			if ( 'pronamic_pay_issuer' !== $field['type'] ) {
+				continue;
+			}
+
+			$issuer = $field['value'];
+
+			break;
+		}
+
+		return $issuer;
+	}
+
+	/**
+	 * Get source indicator.
 	 *
 	 * @see Pronamic_Pay_PaymentDataInterface::get_source()
 	 * @return string
@@ -103,53 +139,58 @@ class PaymentData extends Pay_PaymentData {
 	}
 
 	/**
-	 * Get currency
+	 * Get source id.
+	 *
+	 * @see Pronamic_Pay_PaymentDataInterface::get_source_id()
+	 * @return string
+	 */
+	public function get_source_id() {
+		if ( isset( $this->form_data['actions']['save']['sub_id'] ) ) {
+			return $this->form_data['actions']['save']['sub_id'];
+		}
+
+		return time();
+	}
+
+	/**
+	 * Get currency.
 	 *
 	 * @see Pronamic_Pay_PaymentDataInterface::get_currency_alphabetic_code()
 	 * @return string
 	 */
 	public function get_currency_alphabetic_code() {
-		return 'EUR';
+		$form = Ninja_Forms()->form( $this->form_id )->get();
+
+		return $form->get_setting( 'currency', Ninja_Forms()->get_setting( 'currency' ) );
 	}
 
 	/**
-	 * Get description
+	 * Get description.
 	 *
 	 * @see Pronamic_Pay_PaymentDataInterface::get_description()
 	 * @return string
 	 */
 	public function get_description() {
-		$description = '';
+		$description = $this->action_settings['pronamic_pay_description'];
 
-		if ( isset( $this->form_data['description'] ) ) {
-			$description = $this->form_data['description'];
+		if ( empty( $description ) ) {
+			$description = sprintf(
+				'%s #%s',
+				__( 'Submission', 'pronamic_ideal' ),
+				$this->get_source_id()
+			);
 		}
 
 		return $description;
 	}
 
 	/**
-	 * Get order ID
+	 * Get order ID.
 	 *
 	 * @see Pronamic_Pay_PaymentDataInterface::get_order_id()
 	 * @return string
 	 */
 	public function get_order_id() {
-		return $this->entry_id;
-	}
-
-	/**
-	 * Get amount
-	 *
-	 * @return float
-	 */
-	private function get_amount_from_field() {
-		$amount = 0;
-
-		if ( isset( $this->form_data['amount'] ) ) {
-			$amount = $this->form_data['amount'];
-		}
-
-		return $amount;
+		return $this->get_source_id();
 	}
 }

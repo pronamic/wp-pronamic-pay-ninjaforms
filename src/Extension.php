@@ -92,10 +92,13 @@ class Extension {
 
 		// Source ID could be a submission ID.
 		if ( 'nf_sub' === get_post_type( $source_id ) ) {
-			$url = add_query_arg( array(
-				'post'   => $source_id,
-				'action' => 'edit',
-			), admin_url( 'post.php' ) );
+			$url = add_query_arg(
+				array(
+					'post'   => $source_id,
+					'action' => 'edit',
+				),
+				admin_url( 'post.php' )
+			);
 		}
 
 		return $url;
@@ -123,10 +126,13 @@ class Extension {
 		if ( 'nf_sub' === get_post_type( $source_id ) ) {
 			$text .= sprintf(
 				'<a href="%s">%s</a>',
-				add_query_arg( array(
-					'post'   => $source_id,
-					'action' => 'edit',
-				), admin_url( 'post.php' ) ),
+				add_query_arg(
+					array(
+						'post'   => $source_id,
+						'action' => 'edit',
+					),
+					admin_url( 'post.php' )
+				),
 				/* translators: %s: payment source id */
 				sprintf( __( 'Entry #%s', 'pronamic_ideal' ), $source_id )
 			);

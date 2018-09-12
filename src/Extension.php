@@ -13,12 +13,10 @@ namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 use Pronamic\WordPress\Pay\Payments\Payment;
 
 /**
- * Title: Ninja Forms extension
- * Description:
- * Copyright: Copyright (c) 2005 - 2018
- * Company: Pronamic
+ * Extension
  *
- * @author Ruben Droogh
+ * @version 1.0.0
+ * @since   1.0.0
  */
 class Extension {
 	/**

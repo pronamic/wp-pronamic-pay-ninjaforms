@@ -1,6 +1,6 @@
 <?php
 /**
- * Payment Gateway.
+ * Payment gateway
  *
  * @author    Pronamic <info@pronamic.eu>
  * @copyright 2005-2018 Pronamic
@@ -15,10 +15,10 @@ use Pronamic\WordPress\Pay\Plugin;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
 
 /**
- * Payment Action class
+ * Payment gateway
  *
- * @author Ruben Droogh
- * @since 1.0.0
+ * @version 1.0.0
+ * @since   1.0.0
  */
 final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 	/**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Issuers Field.
+ * Issuers field
  *
  * @author    Pronamic <info@pronamic.eu>
  * @copyright 2005-2018 Pronamic
@@ -15,7 +15,10 @@ use Pronamic\WordPress\Pay\Plugin;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
 
 /**
- * Class IssuersField.
+ * Issuers field
+ *
+ * @version 1.0.0
+ * @since   1.0.0
  */
 class IssuersField extends NF_Abstracts_List {
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Payment Data
+ * Payment data
  *
  * @author    Pronamic <info@pronamic.eu>
  * @copyright 2005-2018 Pronamic
@@ -15,12 +15,10 @@ use Pronamic\WordPress\Pay\Payments\Item;
 use Pronamic\WordPress\Pay\Payments\Items;
 
 /**
- * Title: WordPress pay Ninja Forms payment data
- * Description:
- * Copyright: Copyright (c) 2005 - 2018
- * Company: Pronamic
+ * Payment data
  *
- * @author Ruben Droogh
+ * @version 1.0.0
+ * @since   1.0.0
  */
 class PaymentData extends Pay_PaymentData {
 

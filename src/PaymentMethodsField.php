@@ -79,89 +79,41 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	 * Constructs and initializes the field object.
 	 */
 	public function __construct() {
-		// Construct parent with filtered field settings options columns.
-		add_filter( 'ninja_forms_field_settings', array( $this, 'field_settings_options' ), 10, 1 );
-
 		parent::__construct();
-
-		remove_filter( 'ninja_forms_field_settings', array( $this, 'field_settings_options' ) );
 
 		// Set field properties.
 		$this->_nicename = __( 'Payment Methods', 'pronamic_ideal' );
 
-		$this->_settings['options']['value'] = $this->get_options();
+		$this->_settings['options']['value'] = $this->get_pronamic_payment_method_options();
 
-		// Actions.
-		add_action( 'ninja_forms_render_options_' . $this->_type, array( $this, 'render_options' ), 10, 1 );
+		// Remove calc field for options.
+		unset( $this->_settings['options']['columns']['calc'] );
+		unset( $this->_settings['options']['columns']['selected'] );
 	}
 
 	/**
-	 * Get default options.
+	 * Get default Pronamic payment method options.
 	 *
 	 * @return array
 	 */
-	private function get_options() {
-		$options = $this->_settings['options']['value'];
-
-		if ( ! is_admin() ) {
-			return $options;
-		}
-
-		if ( ! empty( $options ) ) {
-			return $options;
-		}
-
+	private function get_pronamic_payment_method_options() {
 		$options = array();
-		$order   = 0;
+
+		$order = 0;
 
 		// Get gateway payment method options.
-		$payment_methods = $this->get_gateway_payment_methods();
+		$payment_methods = $this->get_pronamic_gateway_payment_methods();
 
 		foreach ( $payment_methods as $value => $label ) {
 			$options[] = array(
 				'label'    => $label,
-				'value'    => $value . '" disabled="disabled" "',
+				'value'    => $value,
 				'calc'     => '',
 				'selected' => 1,
-				'order'    => ++$order,
+				'order'    => $order,
 			);
-		}
 
-		return $options;
-	}
-
-	/**
-	 * Field settings options columns.
-	 *
-	 * @param array $settings Field settings.
-	 *
-	 * @return array
-	 */
-	public function field_settings_options( $settings ) {
-		// Remove default options (one, two, three").
-		$settings['options']['value'] = array();
-
-		// Remove calc field for options.
-		unset( $settings['options']['columns']['calc'] );
-
-		// Remove checkmark icon.
-		$settings['options']['columns']['selected']['header'] = '';
-
-		return $settings;
-	}
-
-	/**
-	 * Render options.
-	 *
-	 * @param array $options  Field select options.
-	 *
-	 * @return array
-	 */
-	public function render_options( $options ) {
-		$options = wp_list_filter( $options, array( 'selected' => 1 ) );
-
-		foreach ( $options as &$option ) {
-			$option['value'] = str_replace( '" disabled="disabled" "', '', $option['value'] );
+			$order++;
 		}
 
 		return $options;
@@ -172,7 +124,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	 *
 	 * @return array
 	 */
-	private function get_gateway_payment_methods() {
+	private function get_pronamic_gateway_payment_methods() {
 		$payment_methods = array();
 
 		$config_id = get_option( 'pronamic_pay_config_id' );

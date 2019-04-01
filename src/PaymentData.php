@@ -161,7 +161,15 @@ class PaymentData extends Pay_PaymentData {
 	public function get_currency_alphabetic_code() {
 		$form = Ninja_Forms()->form( $this->form_id )->get();
 
-		return $form->get_setting( 'currency', Ninja_Forms()->get_setting( 'currency' ) );
+		$currency = $form->get_setting( 'currency' );
+
+		if ( ! empty( $currency ) ) {
+			// Return currency from form settings.
+			return $currency;
+		}
+
+		// Return currency from Ninja Forms settings.
+		return Ninja_Forms()->get_setting( 'currency' );
 	}
 
 	/**

@@ -48,7 +48,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	 *
 	 * @var string
 	 */
-	protected $_section = 'pricing';
+	protected $_section = 'pronamic_pay';
 
 	/**
 	 * Icon.

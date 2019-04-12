@@ -41,8 +41,26 @@ class Extension {
 		add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( $this, 'source_description' ), 10, 2 );
 		add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( $this, 'source_url' ), 10, 2 );
 
+		add_filter( 'ninja_forms_field_type_sections', array( $this, 'field_type_sections' ) );
 		add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
 		add_filter( 'ninja_forms_register_payment_gateways', array( $this, 'register_payment_gateways' ), 10, 1 );
+	}
+
+	/**
+	 * Filter field type sections.
+	 *
+	 * @param array $sections Field type sections.
+	 *
+	 * @return array
+	 */
+	public function field_type_sections( $sections ) {
+		$sections['pronamic_pay'] = array(
+			'id'         => 'pronamic_pay',
+			'nicename'   => __( 'Pronamic Pay', 'pronamic_ideal' ),
+			'fieldTypes' => array(),
+		);
+
+		return $sections;
 	}
 
 	/**

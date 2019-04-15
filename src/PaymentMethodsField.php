@@ -17,7 +17,7 @@ use Pronamic\WordPress\Pay\Plugin;
 /**
  * Payment methods field
  *
- * @version 1.0.0
+ * @version 1.0.1
  * @since   1.0.0
  */
 class PaymentMethodsField extends NF_Abstracts_List {

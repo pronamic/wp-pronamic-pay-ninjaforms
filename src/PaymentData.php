@@ -17,7 +17,7 @@ use Pronamic\WordPress\Pay\Payments\Items;
 /**
  * Payment data
  *
- * @version 1.0.0
+ * @version 1.0.1
  * @since   1.0.0
  */
 class PaymentData extends Pay_PaymentData {

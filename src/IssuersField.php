@@ -17,7 +17,7 @@ use Pronamic\WordPress\Pay\Core\PaymentMethods;
 /**
  * Issuers field
  *
- * @version 1.0.0
+ * @version 1.0.1
  * @since   1.0.0
  */
 class IssuersField extends NF_Abstracts_List {

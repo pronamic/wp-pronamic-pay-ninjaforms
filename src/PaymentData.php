@@ -3,7 +3,7 @@
  * Payment data
  *
  * @author    Pronamic <info@pronamic.eu>
- * @copyright 2005-2018 Pronamic
+ * @copyright 2005-2019 Pronamic
  * @license   GPL-3.0-or-later
  * @package   Pronamic\WordPress\Pay\Extensions\NinjaForms
  */
@@ -17,7 +17,7 @@ use Pronamic\WordPress\Pay\Payments\Items;
 /**
  * Payment data
  *
- * @version 1.0.0
+ * @version 1.0.1
  * @since   1.0.0
  */
 class PaymentData extends Pay_PaymentData {
@@ -161,7 +161,15 @@ class PaymentData extends Pay_PaymentData {
 	public function get_currency_alphabetic_code() {
 		$form = Ninja_Forms()->form( $this->form_id )->get();
 
-		return $form->get_setting( 'currency', Ninja_Forms()->get_setting( 'currency' ) );
+		$currency = $form->get_setting( 'currency' );
+
+		if ( ! empty( $currency ) ) {
+			// Return currency from form settings.
+			return $currency;
+		}
+
+		// Return currency from Ninja Forms settings.
+		return Ninja_Forms()->get_setting( 'currency' );
 	}
 
 	/**

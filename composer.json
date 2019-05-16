@@ -36,15 +36,15 @@
 			"type": "package",
 			"package": {
 				"name": "wpninjas/ninja-forms",
-				"version": "3.3.14.1",
+				"version": "3.3.19",
 				"dist": {
-					"url": "https://github.com/wpninjas/ninja-forms/archive/3.3.14.1.zip",
+					"url": "https://github.com/wpninjas/ninja-forms/archive/3.3.19.zip",
 					"type": "zip"
 				},
 				"source": {
 					"url": "https://github.com/wpninjas/ninja-forms",
 					"type": "github",
-					"reference": "tags/3.3.14.1"
+					"reference": "tags/3.3.19"
 				},
 				"autoload": {
 					"classmap": [
@@ -59,7 +59,7 @@
 		"wp-pay/core": "^2.1"
 	},
 	"require-dev": {
-		"wpninjas/ninja-forms": "3.3.14.1",
+		"wpninjas/ninja-forms": "^3.3",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5",
 		"php-coveralls/php-coveralls": "^1.1",
 		"phpcompatibility/php-compatibility": "^9.1",

@@ -21,6 +21,8 @@
 	<rule ref="PHPCompatibilityWP" />
 
 	<rule ref="WordPress">
+		<exclude name="PSR2.Classes.PropertyDeclaration.Underscore" />
+
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 	</rule>

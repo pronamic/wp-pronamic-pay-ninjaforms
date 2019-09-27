@@ -124,7 +124,11 @@ class IssuersField extends NF_Abstracts_List {
 
 		$gateway->set_payment_method( PaymentMethods::IDEAL );
 
-		$issuers = $gateway->get_issuers();
+		try {
+			$issuers = $gateway->get_transient_issuers();
+		} catch ( \Pronamic\WordPress\Pay\GatewayException $e ) {
+			$issuers = null;
+		}
 
 		if ( empty( $issuers ) ) {
 			return $options;

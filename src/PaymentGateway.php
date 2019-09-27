@@ -87,21 +87,19 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 			return false;
 		}
 
-		$payment = Plugin::start( $config_id, $gateway, $payment_data, $payment_method );
+		try {
+			$payment = Plugin::start( $config_id, $gateway, $payment_data, $payment_method );
 
-		if ( $gateway->has_error() ) {
-			$error = $gateway->get_error();
-
+			$data['actions']['redirect'] = $payment->get_action_url();
+		} catch ( \Pronamic\WordPress\Pay\PayException $e ) {
 			$message = sprintf(
 				'%1$s: %2$s',
-				$error->get_error_code(),
-				$error->get_error_message()
+				$e->get_error_code(),
+				$e->get_message()
 			);
 
 			$data['errors']['form']['pronamic-pay']         = Plugin::get_default_error_message();
 			$data['errors']['form']['pronamic-pay-gateway'] = esc_html( $message );
-		} else {
-			$data['actions']['redirect'] = $payment->get_action_url();
 		}
 
 		return $data;

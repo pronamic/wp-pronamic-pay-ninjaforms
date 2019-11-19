@@ -126,7 +126,7 @@ class IssuersField extends NF_Abstracts_List {
 
 		try {
 			$issuers = $gateway->get_transient_issuers();
-		} catch ( \Pronamic\WordPress\Pay\GatewayException $e ) {
+		} catch ( \Exception $e ) {
 			$issuers = null;
 		}
 

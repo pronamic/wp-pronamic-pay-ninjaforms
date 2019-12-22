@@ -17,7 +17,7 @@ use Pronamic\WordPress\Pay\Core\PaymentMethods;
 /**
  * Issuers field
  *
- * @version 1.0.1
+ * @version 1.0.3
  * @since   1.0.0
  */
 class IssuersField extends NF_Abstracts_List {
@@ -124,7 +124,11 @@ class IssuersField extends NF_Abstracts_List {
 
 		$gateway->set_payment_method( PaymentMethods::IDEAL );
 
-		$issuers = $gateway->get_issuers();
+		try {
+			$issuers = $gateway->get_transient_issuers();
+		} catch ( \Exception $e ) {
+			$issuers = null;
+		}
 
 		if ( empty( $issuers ) ) {
 			return $options;

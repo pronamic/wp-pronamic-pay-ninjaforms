@@ -3,7 +3,7 @@
  * Extension
  *
  * @author    Pronamic <info@pronamic.eu>
- * @copyright 2005-2019 Pronamic
+ * @copyright 2005-2020 Pronamic
  * @license   GPL-3.0-or-later
  * @package   Pronamic\WordPress\Pay\Extensions\NinjaForms
  */
@@ -18,25 +18,19 @@ use Pronamic\WordPress\Pay\Payments\Payment;
  * @version 1.0.1
  * @since   1.0.0
  */
-class Extension {
+class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	/**
 	 * Slug
 	 *
 	 * @var string
 	 */
 	const SLUG = 'ninja-forms';
-
-	/**
-	 * Bootstrap.
-	 */
-	public static function bootstrap() {
-		new self();
-	}
-
 	/**
 	 * Construct.
 	 */
 	public function __construct() {
+		parent::__construct();
+
 		add_filter( 'pronamic_payment_source_text_' . self::SLUG, array( $this, 'source_text' ), 10, 2 );
 		add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( $this, 'source_description' ), 10, 2 );
 		add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( $this, 'source_url' ), 10, 2 );

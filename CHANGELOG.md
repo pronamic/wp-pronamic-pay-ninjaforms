@@ -7,6 +7,10 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [1.1.0] - 2020-03-19
+- Fix incorrect selected payment method in payment methods fields when editing entry.
+- Extension extends abstract plugin integration.
+
 ## [1.0.3] - 2019-12-22
 - Improved error handling with exceptions.
 
@@ -20,7 +24,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2018-05-16
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.0.3...HEAD
+[unreleased]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.0.3...1.1.0
 [1.0.3]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.0.0...1.0.1

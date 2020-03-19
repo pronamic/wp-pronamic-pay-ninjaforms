@@ -3,7 +3,7 @@
  * Payment methods field
  *
  * @author    Pronamic <info@pronamic.eu>
- * @copyright 2005-2019 Pronamic
+ * @copyright 2005-2020 Pronamic
  * @license   GPL-3.0-or-later
  * @package   Pronamic\WordPress\Pay\Extensions\NinjaForms
  */
@@ -89,6 +89,8 @@ class PaymentMethodsField extends NF_Abstracts_List {
 
 		$this->_settings['options']['value'] = $this->get_pronamic_payment_method_options();
 
+		add_filter( 'ninja_forms_render_options_' . $this->_type, array( $this, 'render_options' ) );
+
 		// Remove calc field for options.
 		unset( $this->_settings['options']['columns']['calc'] );
 		unset( $this->_settings['options']['columns']['selected'] );
@@ -117,6 +119,23 @@ class PaymentMethodsField extends NF_Abstracts_List {
 			);
 
 			$order++;
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Render options.
+	 *
+	 * @param array $options Options.
+	 *
+	 * @return array
+	 */
+	public function render_options( $options ) {
+		foreach ( $options as &$option ) {
+			if ( 0 === $option['value'] ) {
+				$option['value'] = '';
+			}
 		}
 
 		return $options;

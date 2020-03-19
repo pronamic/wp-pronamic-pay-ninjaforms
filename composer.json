@@ -34,15 +34,15 @@
 			"type": "package",
 			"package": {
 				"name": "wpninjas/ninja-forms",
-				"version": "3.3.19",
+				"version": "3.4.16",
 				"dist": {
-					"url": "https://github.com/wpninjas/ninja-forms/archive/3.3.19.zip",
+					"url": "https://github.com/wpninjas/ninja-forms/archive/3.4.16.zip",
 					"type": "zip"
 				},
 				"source": {
 					"url": "https://github.com/wpninjas/ninja-forms",
 					"type": "github",
-					"reference": "tags/3.3.19"
+					"reference": "tags/3.4.16"
 				},
 				"autoload": {
 					"classmap": [

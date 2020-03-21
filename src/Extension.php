@@ -10,6 +10,7 @@
 
 namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
+use Pronamic\WordPress\Pay\AbstractPluginIntegration;
 use Pronamic\WordPress\Pay\Payments\Payment;
 
 /**
@@ -18,26 +19,43 @@ use Pronamic\WordPress\Pay\Payments\Payment;
  * @version 1.0.1
  * @since   1.0.0
  */
-class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
+class Extension extends AbstractPluginIntegration {
 	/**
 	 * Slug
 	 *
 	 * @var string
 	 */
 	const SLUG = 'ninja-forms';
+
 	/**
-	 * Construct.
+	 * Construct Ninja Forms plugin integration.
 	 */
 	public function __construct() {
 		parent::__construct();
 
-		add_filter( 'pronamic_payment_source_text_' . self::SLUG, array( $this, 'source_text' ), 10, 2 );
-		add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( $this, 'source_description' ), 10, 2 );
-		add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( $this, 'source_url' ), 10, 2 );
+		// Dependencies.
+		$dependencies = $this->get_dependencies();
 
-		add_filter( 'ninja_forms_field_type_sections', array( $this, 'field_type_sections' ) );
-		add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
-		add_filter( 'ninja_forms_register_payment_gateways', array( $this, 'register_payment_gateways' ), 10, 1 );
+		$dependencies->add( new NinjaFormsDependency() );
+	}
+
+	/**
+	 * Setup.
+	 */
+	public function setup() {
+		\add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( $this, 'source_description' ), 10, 2 );
+		\add_filter( 'pronamic_payment_source_text_' . self::SLUG, array( $this, 'source_text' ), 10, 2 );
+
+		// Check if dependencies are met and integration is active.
+		if ( ! $this->is_active() ) {
+			return;
+		}
+
+		\add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( $this, 'source_url' ), 10, 2 );
+
+		\add_filter( 'ninja_forms_field_type_sections', array( $this, 'field_type_sections' ) );
+		\add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
+		\add_filter( 'ninja_forms_register_payment_gateways', array( $this, 'register_payment_gateways' ), 10, 1 );
 	}
 
 	/**
@@ -122,7 +140,7 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	 *
 	 * @return string
 	 */
-	public static function source_text( $text, Payment $payment ) {
+	public function source_text( $text, Payment $payment ) {
 		$text = __( 'Ninja Forms', 'pronamic_ideal' ) . '<br />';
 
 		$source_id = $payment->get_source_id();

@@ -64,7 +64,7 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 
 		// A valid configuration ID is needed.
 		if ( false === $config_id ) {
-			return;
+			return false;
 		}
 
 		$payment_data = new PaymentData( $action_settings, $form_id, $data );

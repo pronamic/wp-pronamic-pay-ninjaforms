@@ -94,7 +94,7 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 			$payment->set_meta( 'ninjaforms_payment_action_id', $action_settings['id'] );
 			$payment->set_meta( 'ninjaforms_payment_form_id', $form_id );
 
-			$data['actions']['redirect'] = $payment->get_action_url();
+			$data['actions']['redirect'] = $payment->get_pay_redirect_url();
 		} catch ( \Exception $e ) {
 			$message = sprintf( '%1$s: %2$s', $e->getCode(), $e->getMessage() );
 

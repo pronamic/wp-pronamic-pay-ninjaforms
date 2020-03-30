@@ -90,6 +90,10 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		try {
 			$payment = Plugin::start( $config_id, $gateway, $payment_data, $payment_method );
 
+			// Save form and action ID in payment meta for use in redirect URL.
+			$payment->set_meta( 'ninjaforms_payment_action_id', $action_settings['id'] );
+			$payment->set_meta( 'ninjaforms_payment_form_id', $form_id );
+
 			$data['actions']['redirect'] = $payment->get_action_url();
 		} catch ( \Exception $e ) {
 			$message = sprintf( '%1$s: %2$s', $e->getCode(), $e->getMessage() );
@@ -107,21 +111,54 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 	 * @return array
 	 */
 	public function action_settings() {
-		return array(
-			'description' => array(
-				'name'           => 'pronamic_pay_description',
-				'type'           => 'textbox',
-				'group'          => 'primary',
-				'label'          => __( 'Transaction Description', 'pronamic_ideal' ),
-				'placeholder'    => '',
-				'value'          => '',
-				'width'          => 'full',
-				'use_merge_tags' => array(
-					'include' => array(
-						'calcs',
-					),
+		$settings = array();
+
+		// Description.
+		$settings['description'] = array(
+			'name'           => 'pronamic_pay_description',
+			'type'           => 'textbox',
+			'group'          => 'primary',
+			'label'          => __( 'Transaction Description', 'pronamic_ideal' ),
+			'placeholder'    => '',
+			'value'          => '',
+			'width'          => 'full',
+			'use_merge_tags' => array(
+				'include' => array(
+					'calcs',
 				),
 			),
 		);
+
+		/*
+		 * Status pages.
+		 */
+		$options = array(
+			array(
+				'label' => __( '— Select —', 'pronamic_ideal' ),
+			),
+		);
+
+		foreach ( \get_pages() as $page ) {
+			$options[] = array(
+				'label' => $page->post_title,
+				'value' => $page->ID,
+			);
+		}
+
+		// Add settings fields.
+		foreach ( \pronamic_pay_plugin()->get_pages() as $id => $label ) {
+			$settings[ $id ] = array(
+				'name'        => $id,
+				'type'        => 'select',
+				'group'       => 'pronamic_pay_status_pages',
+				'label'       => $label,
+				'placeholder' => '',
+				'value'       => '',
+				'width'       => 'full',
+				'options'     => $options,
+			);
+		}
+
+		return $settings;
 	}
 }

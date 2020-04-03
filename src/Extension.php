@@ -10,7 +10,9 @@
 
 namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
+use Pronamic\WordPress\Pay\AbstractPluginIntegration;
 use Pronamic\WordPress\Pay\Payments\Payment;
+use Pronamic\WordPress\Pay\Payments\PaymentStatus;
 
 /**
  * Extension
@@ -18,26 +20,49 @@ use Pronamic\WordPress\Pay\Payments\Payment;
  * @version 1.0.1
  * @since   1.0.0
  */
-class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
+class Extension extends AbstractPluginIntegration {
 	/**
 	 * Slug
 	 *
 	 * @var string
 	 */
 	const SLUG = 'ninja-forms';
+
 	/**
-	 * Construct.
+	 * Construct Ninja Forms plugin integration.
 	 */
 	public function __construct() {
-		parent::__construct();
+		parent::__construct(
+			array(
+				'name' => __( 'Ninja Forms', 'pronamic_ideal' ),
+			)
+		);
 
-		add_filter( 'pronamic_payment_source_text_' . self::SLUG, array( $this, 'source_text' ), 10, 2 );
-		add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( $this, 'source_description' ), 10, 2 );
-		add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( $this, 'source_url' ), 10, 2 );
+		// Dependencies.
+		$dependencies = $this->get_dependencies();
 
-		add_filter( 'ninja_forms_field_type_sections', array( $this, 'field_type_sections' ) );
-		add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
-		add_filter( 'ninja_forms_register_payment_gateways', array( $this, 'register_payment_gateways' ), 10, 1 );
+		$dependencies->add( new NinjaFormsDependency() );
+	}
+
+	/**
+	 * Setup.
+	 */
+	public function setup() {
+		\add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( $this, 'source_description' ), 10, 2 );
+		\add_filter( 'pronamic_payment_source_text_' . self::SLUG, array( $this, 'source_text' ), 10, 2 );
+
+		// Check if dependencies are met and integration is active.
+		if ( ! $this->is_active() ) {
+			return;
+		}
+
+		\add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( $this, 'source_url' ), 10, 2 );
+		\add_filter( 'pronamic_payment_redirect_url_' . self::SLUG, array( $this, 'redirect_url' ), 10, 2 );
+
+		\add_filter( 'ninja_forms_field_type_sections', array( $this, 'field_type_sections' ) );
+		\add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
+		\add_filter( 'ninja_forms_register_payment_gateways', array( $this, 'register_payment_gateways' ), 10, 1 );
+		\add_filter( 'ninja_forms_field_settings_groups', array( $this, 'register_settings_groups' ) );
 	}
 
 	/**
@@ -84,6 +109,75 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	}
 
 	/**
+	 * Register settings groups.
+	 *
+	 * @param array $groups Settings groups.
+	 *
+	 * @return array
+	 */
+	public function register_settings_groups( $groups ) {
+		$groups['pronamic_pay_status_pages'] = array(
+			'id'       => 'pronamic_pay_status_pages',
+			'label'    => __( 'Pronamic Pay Status Pages', 'pronamic_ideal' ),
+			'priority' => 200,
+		);
+
+		return $groups;
+	}
+
+	/**
+	 * Payment redirect URL filter.
+	 *
+	 * @param string  $url     Redirect URL.
+	 * @param Payment $payment Payment.
+	 *
+	 * @return string
+	 * @since 1.1.1
+	 */
+	public function redirect_url( $url, $payment ) {
+		$form_id   = $payment->get_meta( 'ninjaforms_payment_form_id' );
+		$action_id = $payment->get_meta( 'ninjaforms_payment_action_id' );
+
+		if ( empty( $form_id ) || empty( $action_id ) ) {
+			return $url;
+		}
+
+		$action_settings = Ninja_Forms()->form( $form_id )->get_action( $action_id )->get_settings();
+
+		$status_url = null;
+
+		switch ( $payment->status ) {
+			case PaymentStatus::CANCELLED:
+				$status_url = \get_permalink( $action_settings['pronamic_pay_cancel_page_id'] );
+
+				break;
+			case PaymentStatus::EXPIRED:
+				$status_url = \get_permalink( $action_settings['pronamic_pay_expired_page_id'] );
+
+				break;
+			case PaymentStatus::FAILURE:
+				$status_url = \get_permalink( $action_settings['pronamic_pay_error_page_id'] );
+
+				break;
+			case PaymentStatus::SUCCESS:
+				$status_url = \get_permalink( $action_settings['pronamic_pay_completed_page_id'] );
+
+				break;
+			case PaymentStatus::OPEN:
+			default:
+				$status_url = \get_permalink( $action_settings['pronamic_pay_unknown_page_id'] );
+
+				break;
+		}
+
+		if ( ! empty( $status_url ) ) {
+			return $status_url;
+		}
+
+		return $url;
+	}
+
+	/**
 	 * Source URL.
 	 *
 	 * @param string  $url     Source URL.
@@ -122,7 +216,7 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	 *
 	 * @return string
 	 */
-	public static function source_text( $text, Payment $payment ) {
+	public function source_text( $text, Payment $payment ) {
 		$text = __( 'Ninja Forms', 'pronamic_ideal' ) . '<br />';
 
 		$source_id = $payment->get_source_id();

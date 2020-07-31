@@ -237,7 +237,7 @@ class Extension extends AbstractPluginIntegration {
 					),
 					admin_url( 'post.php' )
 				),
-				/* translators: %s: payment source id */
+				/* translators: %s: source id */
 				sprintf( __( 'Entry #%s', 'pronamic_ideal' ), $source_id )
 			);
 		} else {

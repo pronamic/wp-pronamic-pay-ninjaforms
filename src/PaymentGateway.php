@@ -48,6 +48,8 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 	public function __construct() {
 		$this->_name = __( 'Pronamic Pay', 'pronamic_ideal' );
 
+		add_action( 'ninja_forms_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
 		$this->_settings = $this->action_settings();
 	}
 
@@ -103,6 +105,10 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		}
 
 		return $data;
+	}
+
+	public function enqueue_scripts( $data ) {
+		wp_enqueue_script( 'nf-knit-pay-response', plugin_dir_url( __FILE__ ) . 'assets/js/error-handler.js', array( 'nf-front-end' ) );
 	}
 
 	/**

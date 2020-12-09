@@ -20,7 +20,7 @@ use Pronamic\WordPress\Pay\Payments\Payment;
 /**
  * Payment gateway
  *
- * @version 1.0.3
+ * @version 1.3.0
  * @since   1.0.0
  */
 final class PaymentGateway extends NF_Abstracts_PaymentGateway {
@@ -82,10 +82,10 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		$payment = new Payment();
 
 		$payment->source    = 'ninja-forms';
-		$payment->source_id = PaymentHelper::get_source_id_from_submission_data( $data );
+		$payment->source_id = NinjaFormsHelper::get_source_id_from_submission_data( $data );
 		$payment->order_id  = $payment->source_id;
 
-		$payment->description = PaymentHelper::get_description_from_action_settings( $action_settings );
+		$payment->description = NinjaFormsHelper::get_description_from_action_settings( $action_settings );
 
 		if ( empty( $payment->description ) ) {
 			$payment->description = sprintf(
@@ -102,16 +102,16 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		);
 
 		// Currency.
-		$currency = Currency::get_instance( PaymentHelper::get_currency_from_form_id( $form_id ) );
+		$currency = Currency::get_instance( NinjaFormsHelper::get_currency_from_form_id( $form_id ) );
 
 		// Amount.
 		$payment->set_total_amount( new TaxedMoney( $action_settings['payment_total'], $currency ) );
 
 		// Method.
-		$payment->method = PaymentHelper::get_payment_method_from_submission_data( $data );
+		$payment->method = NinjaFormsHelper::get_payment_method_from_submission_data( $data );
 
 		// Issuer.
-		$payment->issuer = PaymentHelper::get_issuer_from_submission_data( $data );
+		$payment->issuer = NinjaFormsHelper::get_issuer_from_submission_data( $data );
 
 		// Configuration.
 		$payment->config_id = $config_id;

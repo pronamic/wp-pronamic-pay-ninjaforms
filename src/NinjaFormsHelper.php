@@ -1,6 +1,6 @@
 <?php
 /**
- * Payment Helper
+ * Ninja Forms Helper
  *
  * @author    Pronamic <info@pronamic.eu>
  * @copyright 2005-2020 Pronamic
@@ -11,12 +11,12 @@
 namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
 /**
- * Payment Helper
+ * Ninja Forms Helper
  *
- * @version 1.1.0
- * @since   1.1.0
+ * @version 1.3.0
+ * @since   1.3.0
  */
-class PaymentHelper {
+class NinjaFormsHelper {
 	/**
 	 * Get source ID from submission data.
 	 *
@@ -112,5 +112,26 @@ class PaymentHelper {
 		}
 
 		return $issuer;
+	}
+
+	/**
+	 * Get page link from action settings.
+	 *
+	 * @param array  $action_settings Action settings.
+	 * @param string $key             Setting key.
+	 * @return string|null
+	 */
+	public static function get_page_link_from_action_settings( $action_settings, $key ) {
+		if ( ! \array_key_exists( $key, $action_settings ) ) {
+			return null;
+		}
+
+		$page_id = $action_settings[ $key ];
+
+		if ( 'publish' !== get_post_status( $page_id ) ) {
+			return null;
+		}
+
+		return \get_permalink( $page_id );
 	}
 }

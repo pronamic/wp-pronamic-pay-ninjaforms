@@ -7,7 +7,7 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
-## [1.3.0] - unreleased
+## [1.3.0] - 2021-01-14
 - Removed payment data class.
 - Fixed notice payment redirect URL.
 

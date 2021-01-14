@@ -29,45 +29,31 @@
 	"config": {
 		"sort-packages": true
 	},
-	"repositories": [
+	"repositories":[
 		{
-			"type": "package",
-			"package": {
-				"name": "wpninjas/ninja-forms",
-				"version": "3.4.16",
-				"dist": {
-					"url": "https://github.com/wpninjas/ninja-forms/archive/3.4.16.zip",
-					"type": "zip"
-				},
-				"source": {
-					"url": "https://github.com/wpninjas/ninja-forms",
-					"type": "github",
-					"reference": "tags/3.4.16"
-				},
-				"autoload": {
-					"classmap": [
-						"."
-					]
-				}
-			}
+			"type": "composer",
+			"url": "https://wpackagist.org",
+			"only": [
+				"wpackagist-plugin/*"
+			]
 		}
 	],
 	"require": {
 		"php": ">=5.6.20",
-		"wp-pay/core": "^2.3"
+		"wp-pay/core": "^2.4"
 	},
 	"require-dev": {
-		"wpninjas/ninja-forms": "^3.3",
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
 		"php-coveralls/php-coveralls": "^2.1",
 		"phpcompatibility/php-compatibility": "^9.2",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"phpmd/phpmd": "^2.7",
 		"phpunit/phpunit": "^5.7 || ^6.0",
-		"roots/wordpress": "^5.2",
+		"roots/wordpress": "^5.6",
 		"squizlabs/php_codesniffer": "^3.4",
 		"wp-coding-standards/wpcs": "^2.1",
-		"wp-phpunit/wp-phpunit": "^5.2"
+		"wp-phpunit/wp-phpunit": "^5.6",
+		"wpackagist-plugin/ninja-forms": "3.4.33"
 	},
 	"scripts": {
 		"coveralls": "vendor/bin/coveralls -v",

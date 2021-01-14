@@ -11,13 +11,16 @@
 namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
 use NF_Abstracts_PaymentGateway;
+use Pronamic\WordPress\Money\Currency;
+use Pronamic\WordPress\Money\TaxedMoney;
 use Pronamic\WordPress\Pay\Plugin;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
+use Pronamic\WordPress\Pay\Payments\Payment;
 
 /**
  * Payment gateway
  *
- * @version 1.0.3
+ * @version 1.3.0
  * @since   1.0.0
  */
 final class PaymentGateway extends NF_Abstracts_PaymentGateway {
@@ -67,28 +70,64 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 			return false;
 		}
 
-		$payment_data = new PaymentData( $action_settings, $form_id, $data );
-
-		$payment_method = $payment_data->get_payment_method();
-
 		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( ! $gateway ) {
 			return false;
 		}
 
+		/**
+		 * Build payment.
+		 */
+		$payment = new Payment();
+
+		$payment->source    = 'ninja-forms';
+		$payment->source_id = NinjaFormsHelper::get_source_id_from_submission_data( $data );
+		$payment->order_id  = $payment->source_id;
+
+		$payment->description = NinjaFormsHelper::get_description_from_action_settings( $action_settings );
+
+		if ( empty( $payment->description ) ) {
+			$payment->description = sprintf(
+				'%s #%s',
+				__( 'Submission', 'pronamic_ideal' ),
+				$payment->source_id
+			);
+		}
+
+		$payment->title = sprintf(
+			/* translators: %s: payment data title */
+			__( 'Payment for %s', 'pronamic_ideal' ),
+			$payment->description
+		);
+
+		// Currency.
+		$currency = Currency::get_instance( NinjaFormsHelper::get_currency_from_form_id( $form_id ) );
+
+		// Amount.
+		$payment->set_total_amount( new TaxedMoney( $action_settings['payment_total'], $currency ) );
+
+		// Method.
+		$payment->method = NinjaFormsHelper::get_payment_method_from_submission_data( $data );
+
+		// Issuer.
+		$payment->issuer = NinjaFormsHelper::get_issuer_from_submission_data( $data );
+
+		// Configuration.
+		$payment->config_id = $config_id;
+
 		// Set default payment method if neccessary.
-		if ( empty( $payment_method ) && ( null !== $payment_data->get_issuer() || $gateway->payment_method_is_required() ) ) {
-			$payment_method = PaymentMethods::IDEAL;
+		if ( empty( $payment->method ) && ( null !== $payment->issuer || $gateway->payment_method_is_required() ) ) {
+			$payment->method = PaymentMethods::IDEAL;
 		}
 
 		// Only start payments for known/active payment methods.
-		if ( is_string( $payment_method ) && ! PaymentMethods::is_active( $payment_method ) ) {
+		if ( is_string( $payment->method ) && ! PaymentMethods::is_active( $payment->method ) ) {
 			return false;
 		}
 
 		try {
-			$payment = Plugin::start( $config_id, $gateway, $payment_data, $payment_method );
+			$payment = Plugin::start_payment( $payment );
 
 			// Save form and action ID in payment meta for use in redirect URL.
 			$payment->set_meta( 'ninjaforms_payment_action_id', $action_settings['id'] );

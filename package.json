@@ -1,6 +1,6 @@
 {
   "name": "@wp-pay-extensions/ninjaforms",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "description": "Ninja Forms extension for making payments with Pronamic Pay.",
   "repository": {
     "type": "git",

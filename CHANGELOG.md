@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [1.4.0] - 2021-01-21
+- Added gateway configuration setting to form action.
+
 ## [1.3.0] - 2021-01-14
 - Removed payment data class.
 - Fixed notice payment redirect URL.
@@ -34,7 +37,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2018-05-16
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.3.0...HEAD
+[unreleased]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.4.0...HEAD
+[1.4.0]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.0.3...1.1.0

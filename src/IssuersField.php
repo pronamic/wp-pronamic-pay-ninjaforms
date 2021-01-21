@@ -3,7 +3,7 @@
  * Issuers field
  *
  * @author    Pronamic <info@pronamic.eu>
- * @copyright 2005-2020 Pronamic
+ * @copyright 2005-2021 Pronamic
  * @license   GPL-3.0-or-later
  * @package   Pronamic\WordPress\Pay\Extensions\NinjaForms
  */
@@ -79,6 +79,13 @@ class IssuersField extends NF_Abstracts_List {
 	protected $_settings = array();
 
 	/**
+	 * Form ID.
+	 *
+	 * @var int
+	 */
+	public $form_id;
+
+	/**
 	 * Constructs and initializes the field object.
 	 */
 	public function __construct() {
@@ -89,7 +96,18 @@ class IssuersField extends NF_Abstracts_List {
 		$this->_settings['options']['value'] = array();
 
 		// Actions.
-		add_action( 'ninja_forms_render_options_' . $this->_type, array( $this, 'render_options' ), 10, 0 );
+		\add_action( 'ninja_forms_render_options_' . $this->_type, array( $this, 'render_options' ), 10, 0 );
+		\add_action( 'nf_get_form_id', array( $this, 'set_form_id' ) );
+	}
+
+	/**
+	 * Set form ID.
+	 *
+	 * @param int $form_id Form ID.
+	 * @return void
+	 */
+	public function set_form_id( $form_id ) {
+		$this->form_id = $form_id;
 	}
 
 	/**
@@ -115,8 +133,11 @@ class IssuersField extends NF_Abstracts_List {
 		$options = array();
 		$order   = 0;
 
-		$config_id = get_option( 'pronamic_pay_config_id' );
-		$gateway   = Plugin::get_gateway( $config_id );
+		$action_settings = NinjaFormsHelper::get_collect_payment_action_settings( $this->form_id );
+
+		$config_id = NinjaFormsHelper::get_config_id_from_action_settings( $action_settings );
+
+		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( null === $gateway ) {
 			return $options;

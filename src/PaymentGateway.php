@@ -3,7 +3,7 @@
  * Payment gateway
  *
  * @author    Pronamic <info@pronamic.eu>
- * @copyright 2005-2020 Pronamic
+ * @copyright 2005-2021 Pronamic
  * @license   GPL-3.0-or-later
  * @package   Pronamic\WordPress\Pay\Extensions\NinjaForms
  */
@@ -63,14 +63,9 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 	 * @return array|bool
 	 */
 	public function process( $action_settings, $form_id, $data ) {
-		$config_id = get_option( 'pronamic_pay_config_id' );
-
-		// A valid configuration ID is needed.
-		if ( false === $config_id ) {
-			return false;
-		}
-
-		$gateway = Plugin::get_gateway( $config_id );
+		// Gateway.
+		$config_id = NinjaFormsHelper::get_config_id_from_action_settings( $action_settings );
+		$gateway   = Plugin::get_gateway( $config_id );
 
 		if ( ! $gateway ) {
 			return false;
@@ -116,7 +111,7 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		// Configuration.
 		$payment->config_id = $config_id;
 
-		// Set default payment method if neccessary.
+		// Set default payment method if necessary.
 		if ( empty( $payment->method ) && ( null !== $payment->issuer || $gateway->payment_method_is_required() ) ) {
 			$payment->method = PaymentMethods::IDEAL;
 		}
@@ -152,11 +147,28 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 	public function action_settings() {
 		$settings = array();
 
+		// Configuration.
+		$settings['config_id'] = array(
+			'label'   => __( 'Configuration', 'pronamic_ideal' ),
+			'name'    => 'pronamic_pay_config_id',
+			'group'   => 'pronamic_pay',
+			'type'    => 'select',
+			'width'   => 'full',
+			'options' => array(),
+		);
+
+		foreach ( Plugin::get_config_select_options() as $value => $label ) {
+			$settings['config_id']['options'][] = array(
+				'label' => $label,
+				'value' => $value,
+			);
+		}
+
 		// Description.
 		$settings['description'] = array(
 			'name'           => 'pronamic_pay_description',
 			'type'           => 'textbox',
-			'group'          => 'primary',
+			'group'          => 'pronamic_pay',
 			'label'          => __( 'Transaction Description', 'pronamic_ideal' ),
 			'placeholder'    => '',
 			'value'          => '',
@@ -171,6 +183,15 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		/*
 		 * Status pages.
 		 */
+		$settings['pronamic_pay_status_pages'] = array(
+			'name'     => 'pronamic_pay_status_pages',
+			'type'     => 'fieldset',
+			'label'    => __( 'Payment Status Pages', 'pronamic_ideal' ),
+			'width'    => 'full',
+			'group'    => 'pronamic_pay',
+			'settings' => array(),
+		);
+
 		$options = array(
 			array(
 				'label' => __( '— Select —', 'pronamic_ideal' ),
@@ -186,10 +207,10 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 
 		// Add settings fields.
 		foreach ( \pronamic_pay_plugin()->get_pages() as $id => $label ) {
-			$settings[ $id ] = array(
+			$settings['pronamic_pay_status_pages']['settings'][] = array(
 				'name'        => $id,
 				'type'        => 'select',
-				'group'       => 'pronamic_pay_status_pages',
+				'group'       => 'pronamic_pay',
 				'label'       => $label,
 				'placeholder' => '',
 				'value'       => '',

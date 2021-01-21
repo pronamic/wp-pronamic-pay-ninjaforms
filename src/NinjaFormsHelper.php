@@ -36,6 +36,50 @@ class NinjaFormsHelper {
 	}
 
 	/**
+	 * Get Collect Payment action settings.
+	 *
+	 * @param int|string $form_id Form ID.
+	 * @return array|null
+	 */
+	public static function get_collect_payment_action_settings( $form_id ) {
+		$actions = \Ninja_Forms()->form( $form_id )->get_actions();
+
+		foreach ( $actions as $action ) {
+			$action_settings = $action->get_settings();
+
+			// Check Collect Payment action.
+			if ( 'collectpayment' !== $action_settings['type'] ) {
+				continue;
+			}
+
+			// Check gateway.
+			if ( 'pronamic_pay' !== $action_settings['payment_gateways'] ) {
+				continue;
+			}
+
+			return $action_settings;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get config ID from action settings or use default config.
+	 *
+	 * @param array $action_settings Action settings.
+	 * @return string
+	 */
+	public static function get_config_id_from_action_settings( $action_settings ) {
+		$config_id = $action_settings['pronamic_pay_config_id'];
+
+		if ( empty( $config_id ) ) {
+			$config_id = \get_option( 'pronamic_pay_config_id' );
+		}
+
+		return $config_id;
+	}
+
+	/**
 	 * Get description from action settings.
 	 *
 	 * @param array $action_settings Action settings.
@@ -68,6 +112,7 @@ class NinjaFormsHelper {
 	/**
 	 * Get payment method from submission data.
 	 *
+	 * @param array $data Form submission data.
 	 * @return string|null
 	 */
 	public function get_payment_method_from_submission_data( $data ) {

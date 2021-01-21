@@ -149,8 +149,13 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	private function get_pronamic_gateway_payment_methods() {
 		$payment_methods = array();
 
-		$config_id = get_option( 'pronamic_pay_config_id' );
-		$gateway   = Plugin::get_gateway( $config_id );
+		$form_id = \filter_input( \INPUT_GET, 'form_id', \FILTER_SANITIZE_NUMBER_INT );
+
+		$action_settings = NinjaFormsHelper::get_collect_payment_action_settings( $form_id );
+
+		$config_id = NinjaFormsHelper::get_config_id_from_action_settings( $action_settings );
+
+		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( null === $gateway ) {
 			return $payment_methods;

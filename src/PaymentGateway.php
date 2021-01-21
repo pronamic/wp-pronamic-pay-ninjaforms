@@ -116,7 +116,7 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		// Configuration.
 		$payment->config_id = $config_id;
 
-		// Set default payment method if neccessary.
+		// Set default payment method if necessary.
 		if ( empty( $payment->method ) && ( null !== $payment->issuer || $gateway->payment_method_is_required() ) ) {
 			$payment->method = PaymentMethods::IDEAL;
 		}
@@ -156,7 +156,7 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		$settings['description'] = array(
 			'name'           => 'pronamic_pay_description',
 			'type'           => 'textbox',
-			'group'          => 'primary',
+			'group'          => 'pronamic_pay',
 			'label'          => __( 'Transaction Description', 'pronamic_ideal' ),
 			'placeholder'    => '',
 			'value'          => '',
@@ -171,6 +171,15 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		/*
 		 * Status pages.
 		 */
+		$settings['pronamic_pay_status_pages'] = array(
+			'name'        => 'pronamic_pay_status_pages',
+			'type'        => 'fieldset',
+			'label'       => __( 'Payment Status Pages', 'pronamic_ideal' ),
+			'width'       => 'full',
+			'group'       => 'pronamic_pay',
+			'settings'    => array()
+		);
+
 		$options = array(
 			array(
 				'label' => __( '— Select —', 'pronamic_ideal' ),
@@ -186,10 +195,10 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 
 		// Add settings fields.
 		foreach ( \pronamic_pay_plugin()->get_pages() as $id => $label ) {
-			$settings[ $id ] = array(
+			$settings['pronamic_pay_status_pages']['settings'][] = array(
 				'name'        => $id,
 				'type'        => 'select',
-				'group'       => 'pronamic_pay_status_pages',
+				'group'       => 'pronamic_pay',
 				'label'       => $label,
 				'placeholder' => '',
 				'value'       => '',

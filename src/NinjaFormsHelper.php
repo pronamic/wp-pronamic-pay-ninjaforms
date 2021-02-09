@@ -70,7 +70,11 @@ class NinjaFormsHelper {
 	 * @return string
 	 */
 	public static function get_config_id_from_action_settings( $action_settings ) {
-		$config_id = $action_settings['pronamic_pay_config_id'];
+		$config_id = null;
+
+		if ( \array_key_exists( 'pronamic_pay_config_id', $action_settings ) ) {
+			$config_id = $action_settings['pronamic_pay_config_id'];
+		}
 
 		if ( empty( $config_id ) ) {
 			$config_id = \get_option( 'pronamic_pay_config_id' );

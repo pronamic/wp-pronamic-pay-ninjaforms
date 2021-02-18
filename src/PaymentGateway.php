@@ -155,7 +155,6 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 			'type'    => 'select',
 			'width'   => 'full',
 			'options' => array(),
-			'default' => get_option( 'pronamic_pay_config_id' ),
 		);
 
 		foreach ( Plugin::get_config_select_options() as $value => $label ) {

@@ -115,7 +115,7 @@ class NinjaFormsHelper {
 	 * @param array $data Form submission data.
 	 * @return string|null
 	 */
-	public function get_payment_method_from_submission_data( $data ) {
+	public static function get_payment_method_from_submission_data( $data ) {
 		$payment_method = null;
 
 		// Get payment method from a payment method field if it exists.

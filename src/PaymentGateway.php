@@ -158,6 +158,10 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		);
 
 		foreach ( Plugin::get_config_select_options() as $value => $label ) {
+			if ( 0 === $value ) {
+				$label = \__( '— Default Gateway —', 'pronamic_ideal' );
+			}
+
 			$settings['config_id']['options'][] = array(
 				'label' => $label,
 				'value' => $value,

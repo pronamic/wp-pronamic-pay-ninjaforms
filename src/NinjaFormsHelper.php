@@ -66,13 +66,13 @@ class NinjaFormsHelper {
 	/**
 	 * Get config ID from action settings or use default config.
 	 *
-	 * @param array $action_settings Action settings.
+	 * @param array|null $action_settings Action settings.
 	 * @return string
 	 */
 	public static function get_config_id_from_action_settings( $action_settings ) {
 		$config_id = null;
 
-		if ( \array_key_exists( 'pronamic_pay_config_id', $action_settings ) ) {
+		if ( \is_array( $action_settings ) && \array_key_exists( 'pronamic_pay_config_id', $action_settings ) ) {
 			$config_id = $action_settings['pronamic_pay_config_id'];
 		}
 

@@ -268,12 +268,21 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 
 			$actions = \Ninja_Forms()->form( $form_id )->get_actions();
 
+			$no_delay_types = array( 'successmessage' );
+
 			foreach ( $actions as $action ) {
+				$action_type = $action->get_setting( 'type' );
+
 				// Check action timing and priority. Only `late` (1) actions can be delayed
 				// with a priority higher than the `collectpayment` action (`0`).
-				$type = \Ninja_Forms()->actions[ $action->get_setting( 'type' ) ];
+				$type = \Ninja_Forms()->actions[ $action_type ];
 
 				if ( ! ( 1 === $type->get_timing() && $type->get_priority() > 0 ) ) {
+					continue;
+				}
+
+				// Check if action type can be delayed.
+				if ( \in_array( $action_type, $no_delay_types, true ) ) {
 					continue;
 				}
 

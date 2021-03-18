@@ -18,6 +18,10 @@
 	<exclude-pattern>wordpress/*</exclude-pattern>
 	<exclude-pattern type="relative">^wp-content/*</exclude-pattern>
 
+	<rule ref="Generic.CodeAnalysis.EmptyStatement.DetectedCatch">
+		<exclude-pattern>src/Extension.php</exclude-pattern>
+	</rule>
+
 	<rule ref="PHPCompatibilityWP" />
 
 	<rule ref="WordPress">

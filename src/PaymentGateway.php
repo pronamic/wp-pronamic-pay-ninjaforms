@@ -63,6 +63,11 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 	 * @return array|bool
 	 */
 	public function process( $action_settings, $form_id, $data ) {
+		// Check if resuming form action processing.
+		if ( \defined( 'PRONAMIC_PAY_NINJA_FORMS_RESUME' ) && PRONAMIC_PAY_NINJA_FORMS_RESUME ) {
+			return false;
+		}
+
 		// Gateway.
 		$config_id = NinjaFormsHelper::get_config_id_from_action_settings( $action_settings );
 		$gateway   = Plugin::get_gateway( $config_id );
@@ -128,7 +133,30 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 			$payment->set_meta( 'ninjaforms_payment_action_id', $action_settings['id'] );
 			$payment->set_meta( 'ninjaforms_payment_form_id', $form_id );
 
-			$data['actions']['redirect'] = $payment->get_pay_redirect_url();
+			// Save session cookie in payment meta for processing delayed actions.
+			\Ninja_Forms()->session()->set( 'pronamic_payment_id', $payment->get_id() );
+
+			$headers = headers_list();
+
+			foreach ( $headers as $header ) {
+				if ( 'set-cookie' !== substr( strtolower( $header ), 0, 10 ) ) {
+					continue;
+				}
+
+				$cookie = \explode( ';', $header );
+
+				$cookie = trim( \substr( $cookie[0], 12 ) );
+
+				$cookie = \explode( '=', $cookie );
+
+				$payment->set_meta( 'ninjaforms_session_cookie', $cookie[1] );
+			}
+
+			// Set form processing data.
+			$data['halt']                         = true;
+			$data['actions']['redirect']          = $payment->get_pay_redirect_url();
+			$data['actions']['success_message']   = __( 'Please wait while you are redirected to complete the payment.', 'pronamic_ideal' );
+			$data['extra']['pronamic_payment_id'] = $payment->get_id();
 		} catch ( \Exception $e ) {
 			$message = sprintf( '%1$s: %2$s', $e->getCode(), $e->getMessage() );
 
@@ -221,6 +249,42 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 				'width'       => 'full',
 				'options'     => $options,
 			);
+		}
+
+		/*
+		 * Delayed actions.
+		 */
+		$form_id = \filter_input( \INPUT_GET, 'form_id', \FILTER_SANITIZE_NUMBER_INT );
+
+		if ( null !== $form_id ) {
+			$settings['pronamic_pay_delayed_actions'] = array(
+				'name'     => 'pronamic_pay_delayed_actions',
+				'type'     => 'fieldset',
+				'label'    => __( 'Delayed actions', 'pronamic_ideal' ),
+				'width'    => 'full',
+				'group'    => 'pronamic_pay',
+				'settings' => array(),
+			);
+
+			$actions = \Ninja_Forms()->form( $form_id )->get_actions();
+
+			foreach ( $actions as $action ) {
+				// Check action timing and priority. Only `late` (1) actions can be delayed
+				// with a priority higher than the `collectpayment` action (`0`).
+				$type = \Ninja_Forms()->actions[ $action->get_setting( 'type' ) ];
+
+				if ( ! ( 1 === $type->get_timing() && $type->get_priority() > 0 ) ) {
+					continue;
+				}
+
+				// Add setting.
+				$settings['pronamic_pay_delayed_actions']['settings'][] = array(
+					'name'  => sprintf( 'pronamic_pay_delayed_action_%d', $action->get_id() ),
+					'type'  => 'toggle',
+					'width' => 'full',
+					'label' => $action->get_setting( 'label' ),
+				);
+			}
 		}
 
 		return $settings;

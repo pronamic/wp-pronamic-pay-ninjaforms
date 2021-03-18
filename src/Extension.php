@@ -13,6 +13,7 @@ namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 use Pronamic\WordPress\Pay\AbstractPluginIntegration;
 use Pronamic\WordPress\Pay\Payments\Payment;
 use Pronamic\WordPress\Pay\Payments\PaymentStatus;
+use ReflectionClass;
 
 /**
  * Extension
@@ -58,11 +59,15 @@ class Extension extends AbstractPluginIntegration {
 
 		\add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( $this, 'source_url' ), 10, 2 );
 		\add_filter( 'pronamic_payment_redirect_url_' . self::SLUG, array( $this, 'redirect_url' ), 10, 2 );
+		\add_action( 'pronamic_payment_status_update_' . self::SLUG, array( $this, 'update_status' ) );
 
 		\add_filter( 'ninja_forms_field_type_sections', array( $this, 'field_type_sections' ) );
 		\add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
 		\add_filter( 'ninja_forms_register_payment_gateways', array( $this, 'register_payment_gateways' ), 10, 1 );
 		\add_filter( 'ninja_forms_field_settings_groups', array( $this, 'register_settings_groups' ) );
+
+		// Delayed actions.
+		\add_filter( 'ninja_forms_submission_actions', array( $this, 'submission_actions' ) );
 	}
 
 	/**
@@ -123,6 +128,190 @@ class Extension extends AbstractPluginIntegration {
 		);
 
 		return $groups;
+	}
+
+	/**
+	 * Update lead status of the specified payment
+	 *
+	 * @param Payment $payment Payment.
+	 * @retun void
+	 */
+	public function update_status( Payment $payment ) {
+		switch ( $payment->status ) {
+			case PaymentStatus::SUCCESS:
+				// Fulfill order.
+				$this->fulfill_order( $payment );
+
+				break;
+		}
+	}
+
+	/**
+	 * Fulfill order.
+	 *
+	 * @param Payment $payment Payment.
+	 */
+	public function fulfill_order( $payment ) {
+		// Check if already fulfilled.
+		$is_fulfilled = (int) $payment->get_meta( 'ninjaforms_fulfilled' );
+
+		if ( 1 === $is_fulfilled ) {
+			return;
+		}
+
+		// Check session cookie.
+		$session_cookie = $payment->get_meta( 'ninjaforms_session_cookie' );
+
+		if ( empty( $session_cookie ) ) {
+			return;
+		}
+
+		$session_cookie = \urldecode( $session_cookie );
+
+		// Check form ID.
+		$form_id = $payment->get_meta( 'ninjaforms_payment_form_id' );
+
+		if ( empty( $form_id ) ) {
+			return;
+		}
+
+		// Init Ninja Forms session.
+		$wp_session_cookie = 'nf_wp_session';
+
+		if ( defined( '\WP_SESSION_COOKIE' ) ) {
+			$wp_session_cookie = \WP_SESSION_COOKIE;
+		}
+
+		$session_cookie_temp = null;
+
+		if ( \array_key_exists( $wp_session_cookie, $_COOKIE ) ) {
+			$session_cookie_temp = filter_var( \wp_unslash( $_COOKIE[ $wp_session_cookie ] ), \FILTER_SANITIZE_STRING );
+		}
+
+		$_COOKIE[ $wp_session_cookie ] = $session_cookie;
+
+		\Ninja_Forms()->session();
+
+		// Set up fields merge tags to prevent empty default email.
+		try {
+			$fields = \Ninja_Forms()->merge_tags['fields'];
+
+			$fields_reflection = new ReflectionClass( $fields );
+
+			$merge_tags_prop = $fields_reflection->getProperty( 'merge_tags' );
+			$merge_tags_prop->setAccessible( true );
+
+			$merge_tags = array_merge(
+				$merge_tags_prop->getValue( $fields ),
+				\Ninja_Forms()->config( 'MergeTagsFieldsAJAX' )
+			);
+
+			$merge_tags_prop->setValue( $fields, $merge_tags );
+		} catch ( \Exception $e ) {
+			// Nothing to do.
+		}
+
+		// Set `nf_resume` for Ninja Forms to continue processing form actions.
+		$_POST['nf_resume'] = $form_id;
+
+		define( 'PRONAMIC_PAY_NINJA_FORMS_RESUME', true );
+
+		// Prevent `wp_die()` in Ninja Forms response to exit script execution.
+		\add_filter(
+			'wp_die_handler',
+			function( $handler ) {
+				return '__return_true';
+			}
+		);
+
+		// Resume processing form actions.
+		ob_start();
+
+		\Ninja_Forms()->controllers['submission']->resume();
+
+		\ob_end_clean();
+
+		// Unset/restore session cookie.
+		unset( $_COOKIE[ $wp_session_cookie ] );
+
+		if ( null !== $session_cookie_temp ) {
+			$_COOKIE[ $wp_session_cookie ] = $session_cookie_temp;
+		}
+
+		$payment->set_meta( 'ninjaforms_fulfilled', true );
+	}
+
+	/**
+	 * Maybe delay actions.
+	 *
+	 * @param array $actions Actions.
+	 * @return array
+	 */
+	public function submission_actions( $actions ) {
+		// Find active 'Collect payment' actions with our gateway.
+		$collect_payments = array();
+
+		foreach ( $actions as $action ) {
+			$action_settings = $action['settings'];
+
+			// Check if action is active.
+			if ( 0 === (int) $action_settings['active'] ) {
+				continue;
+			}
+
+			// Check 'Collect Payment' action type.
+			if ( 'collectpayment' !== $action_settings['type'] ) {
+				continue;
+			}
+
+			// Check Pronamic Pay gateway.
+			if ( 'pronamic_pay' !== $action_settings['payment_gateways'] ) {
+				continue;
+			}
+
+			$collect_payments[] = $action;
+		}
+
+		// Get 'Collect payment' to get settings from.
+		// @todo consider conditional logic when getting the 'Collect payment' action.
+		$collect_payment = \array_shift( $collect_payments );
+
+		$collect_settings = $collect_payment['settings'];
+
+		foreach ( $actions as &$action ) {
+			// On resume, activate delayed actions.
+			if ( \defined( 'PRONAMIC_PAY_NINJA_FORMS_RESUME' ) && PRONAMIC_PAY_NINJA_FORMS_RESUME ) {
+				if ( \array_key_exists( 'pronamic_pay_delayed', $action ) ) {
+					$action['settings']['active'] = true;
+				}
+
+				continue;
+			}
+
+			// Check if action is active.
+			if ( ! $action['settings']['active'] ) {
+				continue;
+			}
+
+			$action_id = $action['id'];
+
+			// Check if action should be delayed.
+			if ( ! \array_key_exists( 'pronamic_pay_delayed_action_' . $action_id, $collect_settings ) ) {
+				continue;
+			}
+
+			$delayed = (int) $collect_settings[ 'pronamic_pay_delayed_action_' . $action_id ];
+
+			if ( 1 !== $delayed ) {
+				continue;
+			}
+
+			$action['settings']['active'] = true;
+
+			$action['pronamic_pay_delayed'] = true;
+		}
+
+		return $actions;
 	}
 
 	/**

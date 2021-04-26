@@ -66,11 +66,15 @@ class NinjaFormsHelper {
 	/**
 	 * Get config ID from action settings or use default config.
 	 *
-	 * @param array $action_settings Action settings.
+	 * @param array|null $action_settings Action settings.
 	 * @return string
 	 */
 	public static function get_config_id_from_action_settings( $action_settings ) {
-		$config_id = $action_settings['pronamic_pay_config_id'];
+		$config_id = null;
+
+		if ( \is_array( $action_settings ) && \array_key_exists( 'pronamic_pay_config_id', $action_settings ) ) {
+			$config_id = $action_settings['pronamic_pay_config_id'];
+		}
 
 		if ( empty( $config_id ) ) {
 			$config_id = \get_option( 'pronamic_pay_config_id' );
@@ -115,7 +119,7 @@ class NinjaFormsHelper {
 	 * @param array $data Form submission data.
 	 * @return string|null
 	 */
-	public function get_payment_method_from_submission_data( $data ) {
+	public static function get_payment_method_from_submission_data( $data ) {
 		$payment_method = null;
 
 		// Get payment method from a payment method field if it exists.

@@ -153,6 +153,10 @@ class PaymentMethodsField extends NF_Abstracts_List {
 
 		$action_settings = NinjaFormsHelper::get_collect_payment_action_settings( $form_id );
 
+		if ( null === $action_settings ) {
+			return $payment_methods;
+		}
+
 		$config_id = NinjaFormsHelper::get_config_id_from_action_settings( $action_settings );
 
 		$gateway = Plugin::get_gateway( $config_id );

@@ -134,7 +134,7 @@ class Extension extends AbstractPluginIntegration {
 	 * Update lead status of the specified payment
 	 *
 	 * @param Payment $payment Payment.
-	 * @retun void
+	 * @return void
 	 */
 	public function update_status( Payment $payment ) {
 		switch ( $payment->status ) {

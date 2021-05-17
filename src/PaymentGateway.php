@@ -277,6 +277,10 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 				// with a priority higher than the `collectpayment` action (`0`).
 				$type = \Ninja_Forms()->actions[ $action_type ];
 
+				if ( null === $type ) {
+					continue;
+				}
+
 				if ( ! ( 1 === $type->get_timing() && $type->get_priority() > 0 ) ) {
 					continue;
 				}

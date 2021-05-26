@@ -272,6 +272,11 @@ class Extension extends AbstractPluginIntegration {
 			$collect_payments[] = $action;
 		}
 
+		// Check 'Collect Payment' actions.
+		if ( empty( $collect_payments ) ) {
+			return $actions;
+		}
+
 		// Get 'Collect payment' to get settings from.
 		// @todo consider conditional logic when getting the 'Collect payment' action.
 		$collect_payment = \array_shift( $collect_payments );

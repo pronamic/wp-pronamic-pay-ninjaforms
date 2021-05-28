@@ -18,7 +18,7 @@ use ReflectionClass;
 /**
  * Extension
  *
- * @version 1.3.0
+ * @version 1.5.1
  * @since   1.0.0
  */
 class Extension extends AbstractPluginIntegration {
@@ -270,6 +270,11 @@ class Extension extends AbstractPluginIntegration {
 			}
 
 			$collect_payments[] = $action;
+		}
+
+		// Check 'Collect Payment' actions.
+		if ( empty( $collect_payments ) ) {
+			return $actions;
 		}
 
 		// Get 'Collect payment' to get settings from.

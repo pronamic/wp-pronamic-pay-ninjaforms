@@ -54,7 +54,7 @@
 		"squizlabs/php_codesniffer": "^3.4",
 		"wp-coding-standards/wpcs": "^2.3",
 		"wp-phpunit/wp-phpunit": "^5.6",
-		"wpackagist-plugin/ninja-forms": "3.4.33"
+		"wpackagist-plugin/ninja-forms": "3.5.4"
 	},
 	"scripts": {
 		"coveralls": "vendor/bin/php-coveralls -v",

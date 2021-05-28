@@ -20,7 +20,7 @@ use Pronamic\WordPress\Pay\Payments\Payment;
 /**
  * Payment gateway
  *
- * @version 1.3.0
+ * @version 1.5.1
  * @since   1.0.0
  */
 final class PaymentGateway extends NF_Abstracts_PaymentGateway {
@@ -276,6 +276,10 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 				// Check action timing and priority. Only `late` (1) actions can be delayed
 				// with a priority higher than the `collectpayment` action (`0`).
 				$type = \Ninja_Forms()->actions[ $action_type ];
+
+				if ( null === $type ) {
+					continue;
+				}
 
 				if ( ! ( 1 === $type->get_timing() && $type->get_priority() > 0 ) ) {
 					continue;

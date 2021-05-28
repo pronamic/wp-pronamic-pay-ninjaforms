@@ -20,7 +20,7 @@ use Pronamic\WordPress\Pay\Payments\Payment;
 /**
  * Payment gateway
  *
- * @version 1.3.0
+ * @version 1.5.1
  * @since   1.0.0
  */
 final class PaymentGateway extends NF_Abstracts_PaymentGateway {

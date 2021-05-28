@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [1.5.1] - 2021-05-28
+- Improved delayed actions.
+
 ## [1.5.0] - 2021-04-26
 - Added support for delayed actions.
 
@@ -40,7 +43,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2018-05-16
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.5.0...HEAD
+[unreleased]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.5.1...HEAD
+[1.5.1]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.5.0...1.5.1
 [1.5.0]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.2.0...1.3.0

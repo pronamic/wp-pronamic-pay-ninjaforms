@@ -12,7 +12,7 @@ namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
 use NF_Abstracts_PaymentGateway;
 use Pronamic\WordPress\Money\Currency;
-use Pronamic\WordPress\Money\TaxedMoney;
+use Pronamic\WordPress\Money\Money;
 use Pronamic\WordPress\Pay\Plugin;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
 use Pronamic\WordPress\Pay\Payments\Payment;
@@ -105,7 +105,7 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		$currency = Currency::get_instance( NinjaFormsHelper::get_currency_from_form_id( $form_id ) );
 
 		// Amount.
-		$payment->set_total_amount( new TaxedMoney( $action_settings['payment_total'], $currency ) );
+		$payment->set_total_amount( new Money( $action_settings['payment_total'], $currency ) );
 
 		// Method.
 		$payment->method = NinjaFormsHelper::get_payment_method_from_submission_data( $data );

@@ -116,16 +116,6 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		// Configuration.
 		$payment->config_id = $config_id;
 
-		// Set default payment method if necessary.
-		if ( empty( $payment->method ) && ( null !== $payment->issuer || $gateway->payment_method_is_required() ) ) {
-			$payment->method = PaymentMethods::IDEAL;
-		}
-
-		// Only start payments for known/active payment methods.
-		if ( is_string( $payment->method ) && ! PaymentMethods::is_active( $payment->method ) ) {
-			return false;
-		}
-
 		try {
 			$payment = Plugin::start_payment( $payment );
 

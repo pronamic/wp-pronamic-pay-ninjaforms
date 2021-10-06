@@ -85,20 +85,22 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		$payment->source_id = NinjaFormsHelper::get_source_id_from_submission_data( $data );
 		$payment->order_id  = $payment->source_id;
 
-		$payment->description = NinjaFormsHelper::get_description_from_action_settings( $action_settings );
+		$description = NinjaFormsHelper::get_description_from_action_settings( $action_settings );
 
-		if ( empty( $payment->description ) ) {
-			$payment->description = sprintf(
+		if ( empty( $description ) ) {
+			$description = \sprintf(
 				'%s #%s',
 				__( 'Submission', 'pronamic_ideal' ),
 				$payment->source_id
 			);
 		}
 
+		$payment->set_description( $description );
+
 		$payment->title = sprintf(
 			/* translators: %s: payment data title */
 			__( 'Payment for %s', 'pronamic_ideal' ),
-			$payment->description
+			$description
 		);
 
 		// Currency.

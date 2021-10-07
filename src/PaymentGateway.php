@@ -118,6 +118,13 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		// Configuration.
 		$payment->config_id = $config_id;
 
+		// Only start payments for known/active payment methods.
+		$payment_method = $payment->get_payment_method();
+
+		if ( null !== $payment_method && ! PaymentMethods::is_active( $payment_method ) ) {
+			return false;
+		}
+
 		try {
 			$payment = Plugin::start_payment( $payment );
 

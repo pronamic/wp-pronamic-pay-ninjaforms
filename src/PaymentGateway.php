@@ -113,7 +113,11 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		$payment->set_payment_method( NinjaFormsHelper::get_payment_method_from_submission_data( $data ) );
 
 		// Issuer.
-		$payment->set_meta( 'issuer', NinjaFormsHelper::get_issuer_from_submission_data( $data ) );
+		$issuer = NinjaFormsHelper::get_issuer_from_submission_data( $data );
+
+		if ( null !== $issuer ) {
+			$payment->set_meta( 'issuer', $issuer );
+		}
 
 		// Configuration.
 		$payment->config_id = $config_id;

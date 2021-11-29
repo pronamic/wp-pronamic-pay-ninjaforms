@@ -155,6 +155,9 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 				$payment->set_meta( 'ninjaforms_session_cookie', $cookie[1] );
 			}
 
+			// Save payment meta.
+			$payment->save();
+
 			// Set form processing data.
 			$data['halt']                         = true;
 			$data['actions']['redirect']          = $payment->get_pay_redirect_url();

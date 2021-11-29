@@ -231,6 +231,9 @@ class Extension extends AbstractPluginIntegration {
 
 		\ob_end_clean();
 
+		// Delete session.
+		\Ninja_Forms()->session()->delete();
+
 		// Unset/restore session cookie.
 		unset( $_COOKIE[ $wp_session_cookie ] );
 

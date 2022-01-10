@@ -3,7 +3,7 @@
  * Payment gateway
  *
  * @author    Pronamic <info@pronamic.eu>
- * @copyright 2005-2021 Pronamic
+ * @copyright 2005-2022 Pronamic
  * @license   GPL-3.0-or-later
  * @package   Pronamic\WordPress\Pay\Extensions\NinjaForms
  */
@@ -85,20 +85,22 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		$payment->source_id = NinjaFormsHelper::get_source_id_from_submission_data( $data );
 		$payment->order_id  = $payment->source_id;
 
-		$payment->description = NinjaFormsHelper::get_description_from_action_settings( $action_settings );
+		$description = NinjaFormsHelper::get_description_from_action_settings( $action_settings );
 
-		if ( empty( $payment->description ) ) {
-			$payment->description = sprintf(
+		if ( empty( $description ) ) {
+			$description = \sprintf(
 				'%s #%s',
 				__( 'Submission', 'pronamic_ideal' ),
 				$payment->source_id
 			);
 		}
 
+		$payment->set_description( $description );
+
 		$payment->title = sprintf(
 			/* translators: %s: payment data title */
 			__( 'Payment for %s', 'pronamic_ideal' ),
-			$payment->description
+			$description
 		);
 
 		// Currency.
@@ -108,21 +110,22 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		$payment->set_total_amount( new Money( $action_settings['payment_total'], $currency ) );
 
 		// Method.
-		$payment->method = NinjaFormsHelper::get_payment_method_from_submission_data( $data );
+		$payment->set_payment_method( NinjaFormsHelper::get_payment_method_from_submission_data( $data ) );
 
 		// Issuer.
-		$payment->issuer = NinjaFormsHelper::get_issuer_from_submission_data( $data );
+		$issuer = NinjaFormsHelper::get_issuer_from_submission_data( $data );
+
+		if ( null !== $issuer ) {
+			$payment->set_meta( 'issuer', $issuer );
+		}
 
 		// Configuration.
 		$payment->config_id = $config_id;
 
-		// Set default payment method if necessary.
-		if ( empty( $payment->method ) && ( null !== $payment->issuer || $gateway->payment_method_is_required() ) ) {
-			$payment->method = PaymentMethods::IDEAL;
-		}
-
 		// Only start payments for known/active payment methods.
-		if ( is_string( $payment->method ) && ! PaymentMethods::is_active( $payment->method ) ) {
+		$payment_method = $payment->get_payment_method();
+
+		if ( null !== $payment_method && ! PaymentMethods::is_active( $payment_method ) ) {
 			return false;
 		}
 
@@ -151,6 +154,9 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 
 				$payment->set_meta( 'ninjaforms_session_cookie', $cookie[1] );
 			}
+
+			// Save payment meta.
+			$payment->save();
 
 			// Set form processing data.
 			$data['halt']                         = true;

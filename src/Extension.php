@@ -3,7 +3,7 @@
  * Extension
  *
  * @author    Pronamic <info@pronamic.eu>
- * @copyright 2005-2021 Pronamic
+ * @copyright 2005-2022 Pronamic
  * @license   GPL-3.0-or-later
  * @package   Pronamic\WordPress\Pay\Extensions\NinjaForms
  */
@@ -230,6 +230,9 @@ class Extension extends AbstractPluginIntegration {
 		\Ninja_Forms()->controllers['submission']->resume();
 
 		\ob_end_clean();
+
+		// Delete session.
+		\Ninja_Forms()->session()->delete();
 
 		// Unset/restore session cookie.
 		unset( $_COOKIE[ $wp_session_cookie ] );

@@ -64,6 +64,32 @@ class NinjaFormsHelper {
 	}
 
 	/**
+	 * Get action IDs of delayed actions from action settings.
+	 *
+	 * @param array<string, mixed> $action_settings Action settings.
+	 * @return array<int>
+	 */
+	public static function get_delayed_action_ids_from_settings( $action_settings ) {
+		$delayed_actions = array();
+
+		foreach ( $action_settings as $key => $value ) {
+			// Check settings key.
+			if ( 'pronamic_pay_delayed_action_' !== substr( $key, 0, 28 ) ) {
+				continue;
+			}
+
+			// Check settings key.
+			if ( 1 !== (int) $value ) {
+				continue;
+			}
+
+			$delayed_actions[] = (int) substr( $key, 28 );
+		}
+
+		return $delayed_actions;
+	}
+
+	/**
 	 * Get config ID from action settings or use default config.
 	 *
 	 * @param array|null $action_settings Action settings.
@@ -182,5 +208,45 @@ class NinjaFormsHelper {
 		}
 
 		return \get_permalink( $page_id );
+	}
+
+	/**
+	 * Get session cookie.
+	 *
+	 * @return string|null
+	 */
+	public static function get_session_cookie() {
+		// Determine session cookie name.
+		$wp_session_cookie = 'nf_wp_session';
+
+		if ( defined( '\WP_SESSION_COOKIE' ) ) {
+			$wp_session_cookie = \WP_SESSION_COOKIE;
+		}
+
+		// Get cookie from headers.
+		$headers = headers_list();
+
+		foreach ( $headers as $header ) {
+			// Check header name.
+			if ( 'set-cookie' !== substr( strtolower( $header ), 0, 10 ) ) {
+				continue;
+			}
+
+			// Get cookie name and value.
+			$cookie = \explode( ';', $header );
+
+			$cookie = trim( \substr( $cookie[0], 12 ) );
+
+			$cookie = \explode( '=', $cookie );
+
+			if ( $cookie[0] !== $wp_session_cookie ) {
+				continue;
+			}
+
+			// Return cookie value.
+			return $cookie[1];
+		}
+
+		return null;
 	}
 }

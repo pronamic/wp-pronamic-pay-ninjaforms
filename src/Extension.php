@@ -67,7 +67,8 @@ class Extension extends AbstractPluginIntegration {
 		\add_filter( 'ninja_forms_field_settings_groups', array( $this, 'register_settings_groups' ) );
 
 		// Delayed actions.
-		\add_filter( 'ninja_forms_submission_actions', array( $this, 'submission_actions' ) );
+		\add_filter( 'ninja_forms_submission_actions', array( $this, 'submission_actions' ), 10, 3 );
+		\add_action( 'ninja_forms_before_response', array( $this, 'maybe_update_session_before_response' ), 10, 1 );
 	}
 
 	/**
@@ -247,12 +248,14 @@ class Extension extends AbstractPluginIntegration {
 	/**
 	 * Maybe delay actions.
 	 *
-	 * @param array $actions Actions.
-	 * @return array
+	 * @param array $actions    Actions.
+	 * @param array $form_cache Form cache.
+	 * @param array $form_data  Form data.
+	 * @retrun array
 	 */
-	public function submission_actions( $actions ) {
+	public function submission_actions( $actions, $form_cache, $form_data ) {
 		// Find active 'Collect payment' actions with our gateway.
-		$collect_payments = array();
+		$collect_settings = null;
 
 		foreach ( $actions as $action ) {
 			$action_settings = $action['settings'];
@@ -272,54 +275,74 @@ class Extension extends AbstractPluginIntegration {
 				continue;
 			}
 
-			$collect_payments[] = $action;
+			$delayed_action_ids = NinjaFormsHelper::get_delayed_action_ids_from_settings( $action['settings'] );
+
+			if ( empty( $delayed_action_ids ) ) {
+				continue;
+			}
+
+			// Set collect payment settings.
+			// @todo consider conditional logic when getting the 'Collect payment' action.
+			$collect_settings = $action['settings'];
+
+			break;
 		}
 
-		// Check 'Collect Payment' actions.
-		if ( empty( $collect_payments ) ) {
+		// Check 'Collect Payment' action with delayed actions.
+		if ( null === $collect_settings ) {
 			return $actions;
 		}
 
-		// Get 'Collect payment' to get settings from.
-		// @todo consider conditional logic when getting the 'Collect payment' action.
-		$collect_payment = \array_shift( $collect_payments );
+		$is_resuming = \defined( 'PRONAMIC_PAY_NINJA_FORMS_RESUME' ) && PRONAMIC_PAY_NINJA_FORMS_RESUME;
 
-		$collect_settings = $collect_payment['settings'];
+		// Update session with data for later processing of delayed actions.
+		if ( ! $is_resuming ) {
+			\Ninja_Forms()->session()->set( 'nf_processing_form_cache', $form_cache );
+			\Ninja_Forms()->session()->set( 'nf_processing_form_data', $form_data );
+		}
+
+		// Update action activation status for delayed actions.
+		$delayed_action_ids = NinjaFormsHelper::get_delayed_action_ids_from_settings( $collect_settings );
 
 		foreach ( $actions as &$action ) {
-			// On resume, activate delayed actions.
-			if ( \defined( 'PRONAMIC_PAY_NINJA_FORMS_RESUME' ) && PRONAMIC_PAY_NINJA_FORMS_RESUME ) {
-				if ( \array_key_exists( 'pronamic_pay_delayed', $action ) ) {
-					$action['settings']['active'] = true;
-				}
-
+			// Ignore inactive actions.
+			if ( 0 === (int) $action['settings']['active'] ) {
 				continue;
 			}
-
-			// Check if action is active.
-			if ( ! $action['settings']['active'] ) {
-				continue;
-			}
-
-			$action_id = $action['id'];
 
 			// Check if action should be delayed.
-			if ( ! \array_key_exists( 'pronamic_pay_delayed_action_' . $action_id, $collect_settings ) ) {
+			if ( ! \in_array( $action['id'], $delayed_action_ids, true ) ) {
 				continue;
 			}
 
-			$delayed = (int) $collect_settings[ 'pronamic_pay_delayed_action_' . $action_id ];
-
-			if ( 1 !== $delayed ) {
-				continue;
-			}
-
-			$action['settings']['active'] = true;
-
-			$action['pronamic_pay_delayed'] = true;
+			// Set active status based on whether we're resuming.
+			$action['settings']['active'] = $is_resuming;
 		}
 
 		return $actions;
+	}
+
+	/**
+	 * Maybe update Ninja Forms session before response.
+	 *
+	 * @param array $data Data.
+	 * @retrun void
+	 */
+	public function maybe_update_session_before_response( $data ) {
+		// Check if there are delayed actions.
+		if ( false === \Ninja_Forms()->session()->get( 'pronamic_pay_has_delayed_actions' ) ) {
+			return;
+		}
+
+		// Check if resuming, because we don't want to update the session then.
+		$is_resuming = \defined( 'PRONAMIC_PAY_NINJA_FORMS_RESUME' ) && PRONAMIC_PAY_NINJA_FORMS_RESUME;
+
+		if ( $is_resuming ) {
+			return;
+		}
+
+		// Update Ninja Forms session to be able to fulfill delayed actions later.
+		Ninja_Forms()->session()->set( 'nf_processing_data', $data );
 	}
 
 	/**

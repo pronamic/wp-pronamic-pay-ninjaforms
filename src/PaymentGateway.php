@@ -129,40 +129,34 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 			return false;
 		}
 
+		// Set form and action ID in payment meta for use in redirect URL.
+		$payment->set_meta( 'ninjaforms_payment_action_id', $action_settings['id'] );
+		$payment->set_meta( 'ninjaforms_payment_form_id', $form_id );
+
 		try {
 			$payment = Plugin::start_payment( $payment );
 
-			// Save form and action ID in payment meta for use in redirect URL.
-			$payment->set_meta( 'ninjaforms_payment_action_id', $action_settings['id'] );
-			$payment->set_meta( 'ninjaforms_payment_form_id', $form_id );
-
-			// Save session cookie in payment meta for processing delayed actions.
-			\Ninja_Forms()->session()->set( 'pronamic_payment_id', $payment->get_id() );
-
-			$headers = headers_list();
-
-			foreach ( $headers as $header ) {
-				if ( 'set-cookie' !== substr( strtolower( $header ), 0, 10 ) ) {
-					continue;
-				}
-
-				$cookie = \explode( ';', $header );
-
-				$cookie = trim( \substr( $cookie[0], 12 ) );
-
-				$cookie = \explode( '=', $cookie );
-
-				$payment->set_meta( 'ninjaforms_session_cookie', $cookie[1] );
-			}
-
-			// Save payment meta.
-			$payment->save();
-
 			// Set form processing data.
-			$data['halt']                         = true;
-			$data['actions']['redirect']          = $payment->get_pay_redirect_url();
-			$data['actions']['success_message']   = __( 'Please wait while you are redirected to complete the payment.', 'pronamic_ideal' );
-			$data['extra']['pronamic_payment_id'] = $payment->get_id();
+			$data['actions']['redirect']        = $payment->get_pay_redirect_url();
+			$data['actions']['success_message'] = __( 'Please wait while you are redirected to complete the payment.', 'pronamic_ideal' );
+
+			// Maybe prepare for delayed actions.
+			$delayed_action_ids = NinjaFormsHelper::get_delayed_action_ids_from_settings( $action_settings );
+
+			if ( ! empty( $delayed_action_ids ) ) {
+				// Update session.
+				\Ninja_Forms()->session()->set( 'pronamic_pay_has_delayed_actions', true );
+				\Ninja_Forms()->session()->set( 'nf_processing_data', $data );
+
+				// Set session cookie in payment meta.
+				$session_cookie = NinjaFormsHelper::get_session_cookie();
+
+				if ( null !== $session_cookie ) {
+					$payment->set_meta( 'ninjaforms_session_cookie', $session_cookie );
+
+					$payment->save();
+				}
+			}
 		} catch ( \Exception $e ) {
 			$message = sprintf( '%1$s: %2$s', $e->getCode(), $e->getMessage() );
 

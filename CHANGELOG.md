@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [3.0.1] - 2022-02-16
+- Fixed delaying all actions ([#4](https://github.com/pronamic/wp-pronamic-pay-ninjaforms/issues/4)).
+
 ## [3.0.0] - 2022-01-10
 ### Changed
 - Updated to https://github.com/pronamic/wp-pay-core/releases/tag/4.0.0.
@@ -54,7 +57,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2018-05-16
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/ninjaforms/compare/3.0.0...HEAD
+[unreleased]: https://github.com/pronamic/wp-pronamic-pay-ninjaforms/compare/3.0.1...HEAD
+[3.0.1]: https://github.com/pronamic/wp-pronamic-pay-ninjaforms/compare/3.0.0...3.0.1
 [3.0.0]: https://github.com/wp-pay-extensions/ninjaforms/compare/2.0.0...3.0.0
 [2.0.0]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.5.0...2.0.0
 [1.5.1]: https://github.com/wp-pay-extensions/ninjaforms/compare/1.5.0...1.5.1

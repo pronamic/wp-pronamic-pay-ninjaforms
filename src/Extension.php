@@ -251,7 +251,7 @@ class Extension extends AbstractPluginIntegration {
 	 * @param array $actions    Actions.
 	 * @param array $form_cache Form cache.
 	 * @param array $form_data  Form data.
-	 * @retrun array
+	 * @return array
 	 */
 	public function submission_actions( $actions, $form_cache, $form_data ) {
 		// Find active 'Collect payment' actions with our gateway.
@@ -326,7 +326,7 @@ class Extension extends AbstractPluginIntegration {
 	 * Maybe update Ninja Forms session before response.
 	 *
 	 * @param array $data Data.
-	 * @retrun void
+	 * @return void
 	 */
 	public function maybe_update_session_before_response( $data ) {
 		// Check if there are delayed actions.

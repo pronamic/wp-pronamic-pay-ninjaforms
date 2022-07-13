@@ -147,8 +147,6 @@ class IssuersField extends NF_Abstracts_List {
 			return $options;
 		}
 
-		$gateway->set_payment_method( PaymentMethods::IDEAL );
-
 		try {
 			$issuers = $gateway->get_transient_issuers();
 		} catch ( \Exception $e ) {

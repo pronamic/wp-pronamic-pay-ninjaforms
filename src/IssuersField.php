@@ -77,7 +77,7 @@ class IssuersField extends NF_Abstracts_List {
 	 *
 	 * @var array
 	 */
-	protected $_settings = array();
+	protected $_settings = [];
 
 	/**
 	 * Form ID.
@@ -94,11 +94,11 @@ class IssuersField extends NF_Abstracts_List {
 
 		$this->_nicename = __( 'Issuer', 'pronamic_ideal' );
 
-		$this->_settings['options']['value'] = array();
+		$this->_settings['options']['value'] = [];
 
 		// Actions.
-		\add_action( 'ninja_forms_render_options_' . $this->_type, array( $this, 'render_options' ), 10, 0 );
-		\add_action( 'nf_get_form_id', array( $this, 'set_form_id' ) );
+		\add_action( 'ninja_forms_render_options_' . $this->_type, [ $this, 'render_options' ], 10, 0 );
+		\add_action( 'nf_get_form_id', [ $this, 'set_form_id' ] );
 	}
 
 	/**
@@ -177,13 +177,13 @@ class IssuersField extends NF_Abstracts_List {
 		$order = 0;
 
 		foreach ( $issuers[0]['options'] as $value => $label ) {
-			$options[] = array(
+			$options[] = [
 				'label'    => $label,
 				'value'    => $value,
 				'calc'     => '',
 				'selected' => 0,
 				'order'    => ++$order,
-			);
+			];
 		}
 
 		return $options;

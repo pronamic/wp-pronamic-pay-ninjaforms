@@ -76,7 +76,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	 *
 	 * @var array
 	 */
-	protected $_settings = array();
+	protected $_settings = [];
 
 	/**
 	 * Constructs and initializes the field object.
@@ -89,7 +89,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 
 		$this->_settings['options']['value'] = $this->get_pronamic_payment_method_options();
 
-		add_filter( 'ninja_forms_render_options_' . $this->_type, array( $this, 'render_options' ) );
+		add_filter( 'ninja_forms_render_options_' . $this->_type, [ $this, 'render_options' ] );
 
 		// Remove calc field for options.
 		unset( $this->_settings['options']['columns']['calc'] );
@@ -102,7 +102,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	 * @return array
 	 */
 	private function get_pronamic_payment_method_options() {
-		$options = array();
+		$options = [];
 
 		$order = 0;
 
@@ -110,13 +110,13 @@ class PaymentMethodsField extends NF_Abstracts_List {
 		$payment_methods = $this->get_pronamic_gateway_payment_methods();
 
 		foreach ( $payment_methods as $value => $label ) {
-			$options[] = array(
+			$options[] = [
 				'label'    => $label,
 				'value'    => $value,
 				'calc'     => '',
 				'selected' => 1,
 				'order'    => $order,
-			);
+			];
 
 			$order++;
 		}
@@ -165,7 +165,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 
 		$payment_methods = $gateway->get_payment_method(
 			[
-				'status'   => [ '', 'active' ],
+				'status' => [ '', 'active' ],
 			]
 		);
 

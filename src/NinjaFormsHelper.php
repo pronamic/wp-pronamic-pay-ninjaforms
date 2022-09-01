@@ -70,7 +70,7 @@ class NinjaFormsHelper {
 	 * @return array<int>
 	 */
 	public static function get_delayed_action_ids_from_settings( $action_settings ) {
-		$delayed_actions = array();
+		$delayed_actions = [];
 
 		foreach ( $action_settings as $key => $value ) {
 			// Check settings key.

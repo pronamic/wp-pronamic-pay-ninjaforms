@@ -34,9 +34,9 @@ class Extension extends AbstractPluginIntegration {
 	 */
 	public function __construct() {
 		parent::__construct(
-			array(
+			[
 				'name' => __( 'Ninja Forms', 'pronamic_ideal' ),
-			)
+			]
 		);
 
 		// Dependencies.
@@ -49,26 +49,26 @@ class Extension extends AbstractPluginIntegration {
 	 * Setup.
 	 */
 	public function setup() {
-		\add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( $this, 'source_description' ), 10, 2 );
-		\add_filter( 'pronamic_payment_source_text_' . self::SLUG, array( $this, 'source_text' ), 10, 2 );
+		\add_filter( 'pronamic_payment_source_description_' . self::SLUG, [ $this, 'source_description' ], 10, 2 );
+		\add_filter( 'pronamic_payment_source_text_' . self::SLUG, [ $this, 'source_text' ], 10, 2 );
 
 		// Check if dependencies are met and integration is active.
 		if ( ! $this->is_active() ) {
 			return;
 		}
 
-		\add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( $this, 'source_url' ), 10, 2 );
-		\add_filter( 'pronamic_payment_redirect_url_' . self::SLUG, array( $this, 'redirect_url' ), 10, 2 );
-		\add_action( 'pronamic_payment_status_update_' . self::SLUG, array( $this, 'update_status' ) );
+		\add_filter( 'pronamic_payment_source_url_' . self::SLUG, [ $this, 'source_url' ], 10, 2 );
+		\add_filter( 'pronamic_payment_redirect_url_' . self::SLUG, [ $this, 'redirect_url' ], 10, 2 );
+		\add_action( 'pronamic_payment_status_update_' . self::SLUG, [ $this, 'update_status' ] );
 
-		\add_filter( 'ninja_forms_field_type_sections', array( $this, 'field_type_sections' ) );
-		\add_filter( 'ninja_forms_register_fields', array( $this, 'register_fields' ), 10, 3 );
-		\add_filter( 'ninja_forms_register_payment_gateways', array( $this, 'register_payment_gateways' ), 10, 1 );
-		\add_filter( 'ninja_forms_field_settings_groups', array( $this, 'register_settings_groups' ) );
+		\add_filter( 'ninja_forms_field_type_sections', [ $this, 'field_type_sections' ] );
+		\add_filter( 'ninja_forms_register_fields', [ $this, 'register_fields' ], 10, 3 );
+		\add_filter( 'ninja_forms_register_payment_gateways', [ $this, 'register_payment_gateways' ], 10, 1 );
+		\add_filter( 'ninja_forms_field_settings_groups', [ $this, 'register_settings_groups' ] );
 
 		// Delayed actions.
-		\add_filter( 'ninja_forms_submission_actions', array( $this, 'submission_actions' ), 10, 3 );
-		\add_action( 'ninja_forms_before_response', array( $this, 'maybe_update_session_before_response' ), 10, 1 );
+		\add_filter( 'ninja_forms_submission_actions', [ $this, 'submission_actions' ], 10, 3 );
+		\add_action( 'ninja_forms_before_response', [ $this, 'maybe_update_session_before_response' ], 10, 1 );
 	}
 
 	/**
@@ -79,11 +79,11 @@ class Extension extends AbstractPluginIntegration {
 	 * @return array
 	 */
 	public function field_type_sections( $sections ) {
-		$sections['pronamic_pay'] = array(
+		$sections['pronamic_pay'] = [
 			'id'         => 'pronamic_pay',
 			'nicename'   => __( 'Pronamic Pay', 'pronamic_ideal' ),
-			'fieldTypes' => array(),
-		);
+			'fieldTypes' => [],
+		];
 
 		return $sections;
 	}
@@ -122,11 +122,11 @@ class Extension extends AbstractPluginIntegration {
 	 * @return array
 	 */
 	public function register_settings_groups( $groups ) {
-		$groups['pronamic_pay'] = array(
+		$groups['pronamic_pay'] = [
 			'id'       => 'pronamic_pay',
 			'label'    => __( 'Pronamic Pay', 'pronamic_ideal' ),
 			'priority' => 200,
-		);
+		];
 
 		return $groups;
 	}
@@ -417,10 +417,10 @@ class Extension extends AbstractPluginIntegration {
 		// Source ID could be a submission ID.
 		if ( 'nf_sub' === get_post_type( $source_id ) ) {
 			$url = add_query_arg(
-				array(
+				[
 					'post'   => $source_id,
 					'action' => 'edit',
-				),
+				],
 				admin_url( 'post.php' )
 			);
 		}
@@ -451,10 +451,10 @@ class Extension extends AbstractPluginIntegration {
 			$text .= sprintf(
 				'<a href="%s">%s</a>',
 				add_query_arg(
-					array(
+					[
 						'post'   => $source_id,
 						'action' => 'edit',
-					),
+					],
 					admin_url( 'post.php' )
 				),
 				/* translators: %s: source id */

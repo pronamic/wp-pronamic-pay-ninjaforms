@@ -11,7 +11,7 @@
 namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
 use NF_Abstracts_List;
-use Pronamic\WordPress\Pay\Core\SelectField;
+use Pronamic\WordPress\Pay\Fields\IDealIssuerSelectField;
 use Pronamic\WordPress\Pay\Plugin;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
 
@@ -145,30 +145,9 @@ class IssuersField extends NF_Abstracts_List {
 			return [];
 		}
 
-		$payment_method_ideal = $gateway->get_payment_method( PaymentMethods::IDEAL );
+		$issuer_field = $gateway->first_payment_method_field( PaymentMethods::IDEAL, IDealIssuerSelectField::class );
 
-		if ( null === $payment_method_ideal ) {
-			return [];
-		}
-
-		$fields = array_filter(
-			$payment_method_ideal->get_fields(),
-			function ( $field ) {
-				return (
-					'ideal-issuer' === $field->get_id()
-						&&
-					$field instanceof SelectField
-				);
-			}
-		);
-
-		$issuers = [];
-
-		foreach ( $fields as $field ) {
-			$issuers = $field->get_options();
-		}
-
-		if ( empty( $issuers ) ) {
+		if ( null === $issuer_field ) {
 			return [];
 		}
 
@@ -176,10 +155,10 @@ class IssuersField extends NF_Abstracts_List {
 
 		$order = 0;
 
-		foreach ( $issuers[0]['options'] as $value => $label ) {
+		foreach ( $issuer_field->get_flat_options() as $option ) {
 			$options[] = [
-				'label'    => $label,
-				'value'    => $value,
+				'label'    => $option->label,
+				'value'    => $option->value,
 				'calc'     => '',
 				'selected' => 0,
 				'order'    => ++$order,

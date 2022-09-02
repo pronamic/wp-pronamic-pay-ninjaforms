@@ -163,7 +163,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 			return [];
 		}
 
-		$payment_methods = $gateway->get_payment_method(
+		$payment_methods = $gateway->get_payment_methods(
 			[
 				'status' => [ '', 'active' ],
 			]

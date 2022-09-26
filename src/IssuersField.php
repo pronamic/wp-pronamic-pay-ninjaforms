@@ -11,6 +11,7 @@
 namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
 use NF_Abstracts_List;
+use Pronamic\WordPress\Pay\Fields\IDealIssuerSelectField;
 use Pronamic\WordPress\Pay\Plugin;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
 
@@ -76,7 +77,7 @@ class IssuersField extends NF_Abstracts_List {
 	 *
 	 * @var array
 	 */
-	protected $_settings = array();
+	protected $_settings = [];
 
 	/**
 	 * Form ID.
@@ -93,11 +94,11 @@ class IssuersField extends NF_Abstracts_List {
 
 		$this->_nicename = __( 'Issuer', 'pronamic_ideal' );
 
-		$this->_settings['options']['value'] = array();
+		$this->_settings['options']['value'] = [];
 
 		// Actions.
-		\add_action( 'ninja_forms_render_options_' . $this->_type, array( $this, 'render_options' ), 10, 0 );
-		\add_action( 'nf_get_form_id', array( $this, 'set_form_id' ) );
+		\add_action( 'ninja_forms_render_options_' . $this->_type, [ $this, 'render_options' ], 10, 0 );
+		\add_action( 'nf_get_form_id', [ $this, 'set_form_id' ] );
 	}
 
 	/**
@@ -130,13 +131,10 @@ class IssuersField extends NF_Abstracts_List {
 	 * @return array
 	 */
 	public function render_options() {
-		$options = array();
-		$order   = 0;
-
 		$action_settings = NinjaFormsHelper::get_collect_payment_action_settings( $this->form_id );
 
 		if ( null === $action_settings ) {
-			return $options;
+			return [];
 		}
 
 		$config_id = NinjaFormsHelper::get_config_id_from_action_settings( $action_settings );
@@ -144,29 +142,27 @@ class IssuersField extends NF_Abstracts_List {
 		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( null === $gateway ) {
-			return $options;
+			return [];
 		}
 
-		$gateway->set_payment_method( PaymentMethods::IDEAL );
+		$issuer_field = $gateway->first_payment_method_field( PaymentMethods::IDEAL, IDealIssuerSelectField::class );
 
-		try {
-			$issuers = $gateway->get_transient_issuers();
-		} catch ( \Exception $e ) {
-			$issuers = null;
+		if ( null === $issuer_field ) {
+			return [];
 		}
 
-		if ( empty( $issuers ) ) {
-			return $options;
-		}
+		$options = [];
 
-		foreach ( $issuers[0]['options'] as $value => $label ) {
-			$options[] = array(
-				'label'    => $label,
-				'value'    => $value,
+		$order = 0;
+
+		foreach ( $issuer_field->get_flat_options() as $option ) {
+			$options[] = [
+				'label'    => $option->label,
+				'value'    => $option->value,
 				'calc'     => '',
 				'selected' => 0,
 				'order'    => ++$order,
-			);
+			];
 		}
 
 		return $options;

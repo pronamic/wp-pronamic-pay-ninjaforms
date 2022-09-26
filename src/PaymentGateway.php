@@ -43,7 +43,7 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 	 *
 	 * @var array
 	 */
-	protected $_settings = array();
+	protected $_settings = [];
 
 	/**
 	 * Constructor for the payment gateway.
@@ -173,31 +173,31 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 	 * @return array
 	 */
 	public function action_settings() {
-		$settings = array();
+		$settings = [];
 
 		// Configuration.
-		$settings['config_id'] = array(
+		$settings['config_id'] = [
 			'label'   => __( 'Configuration', 'pronamic_ideal' ),
 			'name'    => 'pronamic_pay_config_id',
 			'group'   => 'pronamic_pay',
 			'type'    => 'select',
 			'width'   => 'full',
-			'options' => array(),
-		);
+			'options' => [],
+		];
 
 		foreach ( Plugin::get_config_select_options() as $value => $label ) {
 			if ( 0 === $value ) {
 				$label = \__( '— Default Gateway —', 'pronamic_ideal' );
 			}
 
-			$settings['config_id']['options'][] = array(
+			$settings['config_id']['options'][] = [
 				'label' => $label,
 				'value' => $value,
-			);
+			];
 		}
 
 		// Description.
-		$settings['description'] = array(
+		$settings['description'] = [
 			'name'           => 'pronamic_pay_description',
 			'type'           => 'textbox',
 			'group'          => 'pronamic_pay',
@@ -205,41 +205,41 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 			'placeholder'    => '',
 			'value'          => '',
 			'width'          => 'full',
-			'use_merge_tags' => array(
-				'include' => array(
+			'use_merge_tags' => [
+				'include' => [
 					'calcs',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		/*
 		 * Status pages.
 		 */
-		$settings['pronamic_pay_status_pages'] = array(
+		$settings['pronamic_pay_status_pages'] = [
 			'name'     => 'pronamic_pay_status_pages',
 			'type'     => 'fieldset',
 			'label'    => __( 'Payment Status Pages', 'pronamic_ideal' ),
 			'width'    => 'full',
 			'group'    => 'pronamic_pay',
-			'settings' => array(),
-		);
+			'settings' => [],
+		];
 
-		$options = array(
-			array(
+		$options = [
+			[
 				'label' => __( '— Select —', 'pronamic_ideal' ),
-			),
-		);
+			],
+		];
 
 		foreach ( \get_pages() as $page ) {
-			$options[] = array(
+			$options[] = [
 				'label' => $page->post_title,
 				'value' => $page->ID,
-			);
+			];
 		}
 
 		// Add settings fields.
 		foreach ( \pronamic_pay_plugin()->get_pages() as $id => $label ) {
-			$settings['pronamic_pay_status_pages']['settings'][] = array(
+			$settings['pronamic_pay_status_pages']['settings'][] = [
 				'name'        => $id,
 				'type'        => 'select',
 				'group'       => 'pronamic_pay',
@@ -248,7 +248,7 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 				'value'       => '',
 				'width'       => 'full',
 				'options'     => $options,
-			);
+			];
 		}
 
 		/*
@@ -257,18 +257,18 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		$form_id = \filter_input( \INPUT_GET, 'form_id', \FILTER_SANITIZE_NUMBER_INT );
 
 		if ( null !== $form_id ) {
-			$settings['pronamic_pay_delayed_actions'] = array(
+			$settings['pronamic_pay_delayed_actions'] = [
 				'name'     => 'pronamic_pay_delayed_actions',
 				'type'     => 'fieldset',
 				'label'    => __( 'Delayed actions', 'pronamic_ideal' ),
 				'width'    => 'full',
 				'group'    => 'pronamic_pay',
-				'settings' => array(),
-			);
+				'settings' => [],
+			];
 
 			$actions = \Ninja_Forms()->form( $form_id )->get_actions();
 
-			$no_delay_types = array( 'successmessage' );
+			$no_delay_types = [ 'successmessage' ];
 
 			foreach ( $actions as $action ) {
 				$action_type = $action->get_setting( 'type' );
@@ -291,12 +291,12 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 				}
 
 				// Add setting.
-				$settings['pronamic_pay_delayed_actions']['settings'][] = array(
+				$settings['pronamic_pay_delayed_actions']['settings'][] = [
 					'name'  => sprintf( 'pronamic_pay_delayed_action_%d', $action->get_id() ),
 					'type'  => 'toggle',
 					'width' => 'full',
 					'label' => $action->get_setting( 'label' ),
-				);
+				];
 			}
 		}
 

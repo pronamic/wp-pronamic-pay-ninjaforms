@@ -76,7 +76,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	 *
 	 * @var array
 	 */
-	protected $_settings = array();
+	protected $_settings = [];
 
 	/**
 	 * Constructs and initializes the field object.
@@ -89,7 +89,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 
 		$this->_settings['options']['value'] = $this->get_pronamic_payment_method_options();
 
-		add_filter( 'ninja_forms_render_options_' . $this->_type, array( $this, 'render_options' ) );
+		add_filter( 'ninja_forms_render_options_' . $this->_type, [ $this, 'render_options' ] );
 
 		// Remove calc field for options.
 		unset( $this->_settings['options']['columns']['calc'] );
@@ -102,7 +102,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	 * @return array
 	 */
 	private function get_pronamic_payment_method_options() {
-		$options = array();
+		$options = [];
 
 		$order = 0;
 
@@ -110,13 +110,13 @@ class PaymentMethodsField extends NF_Abstracts_List {
 		$payment_methods = $this->get_pronamic_gateway_payment_methods();
 
 		foreach ( $payment_methods as $value => $label ) {
-			$options[] = array(
+			$options[] = [
 				'label'    => $label,
 				'value'    => $value,
 				'calc'     => '',
 				'selected' => 1,
 				'order'    => $order,
-			);
+			];
 
 			$order++;
 		}
@@ -147,14 +147,12 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	 * @return array
 	 */
 	private function get_pronamic_gateway_payment_methods() {
-		$payment_methods = array();
-
 		$form_id = \filter_input( \INPUT_GET, 'form_id', \FILTER_SANITIZE_NUMBER_INT );
 
 		$action_settings = NinjaFormsHelper::get_collect_payment_action_settings( $form_id );
 
 		if ( null === $action_settings ) {
-			return $payment_methods;
+			return [];
 		}
 
 		$config_id = NinjaFormsHelper::get_config_id_from_action_settings( $action_settings );
@@ -162,19 +160,21 @@ class PaymentMethodsField extends NF_Abstracts_List {
 		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( null === $gateway ) {
-			return $payment_methods;
+			return [];
 		}
 
-		$payment_methods = $gateway->get_payment_method_field_options();
+		$payment_methods = $gateway->get_payment_methods(
+			[
+				'status' => [ '', 'active' ],
+			]
+		);
 
-		if ( empty( $payment_methods ) ) {
-			$active_methods = PaymentMethods::get_active_payment_methods();
+		$result = [];
 
-			foreach ( $active_methods as $payment_method ) {
-				$payment_methods[ $payment_method ] = PaymentMethods::get_name( $payment_method );
-			}
+		foreach ( $payment_methods as $payment_method ) {
+			$result[ $payment_method->get_id() ] = $payment_method->get_name();
 		}
 
-		return $payment_methods;
+		return $result;
 	}
 }

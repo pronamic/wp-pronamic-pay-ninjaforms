@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [3.1.1] - 2022-09-27
+- Update to `wp-pay/core` version `^4.4`.
+
 ## [3.1.0] - 2022-09-26
 - Updated for new payment methods and fields registration.
 
@@ -60,7 +63,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2018-05-16
 - First release.
 
-[unreleased]: https://github.com/pronamic/wp-pronamic-pay-ninjaforms/compare/3.1.0...HEAD
+[unreleased]: https://github.com/pronamic/wp-pronamic-pay-ninjaforms/compare/3.1.1...HEAD
+[3.1.1]: https://github.com/pronamic/wp-pronamic-pay-ninjaforms/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/pronamic/wp-pronamic-pay-ninjaforms/compare/3.0.1...3.1.0
 [3.0.1]: https://github.com/pronamic/wp-pronamic-pay-ninjaforms/compare/3.0.0...3.0.1
 [3.0.0]: https://github.com/wp-pay-extensions/ninjaforms/compare/2.0.0...3.0.0

@@ -186,7 +186,7 @@ class Extension extends AbstractPluginIntegration {
 		$session_cookie_temp = null;
 
 		if ( \array_key_exists( $wp_session_cookie, $_COOKIE ) ) {
-			$session_cookie_temp = filter_var( \wp_unslash( $_COOKIE[ $wp_session_cookie ] ), \FILTER_SANITIZE_STRING );
+			$session_cookie_temp = \sanitize_text_field( \wp_unslash( $_COOKIE[ $wp_session_cookie ] ) );
 		}
 
 		$_COOKIE[ $wp_session_cookie ] = $session_cookie;

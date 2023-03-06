@@ -247,7 +247,7 @@ final class PaymentGateway extends NF_Abstracts_PaymentGateway {
 		];
 
 		foreach ( $pages as $key => $label ) {
-			$id = sprintf( 'pronamic_pay_%s_page_id', $key );
+			$id = \sprintf( 'pronamic_pay_%s_page_id', $key );
 
 			$settings['pronamic_pay_status_pages']['settings'][] = [
 				'name'        => $id,

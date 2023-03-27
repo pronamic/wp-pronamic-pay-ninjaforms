@@ -3,6 +3,7 @@
 	"description": "Ninja Forms driver for the WordPress payment processing library.",
 	"keywords": ["wordpress", "wp", "pay", "ninja", "forms", "extension", "pronamic"],
 	"license": "GPL-3.0-or-later",
+	"type": "wordpress-plugin",
 	"authors": [
 		{
 			"name": "Pronamic",

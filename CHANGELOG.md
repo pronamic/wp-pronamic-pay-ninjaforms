@@ -7,6 +7,19 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [3.2.2] - 2023-03-27
+
+### Commits
+
+- Set Composer type to WordPress plugin. ([159c033](https://github.com/pronamic/wp-pronamic-pay-ninjaforms/commit/159c033491ae296a8bb6f13f19a413fbb589ba90))
+- No longer use `\pronamic_pay_plugin()->get_pages()`. ([794a80f](https://github.com/pronamic/wp-pronamic-pay-ninjaforms/commit/794a80f1b1f908f7fa20a5908678f3bc4d125d8d))
+- Created .gitattributes ([726c751](https://github.com/pronamic/wp-pronamic-pay-ninjaforms/commit/726c751d0379744074b2b328f023fd04a215bc5c))
+- Requires PHP: 7.4. ([1c0fff0](https://github.com/pronamic/wp-pronamic-pay-ninjaforms/commit/1c0fff0762cdd8caddb01ee3473a6e507aa8902b))
+
+Full set of changes: [`3.2.1...3.2.2`][3.2.2]
+
+[3.2.2]: https://github.com/pronamic/wp-pronamic-pay-ninjaforms/compare/v3.2.1...v3.2.2
+
 ## [3.2.1] - 2023-01-31
 ### Composer
 

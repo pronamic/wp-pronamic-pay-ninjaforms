@@ -7,6 +7,16 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [3.2.3] - 2023-06-01
+
+### Commits
+
+- Switch from `pronamic/wp-deployer` to `pronamic/pronamic-cli`. ([164e796](https://github.com/pronamic/wp-pronamic-pay-ninjaforms/commit/164e7962e904abcce23ec5fb9e288c6cf779384b))
+
+Full set of changes: [`3.2.2...3.2.3`][3.2.3]
+
+[3.2.3]: https://github.com/pronamic/wp-pronamic-pay-ninjaforms/compare/v3.2.2...v3.2.3
+
 ## [3.2.2] - 2023-03-27
 
 ### Commits

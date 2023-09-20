@@ -1,6 +1,7 @@
 {
 	"core": null,
 	"plugins": [
+		"pronamic/wp-env-quick-login",
 		"pronamic/wp-pronamic-pay-test-helper",
 		"https://downloads.wordpress.org/plugin/ninja-forms.zip",
 		"https://downloads.wordpress.org/plugin/pronamic-client.zip",

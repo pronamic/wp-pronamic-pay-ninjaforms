@@ -3,12 +3,16 @@
 	"plugins": [
 		"pronamic/wp-env-quick-login",
 		"pronamic/wp-pronamic-pay-test-helper",
+		"pronamic/ninja-forms-paypal-express",
+		"pronamic/ninja-forms-conditionals",
+		"pronamic/ninja-forms-mail-chimp",
 		"https://downloads.wordpress.org/plugin/ninja-forms.zip",
 		"https://downloads.wordpress.org/plugin/pronamic-client.zip",
 		"https://downloads.wordpress.org/plugin/query-monitor.zip",
 		"https://downloads.wordpress.org/plugin/one-time-login.zip",
 		"https://downloads.wordpress.org/plugin/wp-plugin-dependencies.zip",
-		"https://downloads.wordpress.org/plugin/wp-mail-logging.zip"
+		"https://downloads.wordpress.org/plugin/wp-mail-logging.zip",
+		"https://downloads.wordpress.org/plugin/log-http-requests.zip"
 	],
 	"mappings": {
 		"wp-content/plugins/pronamic-ideal": "../../../",

@@ -6,6 +6,7 @@
 		"pronamic/ninja-forms-paypal-express",
 		"pronamic/ninja-forms-conditionals",
 		"pronamic/ninja-forms-mail-chimp",
+		"pronamic/ninja-forms-save-progress",
 		"https://downloads.wordpress.org/plugin/ninja-forms.zip",
 		"https://downloads.wordpress.org/plugin/pronamic-client.zip",
 		"https://downloads.wordpress.org/plugin/query-monitor.zip",

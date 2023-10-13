@@ -7,6 +7,19 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [3.2.4] - 2023-10-13
+
+### Commits
+
+- Added `ninja-forms-save-progress` for https://github.com/pronamic/wp-pronamic-pay-ninjaforms/issues/8. ([118b910](https://github.com/pronamic/wp-pronamic-pay-ninjaforms/commit/118b910a662684845f8b5221ed99b6e9983516bd))
+- Added extra Ninja Forms extensions for testing features. ([50fa9b8](https://github.com/pronamic/wp-pronamic-pay-ninjaforms/commit/50fa9b83b9a937ce04295edc15ef360549201de7))
+- Use new `pronamic/wp-env-quick-login` library. ([e27cdcd](https://github.com/pronamic/wp-pronamic-pay-ninjaforms/commit/e27cdcd34ec243d958661930c0fb4ea42e6c2aa1))
+- Auto setup after wp-env start. ([ab9314f](https://github.com/pronamic/wp-pronamic-pay-ninjaforms/commit/ab9314f17efc3cc483a02da3c39c72d39d1388b5))
+
+Full set of changes: [`3.2.3...3.2.4`][3.2.4]
+
+[3.2.4]: https://github.com/pronamic/wp-pronamic-pay-ninjaforms/compare/v3.2.3...v3.2.4
+
 ## [3.2.3] - 2023-06-01
 
 ### Commits

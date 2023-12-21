@@ -47,6 +47,7 @@
 	},
 	"private": true,
 	"scripts": {
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
 		"start": "wp-env start && npm run login",
 		"wp-env-setup": "npm-run-all wp-env-setup-*",
 		"wp-env-setup-mollie": "wp-env run cli wp config set MOLLIE_API_KEY $MOLLIE_API_KEY",

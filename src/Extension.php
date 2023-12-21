@@ -220,7 +220,7 @@ class Extension extends AbstractPluginIntegration {
 		// Prevent `wp_die()` in Ninja Forms response to exit script execution.
 		\add_filter(
 			'wp_die_handler',
-			function( $handler ) {
+			function ( $handler ) {
 				return '__return_true';
 			}
 		);

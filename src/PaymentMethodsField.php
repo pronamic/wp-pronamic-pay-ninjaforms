@@ -118,7 +118,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 				'order'    => $order,
 			];
 
-			$order++;
+			++$order;
 		}
 
 		return $options;

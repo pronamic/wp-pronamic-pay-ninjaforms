@@ -2,15 +2,6 @@
 	"name": "@wp-pay-extensions/ninjaforms",
 	"version": "3.2.4",
 	"description": "Ninja Forms extension for making payments with Pronamic Pay.",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/wp-pay-extensions/ninjaforms.git"
-	},
-	"keywords": [
-		"pronamic",
-		"ninjaforms",
-		"pay"
-	],
 	"author": {
 		"name": "Pronamic",
 		"email": "info@pronamic.nl",
@@ -23,12 +14,21 @@
 			"url": "http://www.rubendroogh.nl/"
 		}
 	],
-	"license": "GPL-3.0-or-later",
+	"license": "GPL-2.0-or-later",
+	"keywords": [
+		"pronamic",
+		"ninjaforms",
+		"pay"
+	],
+	"homepage": "https://github.com/wp-pay-extensions/ninjaforms",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wp-pay-extensions/ninjaforms.git"
+	},
 	"bugs": {
 		"url": "https://github.com/wp-pay-extensions/ninjaforms/issues",
 		"email": "support@pronamic.nl"
 	},
-	"homepage": "https://github.com/wp-pay-extensions/ninjaforms",
 	"browserslist": [
 		"> 1%",
 		"last 2 versions"

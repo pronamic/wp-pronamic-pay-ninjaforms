@@ -10,6 +10,8 @@
 
 namespace Pronamic\WordPress\Pay\Extensions\NinjaForms;
 
+use NF_Abstracts_Field;
+use NF_Abstracts_PaymentGateway;
 use Pronamic\WordPress\Pay\AbstractPluginIntegration;
 use Pronamic\WordPress\Pay\Payments\Payment;
 use Pronamic\WordPress\Pay\Payments\PaymentStatus;
@@ -20,6 +22,8 @@ use ReflectionClass;
  *
  * @version 1.5.1
  * @since   1.0.0
+ * @phpstan-type NinjaFormsSection array{id: string, nicename: string, fieldTypes: array<string>}
+ * @phpstan-type NinjaFormsSettingsGroup array{id: string, label: string, priority: int}
  */
 class Extension extends AbstractPluginIntegration {
 	/**
@@ -62,7 +66,7 @@ class Extension extends AbstractPluginIntegration {
 		\add_action( 'pronamic_payment_status_update_' . self::SLUG, [ $this, 'update_status' ] );
 
 		\add_filter( 'ninja_forms_field_type_sections', [ $this, 'field_type_sections' ] );
-		\add_filter( 'ninja_forms_register_fields', [ $this, 'register_fields' ], 10, 3 );
+		\add_filter( 'ninja_forms_register_fields', [ $this, 'register_fields' ], 10, 1 );
 		\add_filter( 'ninja_forms_register_payment_gateways', [ $this, 'register_payment_gateways' ], 10, 1 );
 		\add_filter( 'ninja_forms_field_settings_groups', [ $this, 'register_settings_groups' ] );
 
@@ -74,9 +78,8 @@ class Extension extends AbstractPluginIntegration {
 	/**
 	 * Filter field type sections.
 	 *
-	 * @param array $sections Field type sections.
-	 *
-	 * @return array
+	 * @param array<string, NinjaFormsSection> $sections Ninja Forms sections.
+	 * @return array<string, NinjaFormsSection>
 	 */
 	public function field_type_sections( $sections ) {
 		$sections['pronamic_pay'] = [
@@ -91,8 +94,8 @@ class Extension extends AbstractPluginIntegration {
 	/**
 	 * Register custom fields
 	 *
-	 * @param array $fields Fields from Ninja Forms.
-	 * @return array $fields
+	 * @param array<string, NF_Abstracts_Field> $fields Fields from Ninja Forms.
+	 * @return array<string, NF_Abstracts_Field>
 	 */
 	public function register_fields( $fields ) {
 		$fields['pronamic_pay_payment_method'] = new PaymentMethodsField();
@@ -104,9 +107,8 @@ class Extension extends AbstractPluginIntegration {
 	/**
 	 * Register payment gateways.
 	 *
-	 * @param array $gateways Payment gateways.
-	 *
-	 * @return array
+	 * @param array<string, NF_Abstracts_PaymentGateway> $gateways Payment gateways.
+	 * @return array<string, NF_Abstracts_PaymentGateway>
 	 */
 	public function register_payment_gateways( $gateways ) {
 		$gateways['pronamic_pay'] = new PaymentGateway();
@@ -117,9 +119,8 @@ class Extension extends AbstractPluginIntegration {
 	/**
 	 * Register settings groups.
 	 *
-	 * @param array $groups Settings groups.
-	 *
-	 * @return array
+	 * @param array<string, NinjaFormsSettingsGroup> $groups Settings groups.
+	 * @return array<string, NinjaFormsSettingsGroup>
 	 */
 	public function register_settings_groups( $groups ) {
 		$groups['pronamic_pay'] = [
@@ -140,7 +141,6 @@ class Extension extends AbstractPluginIntegration {
 	public function update_status( Payment $payment ) {
 		switch ( $payment->status ) {
 			case PaymentStatus::SUCCESS:
-				// Fulfill order.
 				$this->fulfill_order( $payment );
 
 				break;
@@ -151,6 +151,7 @@ class Extension extends AbstractPluginIntegration {
 	 * Fulfill order.
 	 *
 	 * @param Payment $payment Payment.
+	 * @return void
 	 */
 	public function fulfill_order( $payment ) {
 		// Check if already fulfilled.

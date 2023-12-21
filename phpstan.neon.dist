@@ -3,7 +3,7 @@ includes:
 parameters:
 	customRulesetUsed: false
 	level: max
-	bootstrapFiles:
-		- tests/phpstan/bootstrap.php
 	paths:
 		- src/
+	scanDirectories:
+		- wp-content/plugins/ninja-forms

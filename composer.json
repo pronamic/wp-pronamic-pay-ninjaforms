@@ -66,7 +66,7 @@
 		"pronamic/wp-coding-standards": "^2.1",
 		"roots/wordpress": "^6.0",
 		"wp-phpunit/wp-phpunit": "^6.1",
-		"wpackagist-plugin/ninja-forms": "3.5.4",
+		"wpackagist-plugin/ninja-forms": "^3.7",
 		"yoast/phpunit-polyfills": "^1.0"
 	},
 	"scripts": {

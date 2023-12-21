@@ -1,58 +1,58 @@
 {
-  "name": "@wp-pay-extensions/ninjaforms",
-  "version": "3.2.4",
-  "description": "Ninja Forms extension for making payments with Pronamic Pay.",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/wp-pay-extensions/ninjaforms.git"
-  },
-  "keywords": [
-    "pronamic",
-    "ninjaforms",
-    "pay"
-  ],
-  "author": {
-    "name": "Pronamic",
-    "email": "info@pronamic.nl",
-    "url": "https://www.pronamic.nl/"
-  },
-  "contributors": [
-    {
-      "name": "Ruben Droogh",
-      "email": "rubendroogh@hotmail.nl",
-      "url": "http://www.rubendroogh.nl/"
-    }
-  ],
-  "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/wp-pay-extensions/ninjaforms/issues",
-    "email": "support@pronamic.nl"
-  },
-  "homepage": "https://github.com/wp-pay-extensions/ninjaforms",
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ],
-  "devDependencies": {
-    "@wordpress/env": "^9.0.0",
-    "grunt": "^1.6.1",
-    "grunt-contrib-jshint": "^3.2.0",
-    "grunt-phpcs": "^0.4.0",
-    "grunt-phplint": "0.1.0",
-    "grunt-phpmd": "^0.1.1",
-    "grunt-phpunit": "^0.3.6",
-    "load-grunt-tasks": "^5.1.0",
-    "npm-run-all": "^4.1.5"
-  },
-  "private": true,
-  "scripts": {
-    "start": "wp-env start && npm run login",
-    "wp-env-setup": "npm-run-all wp-env-setup-*",
-    "wp-env-setup-mollie": "wp-env run cli wp config set MOLLIE_API_KEY $MOLLIE_API_KEY",
-    "wp-env-setup-buckaroo-website-key": "wp-env run cli wp config set BUCKAROO_WEBSITE_KEY $BUCKAROO_WEBSITE_KEY",
-    "wp-env-setup-buckaroo-secret-key": "wp-env run cli wp config set BUCKAROO_SECRET_KEY $BUCKAROO_SECRET_KEY",
-    "wp-env-setup-plugins": "wp-env run cli wp plugin activate pronamic-ideal pronamic-pay-ninja-forms",
-    "wp-env-login": "wp-env run cli wp user one-time-login admin",
-    "wp-env-after-start": "npm-run-all wp-env-setup"
-  }
+	"name": "@wp-pay-extensions/ninjaforms",
+	"version": "3.2.4",
+	"description": "Ninja Forms extension for making payments with Pronamic Pay.",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wp-pay-extensions/ninjaforms.git"
+	},
+	"keywords": [
+		"pronamic",
+		"ninjaforms",
+		"pay"
+	],
+	"author": {
+		"name": "Pronamic",
+		"email": "info@pronamic.nl",
+		"url": "https://www.pronamic.nl/"
+	},
+	"contributors": [
+		{
+			"name": "Ruben Droogh",
+			"email": "rubendroogh@hotmail.nl",
+			"url": "http://www.rubendroogh.nl/"
+		}
+	],
+	"license": "GPL-3.0-or-later",
+	"bugs": {
+		"url": "https://github.com/wp-pay-extensions/ninjaforms/issues",
+		"email": "support@pronamic.nl"
+	},
+	"homepage": "https://github.com/wp-pay-extensions/ninjaforms",
+	"browserslist": [
+		"> 1%",
+		"last 2 versions"
+	],
+	"devDependencies": {
+		"@wordpress/env": "^9.0.0",
+		"grunt": "^1.6.1",
+		"grunt-contrib-jshint": "^3.2.0",
+		"grunt-phpcs": "^0.4.0",
+		"grunt-phplint": "0.1.0",
+		"grunt-phpmd": "^0.1.1",
+		"grunt-phpunit": "^0.3.6",
+		"load-grunt-tasks": "^5.1.0",
+		"npm-run-all": "^4.1.5"
+	},
+	"private": true,
+	"scripts": {
+		"start": "wp-env start && npm run login",
+		"wp-env-setup": "npm-run-all wp-env-setup-*",
+		"wp-env-setup-mollie": "wp-env run cli wp config set MOLLIE_API_KEY $MOLLIE_API_KEY",
+		"wp-env-setup-buckaroo-website-key": "wp-env run cli wp config set BUCKAROO_WEBSITE_KEY $BUCKAROO_WEBSITE_KEY",
+		"wp-env-setup-buckaroo-secret-key": "wp-env run cli wp config set BUCKAROO_SECRET_KEY $BUCKAROO_SECRET_KEY",
+		"wp-env-setup-plugins": "wp-env run cli wp plugin activate pronamic-ideal pronamic-pay-ninja-forms",
+		"wp-env-login": "wp-env run cli wp user one-time-login admin",
+		"wp-env-after-start": "npm-run-all wp-env-setup"
+	}
 }

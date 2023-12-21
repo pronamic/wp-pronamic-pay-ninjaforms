@@ -1,7 +1,15 @@
 {
 	"name": "wp-pay-extensions/ninjaforms",
 	"description": "Ninja Forms driver for the WordPress payment processing library.",
-	"keywords": ["wordpress", "wp", "pay", "ninja", "forms", "extension", "pronamic"],
+	"keywords": [
+		"wordpress",
+		"wp",
+		"pay",
+		"ninja",
+		"forms",
+		"extension",
+		"pronamic"
+	],
 	"license": "GPL-3.0-or-later",
 	"type": "wordpress-plugin",
 	"authors": [
@@ -36,7 +44,7 @@
 			"bamarni/composer-bin-plugin": true
 		}
 	},
-	"repositories":[
+	"repositories": [
 		{
 			"type": "composer",
 			"url": "https://wpackagist.org",

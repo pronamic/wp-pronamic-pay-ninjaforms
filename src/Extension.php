@@ -221,7 +221,9 @@ class Extension extends AbstractPluginIntegration {
 		\add_filter(
 			'wp_die_handler',
 			function ( $handler ) {
-				return '__return_true';
+				$handler = '__return_true';
+
+				return $handler;
 			}
 		);
 

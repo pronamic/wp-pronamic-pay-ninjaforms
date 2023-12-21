@@ -208,7 +208,7 @@ class Extension extends AbstractPluginIntegration {
 			);
 
 			$merge_tags_prop->setValue( $fields, $merge_tags );
-		} catch ( \Exception $e ) {
+		} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			// Nothing to do.
 		}
 

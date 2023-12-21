@@ -11,8 +11,4 @@
 
 		<exclude name="WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE"  />
 	</rule>
-
-	<rule ref="Generic.CodeAnalysis.EmptyStatement.DetectedCatch">
-		<exclude-pattern>src/Extension.php</exclude-pattern>
-	</rule>
 </ruleset>

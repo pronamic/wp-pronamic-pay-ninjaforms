@@ -128,8 +128,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	 * Render options.
 	 *
 	 * @param array $options Options.
-	 *
-	 * @return array
+	 * @return array<string, string>
 	 */
 	public function render_options( $options ) {
 		foreach ( $options as &$option ) {
@@ -144,7 +143,7 @@ class PaymentMethodsField extends NF_Abstracts_List {
 	/**
 	 * Get gateway available payment methods.
 	 *
-	 * @return array
+	 * @return array<string, string>
 	 */
 	private function get_pronamic_gateway_payment_methods() {
 		$form_id = \filter_input( \INPUT_GET, 'form_id', \FILTER_SANITIZE_NUMBER_INT );

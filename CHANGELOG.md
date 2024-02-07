@@ -7,6 +7,16 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [3.3.0] - 2024-02-07
+
+### Changed
+
+- The code further complies with (WordPress) coding standards.
+
+Full set of changes: [`3.2.4...3.3.0`][3.3.0]
+
+[3.3.0]: https://github.com/pronamic/wp-pronamic-pay-ninjaforms/compare/v3.2.4...v3.3.0
+
 ## [3.2.4] - 2023-10-13
 
 ### Commits

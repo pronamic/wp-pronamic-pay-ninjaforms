@@ -7,6 +7,16 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [3.3.1] - 2024-02-13
+
+### Changed
+
+- No longer allow direct file access to plugin file. [pronamic/pronamic-pay-with-mollie-for-ninja-forms#2](https://github.com/pronamic/pronamic-pay-with-mollie-for-ninja-forms/issues/2)
+
+Full set of changes: [`3.3.0...3.3.1`][3.3.1]
+
+[3.3.1]: https://github.com/pronamic/wp-pronamic-pay-ninjaforms/compare/v3.3.0...v3.3.1
+
 ## [3.3.0] - 2024-02-07
 
 ### Changed

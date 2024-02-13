@@ -27,6 +27,10 @@
  * @package   Pronamic\WordPress\Pay\Extensions\NinjaForms
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 add_filter(
 	'pronamic_pay_plugin_integrations',
 	function ( $integrations ) {

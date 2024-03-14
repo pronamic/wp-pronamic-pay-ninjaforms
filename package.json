@@ -48,6 +48,7 @@
 		"wp-env-setup-buckaroo-secret-key": "wp-env run cli wp config set BUCKAROO_SECRET_KEY $BUCKAROO_SECRET_KEY",
 		"wp-env-setup-plugins": "wp-env run cli wp plugin activate pronamic-ideal pronamic-pay-ninja-forms",
 		"wp-env-login": "wp-env run cli wp user one-time-login admin",
-		"wp-env-after-start": "npm-run-all wp-env-setup"
+		"wp-env-after-start": "npm-run-all wp-env-setup",
+		"login": "wp-env run cli wp user one-time-login admin"
 	}
 }

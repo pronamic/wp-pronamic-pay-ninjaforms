@@ -7,6 +7,17 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [3.3.3] - 2024-12-17
+
+### Commits
+
+- Allow automattic/jetpack-autoloader Composer plugin. ([bb372d9](https://github.com/pronamic/wp-pronamic-pay-ninjaforms/commit/bb372d941ccf971a90dd9f386269fbbdd0f29769))
+- Happy 2024. ([e752cc0](https://github.com/pronamic/wp-pronamic-pay-ninjaforms/commit/e752cc0f3a9810a96b06ff8c12ee1fed690d157c))
+
+Full set of changes: [`3.3.2...3.3.3`][3.3.3]
+
+[3.3.3]: https://github.com/pronamic/wp-pronamic-pay-ninjaforms/compare/v3.3.2...v3.3.3
+
 ## [3.3.2] - 2024-03-26
 
 ### Commits

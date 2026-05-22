@@ -24,5 +24,6 @@
 	},
 	"lifecycleScripts": {
 		"afterStart": "npm run wp-env-after-start"
-	}
+	},
+	"testsEnvironment": false
 }

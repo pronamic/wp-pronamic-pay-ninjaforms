@@ -7,6 +7,18 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [3.3.5] - 2026-07-31
+
+### Changed
+
+- Updated the WordPress development environment (`@wordpress/env`) from `^9.6.0` to `^11.4.0`.
+- Disabled the separate wp-env tests environment via `testsEnvironment: false`.
+- Ignored the local `.wp-env.override.json` file in Git.
+
+Full set of changes: [`3.3.4...3.3.5`][3.3.5]
+
+[3.3.5]: https://github.com/pronamic/wp-pronamic-pay-ninjaforms/compare/v3.3.4...v3.3.5
+
 ## [3.3.4] - 2025-11-11
 
 ### Commits
